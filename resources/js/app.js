@@ -8,6 +8,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+require('popper.js');
+require('jquery');
+require('bootstrap');
 
 /**
  * The following block of code may be used to automatically register your
@@ -28,6 +31,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
+/*const app = new Vue({
     el: '#app'
-});
+});*/

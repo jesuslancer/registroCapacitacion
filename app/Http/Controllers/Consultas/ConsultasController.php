@@ -11,7 +11,10 @@ class ConsultasController extends Controller
 {
     public function consulta($n,$c)
     {
-    	$persona = Persona::with('parroquia')->where('nacionalidad',$n)->where('cedula_identidad',$c)->get();
-    	dd($persona);
+    	$persona = Persona::with('parroquia')->where('nacionalidad',$n)->where('cedula_identidad',$c)->first();
+    	if (empty($persona)) {
+    		return 'vacio';
+    	}
+    	return $persona;
     }
 }

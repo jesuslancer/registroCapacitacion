@@ -5,17 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
         <!-- Fonts -->
-        {{-- <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"> --}}
-        <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet" />
-        <script src="{{ asset('/bootstrap/dist/css/bootstrap.css') }}"></script>
-
-        <script src="{{ asset('js/jquery.min.js') }}"></script>
-        <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-        <script src="{{ asset('/bootstrap/dist/js/bootstrap.js') }}"></script>
-        
-        <!-- Styles -->
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+        <script src="{{ asset('js/Controller/registroCaptacionCtrl.js') }}"></script>         
+        <script src="{{ asset('css/app.css') }}"></script>
+    </head>
+    <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
@@ -68,9 +63,8 @@
                 margin-bottom: 30px;
             }
         </style>
-    </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div id="captacion" class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
@@ -84,17 +78,47 @@
                     @endauth
                 </div>
             @endif
-            <div class="form-control">
-                <label for="">Cédula Identidad:</label>
-                <select class="form-control" v-model="form.nac">
-                            <option value="V">V</option>
-                            <option value="E">E</option>
-                        </select>
-                <input type="text" class="form-control">
-                <button class="success">Buscar </button>
-                
+            <div>
+                <form class="form-inline" @submit.prevent="consulta"   >
+                    <div class="text-center col-lg-6 col-lg-offset-3">
+                        <div class="form-group">
+                            <label for="">Cédula de Identidad:</label>
+                            <select class="form-control" v-model="nac">
+                                <option value="V">V</option>
+                                <option value="E">E</option>
+                            </select>
+                        </div>
+                        <div class="input-group" >
+                            <input  maxlength="8"  data-vv-name="cédula" id="Cedula" v-model="cedula"  name="Cedula" type="text" class="form-control" title="Rellene este campo">
+                            <div class="input-group-btn">
+                                <button  type="submit" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span> Buscar
+                                </button>
+                            </div>
+                        </div><br>
+                    </div>
+                </form> 
             </div>
-           
+            <br>
+            <div>
+                <form class="form-control" accept-charset="utf-8">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 form-group">
+                            <label>Nombres y Apellidos:</label>
+                            <input type="text"  class="form-control" v-model="nombrePersona" disabled>
+                        </div>
+                        <div class="col-lg-4 col-lg-push-2 form-group">
+                            <label for="">Género:</label>
+                            <input type="text" class="form-control" v-model="genero" disabled>
+                        </div>
+                        <div class="col-lg-4 col-lg-push-2 form-group">
+                            <label for="">Fecha de Nacimiento:</label>
+                            <input type="text" class="form-control" v-model="fechaNac" disabled>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </body>
+        <script src="{{ asset('js/app.js') }}"></script>
 </html>

@@ -14,4 +14,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('prueba/{nac}/{cedula}','Consultas\ConsultasController@consulta');
+Route::get('consultaCedula/{nac}/{cedula}','Consultas\ConsultasController@consulta');
