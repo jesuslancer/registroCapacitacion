@@ -1,5 +1,4 @@
 
-
 window.onload = function(){
 	var registro = new Vue({
 		el: '#captacion',
@@ -20,6 +19,8 @@ window.onload = function(){
 			telf1:'',
 			telf2:'',
 			telf3:'',
+			correo1:'',
+			correo2:'',
 			existeP:true,
 
 		},

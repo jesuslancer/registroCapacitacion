@@ -1,5 +1,6 @@
 @extends('template')
 @section('content')
+
 <script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>         
     <div id="captacion" v-cloak>
         <div class="d-flex justify-content-center"> {{-- Inicio busqueda --}}
@@ -46,37 +47,55 @@
                 </h2>
             </div>
             <br>
-            <div class="d-flex  mb-3">  
-                <div class="col-4">
-                    <label>Celular</label>
+            <div class="d-flex  mb-3"> {{-- Teléfonos --}} 
+                <div class="col">
+                    <label>Celular(*)</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <span class="input-group-text fa fa-phone" id="basic-addon1"></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Ej:04121234567" v-model="telf1" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" placeholder="Ej:04121234567" minlength="11" maxlength="11"  v-model="telf1" aria-label="Telefono1" aria-describedby="basic-addon1">
                     </div>
-                    
                 </div>
-                <div class="col-4">
+                <div class="col">
                     <label>Habitación</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <span class="input-group-text fa fa-phone" id="basic-addon2"></span>
                         </div>
-                        <input type="text" class="form-control" v-model="telf2" placeholder="Ej:02121234567" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" minlength="11" maxlength="11"  v-model="telf2" placeholder="Ej:02121234567" aria-label="Telefono2" aria-describedby="basic-addon2">
                 </div>
                 </div>
-                <div class="col-4">
+                <div class="col">
                     <label>Otro</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">@</span>
+                            <span class="input-group-text fa fa-phone" id="basic-addon3"></span>
                         </div>
-                        <input type="text" class="form-control" v-model="telf3" aria-label="Username" placeholder="Ej:02121234567" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" minlength="11" maxlength="11"  v-model="telf3" aria-label="Telefono3" placeholder="Ej:02121234567" aria-describedby="basic-addon3">
                     </div>
                 </div>
             </div>
-
+            <div class="d-flex">{{-- Correos --}}
+                <div class="col">
+                    <label>Correo Principal(*)</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fa fa-mail-bulk" id="basic-addon4"></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="user@gmail.com" v-model="correo1" aria-label="Correo1" aria-describedby="basic-addon4">
+                    </div>
+                </div>
+                <div class="col">
+                    <label>Correo Opcional(*)</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fa fa-mail-bulk" id="basic-addon5"></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="user@gmail.com" v-model="correo2" aria-label="Correo2" aria-describedby="basic-addon5">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @stop
