@@ -17,6 +17,10 @@ window.onload = function(){
 			nombrePersona:'',
 			genero:'',
 			fechaNac:'',
+			telf1:'',
+			telf2:'',
+			telf3:'',
+			existeP:true,
 
 		},
 		methods:{
@@ -35,11 +39,14 @@ window.onload = function(){
 									this.sinParroquia = false
 								}*/
 								//this.loading1 = false
+								this.existeP=true;
 								this.personaId = r.data.id
 								this.nombrePersona = r.data.primer_nombre + ' ' + r.data.segundo_nombre + ' ' + r.data.primer_apellido + ' ' + r.data.segundo_apellido
 								this.genero = r.data.sexo
 								this.fechaNac = this.formatoVw(r.data.fecha_nacimiento)
 							} else {
+								this.existeP=false;
+								alert('NO CONSIGUÓ! ')
 								swal('¡Atención!','Estimado(a) usuario(a), por favor coloque una cédula valida','error')
 								/*this.sinCorreo = false
 								this.sinParroquia = false
