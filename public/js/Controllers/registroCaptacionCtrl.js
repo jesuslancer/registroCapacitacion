@@ -3,7 +3,7 @@ window.onload = function(){
 	var registro = new Vue({
 		el: '#captacion',
 		created () {
-			
+			this.getEstados();
 
 		},
 		mounted(){
@@ -21,11 +21,17 @@ window.onload = function(){
 			telf3:'',
 			correo1:'',
 			correo2:'',
+			estado:'',
+			municipio:'',
+			parroquia:'',
 			existeP:true,
+			estados:[],
+			municipios:[],
+			parroquias:[],
 
 		},
 		methods:{
-			consulta(){
+			consulta(){//Consulta inicial de persona con la cedula
 				axios.get('consultaCedula/'+ this.nac + '/' + this.cedula)
 				.then(r=>{
 					if (r.data != 'vacio') {
@@ -54,6 +60,27 @@ window.onload = function(){
 								this.loading1 = false*/
 
 							}
+							this.getEstados()
+				})
+			},
+			getEstados() {//Consulta todos los estados
+				axios.post('estados')
+				.then(r => {
+					this.estados = r.data
+					this.parroquias.length = 0
+				})
+			},
+			getMunicipios() {
+				axios.post('municipios', {id:this.estado})
+				.then(r => {
+					this.municipios = r.data
+					this.parroquias.length = 0
+				})
+			},
+			getParroquias() {
+				axios.post('parroquias', {id:this.municipio})
+				.then(r => {
+					this.parroquias = r.data
 				})
 			},
 			formatoVw(date){

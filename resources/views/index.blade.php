@@ -110,26 +110,23 @@
             <div class="d-md-flex">
                 <div class="col">
                     <label> Estado</label>
-                    <select name="estado" class="form-control" >
-                        <option value=""></option>
-                        <option  disabled selected>Seleccione</option>
-                            <option > prueba </option>
+                    <select @change="getMunicipios" name="estado" class="form-control" v-model="estado">
+                        <option value="" disabled selected>Seleccione</option>
+                        <option :value="x.id" v-for="x in estados">@{{ x.denominacion }}</option>
                     </select>
                 </div>
                 <div class="col">
                     <label> Municipio</label>
-                    <select name="municipio" class="form-control" >
-                        <option value=""></option>
-                        <option  disabled selected>Seleccione</option>
-                            <option > prueba </option>
+                    <select @change="getParroquias" name="municipio" class="form-control" v-model="municipio">
+                        <option  value="" disabled selected>Seleccione</option>
+                        <option :value="x.id" v-for="x in municipios">@{{ x.denominacion }}</option>
                     </select>
                 </div>
                 <div class="col">
                     <label> Parroquia</label>
-                    <select name="parroquia" class="form-control" >
-                        <option value=""></option>
-                        <option  disabled selected>Seleccione</option>
-                            <option > prueba </option>
+                    <select name="parroquia" class="form-control" v-model="parroquia">
+                        <option value="" disabled selected>Seleccione</option>
+                        <option :value="x.id" v-for="x in parroquias">@{{ x.denominacion }}</option>
                     </select>
                 </div>
             </div>
