@@ -83,6 +83,8 @@
   <!-- Custom JavaScript for this theme -->
   <script src="js/scrolling-nav.js"></script>
   <script src="js/app.js" charset="utf-8"></script>
+  <!-- Sweetalert2 -->
+  <script src="../node_modules/sweetalert2/dist/sweetalert2.js"></script>
 </body>
 <style>
 [v-cloak]{

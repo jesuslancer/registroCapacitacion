@@ -1,7 +1,8 @@
 @extends('template')
 @section('content')
 
-<script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>         
+<script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>   
+
     <div id="captacion" v-cloak>
         <div class="d-md-flex justify-content-center"> {{-- Inicio busqueda --}}
             <form class="form-inline " @submit.prevent="consulta" >
@@ -54,7 +55,7 @@
                     <label>Celular(*)</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text fa fa-phone" id="basic-addon1"></span>
+                            <span class="input-group-text fas fa-phone" id="basic-addon1"></span>
                         </div>
                         <input type="text" class="form-control" placeholder="Ej:04121234567" minlength="11" maxlength="11"  v-model="telf1" aria-label="Telefono1" aria-describedby="basic-addon1">
                     </div>
@@ -128,6 +129,36 @@
                         <option value="" disabled selected>Seleccione</option>
                         <option :value="x.id" v-for="x in parroquias">@{{ x.denominacion }}</option>
                     </select>
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col">
+                    <label>Urbanización/Sector(*)</label>
+                        <input type="text" class="form-control" placeholder="Urb. Ejemplo" v-model="urbanizacion" >
+                </div>
+                <div class="col">
+                    <label>Avenida/Calle(*)</label>
+                        <input type="text" class="form-control" placeholder="Avenida. Ejemplo" v-model="avenida" aria-label="Correo1" >
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col">
+                    <label>Edificio/Casa/Quinta(*)</label>
+                        <input type="text" class="form-control" placeholder="Edif. Ejemplo" v-model="edificio" >
+                </div>
+                <div class="col">
+                    <label>Piso(*)</label>
+                        <input type="text" class="form-control" placeholder="Piso. Ejemplo" v-model="piso" aria-label="Correo1" >
+                </div>
+                <div class="col">
+                    <label>Apto(*)</label>
+                        <input type="text" class="form-control" placeholder="Apto. Ejemplo" v-model="apto" aria-label="Correo1" >
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col">
+                    <label>Punto de Referencia(*)</label>
+                        <input type="text" class="form-control" placeholder="Referencia. Ejemplo" v-model="referencia" aria-label="Correo1" >
                 </div>
             </div>
             </form> 

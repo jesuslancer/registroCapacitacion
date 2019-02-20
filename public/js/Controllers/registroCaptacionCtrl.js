@@ -22,6 +22,12 @@ window.onload = function(){
 			correo1:'',
 			correo2:'',
 			estado:'',
+			urbanizacion:'',
+			avenida:'',
+			edificio:'',
+			piso:'',
+			apto:'',
+			referencia:'',
 			municipio:'',
 			parroquia:'',
 			existeP:true,
@@ -53,8 +59,12 @@ window.onload = function(){
 								this.fechaNac = this.formatoVw(r.data.fecha_nacimiento)
 							} else {
 								this.existeP=false;
-								alert('NO CONSIGUÓ! ')
-								swal('¡Atención!','Estimado(a) usuario(a), por favor coloque una cédula valida','error')
+								Swal.fire({
+									  title: '¡Atención!',
+									  text: 'Estimado(a) Usuario(a), se detecto un error en la consulta,',
+									  type: 'error',
+									  confirmButtonText: 'aceptar'
+									})
 								/*this.sinCorreo = false
 								this.sinParroquia = false
 								this.loading1 = false*/
@@ -68,7 +78,8 @@ window.onload = function(){
 				.then(r => {
 					this.estados = r.data
 					this.parroquias.length = 0
-				})
+				})				
+
 			},
 			getMunicipios() {
 				axios.post('municipios', {id:this.estado})

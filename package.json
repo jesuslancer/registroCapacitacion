@@ -21,11 +21,13 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
+        "sweetalert": "^2.1.2",
         "vue": "^2.6.6",
         "vue-template-compiler": "^2.6.6"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.7.2",
+        "sweetalert2": "^8.2.2",
         "vee-validate": "^2.1.7",
         "vue-router": "^3.0.2",
         "vue-select": "^2.5.1",
