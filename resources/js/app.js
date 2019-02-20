@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.$ = require('jquery');
 require('popper.js');
 require('jquery');
 require('bootstrap');

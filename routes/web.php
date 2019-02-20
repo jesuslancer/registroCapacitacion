@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('consultaCedula/{nac}/{cedula}','Consultas\ConsultasController@consulta');
+Route::get('estados','Consultas\ConsultasController@estados');

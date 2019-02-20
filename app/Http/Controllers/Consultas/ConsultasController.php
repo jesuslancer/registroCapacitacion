@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\AreaConocimiento;
 use App\Persona;
+use App\Estado;
 
 class ConsultasController extends Controller
 {
@@ -16,5 +17,8 @@ class ConsultasController extends Controller
     		return 'vacio';
     	}
     	return $persona;
+    }
+    public function estados(){
+    	return Estado::get();
     }
 }

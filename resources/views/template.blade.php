@@ -90,6 +90,19 @@
 }
 </style>
 <script>
+    $(document).ready(function(event){
+      var tecla;
+  $('.solo-numerosCharlie').keypress(function(event){
+      tecla = (document.all) ? event.keyCode : event.which;
+      if (tecla == 8 || tecla == 0 ) {
+          return true;
+      }
+      patron =/[0-9]/;
+      tecla_final = String.fromCharCode(tecla);
+      return patron.test(tecla_final);
+
+  })
+  })
   window.Laravel = <?php echo json_encode([
       'csrfToken' => csrf_token(),
   ]); ?>
