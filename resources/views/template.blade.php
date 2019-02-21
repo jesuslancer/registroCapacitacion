@@ -87,8 +87,7 @@
   <script src="js/app.js" charset="utf-8"></script>
   <!-- Sweetalert2 -->
   <script src="../node_modules/sweetalert2/dist/sweetalert2.js"></script>
-  <!-- FontAwesome -->
-  <script src="css/fontawesome/js/all.js"></script>
+  
 </body>
 <style>
 [v-cloak]{
@@ -96,6 +95,7 @@
 }
 </style>
 <script>
+  
     $(document).ready(function(event){
       var tecla;
   $('.solo-numerosCharlie').keypress(function(event){

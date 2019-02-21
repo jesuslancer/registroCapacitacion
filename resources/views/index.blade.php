@@ -5,7 +5,7 @@
 
     <div id="captacion" v-cloak>
         <div class="d-md-flex justify-content-center"> {{-- Inicio busqueda --}}
-            <form class="form-inline " @submit.prevent="consulta" >
+            <form class="form-inline " @submit.prevent="consulta()" >
                 <label for="">Cédula de Identidad:</label> <br>
                     
                 <div class="input-group mx-2" >
@@ -102,10 +102,15 @@
             <div class="d-md-flex">
                 <div class="col">
                     <label>Nivel de Instrucción Académica(*)</label>
-                    <select name="nivel" class="form-control " >
-                            <option  disabled selected>Seleccione</option>
-                            <option > prueba </option>
-                    </select>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fa fa-book" id="basic-addon6"></span>
+                        </div>
+                        <select name="nivel" class="form-control " aria-label="Correo2" aria-describedby="basic-addon6">
+                                <option  disabled selected>Seleccione</option>
+                                <option > prueba </option>
+                        </select>
+                    </div>
                 </div>
             </div> <br>
             <div class="d-md-flex">

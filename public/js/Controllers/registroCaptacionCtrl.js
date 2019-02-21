@@ -1,3 +1,4 @@
+Vue.use(VeeValidate);
 
 window.onload = function(){
 	var registro = new Vue({
@@ -61,7 +62,7 @@ window.onload = function(){
 								this.existeP=false;
 								Swal.fire({
 									  title: '¡Atención!',
-									  text: 'Estimado(a) Usuario(a), se detecto un error en la consulta,',
+									  text: 'Estimado(a) Usuario(a), no se consiguen datos.',
 									  type: 'error',
 									  confirmButtonText: 'aceptar'
 									})

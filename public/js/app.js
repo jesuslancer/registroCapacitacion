@@ -51539,6 +51539,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 /*const app = new Vue({
     el: '#app'
 });*/
+//DA ERROR
 
 /***/ }),
 
