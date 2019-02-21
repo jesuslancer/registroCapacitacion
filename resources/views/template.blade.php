@@ -11,7 +11,9 @@
   <title>Registro de Captación</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendar/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="css/fontawesome/css/all.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
   <link href="css/scrolling-nav.css" rel="stylesheet">
@@ -74,17 +76,19 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendar/jquery/jquery.min.js"></script>
+  <script src="vendar/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Plugin JavaScript -->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="vendar/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom JavaScript for this theme -->
   <script src="js/scrolling-nav.js"></script>
   <script src="js/app.js" charset="utf-8"></script>
   <!-- Sweetalert2 -->
   <script src="../node_modules/sweetalert2/dist/sweetalert2.js"></script>
+  <!-- FontAwesome -->
+  <script src="css/fontawesome/js/all.js"></script>
 </body>
 <style>
 [v-cloak]{

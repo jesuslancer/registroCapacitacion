@@ -55,7 +55,7 @@
                     <label>Celular(*)</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text fas fa-phone" id="basic-addon1"></span>
+                            <span class="input-group-text fa fa-phone" id="basic-addon1"></span>
                         </div>
                         <input type="text" class="form-control" placeholder="Ej:04121234567" minlength="11" maxlength="11"  v-model="telf1" aria-label="Telefono1" aria-describedby="basic-addon1">
                     </div>
