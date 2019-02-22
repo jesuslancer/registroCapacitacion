@@ -18,3 +18,5 @@ Route::get('consultaCedula/{nac}/{cedula}','Consultas\ConsultasController@consul
 Route::post('estados','Consultas\ConsultasController@estados');
 Route::post('municipios','Consultas\ConsultasController@municipios');
 Route::post('parroquias','Consultas\ConsultasController@parroquias');
+Route::post('nivelInstruccion','Consultas\ConsultasController@nivelInstruccion');
+Route::post('guardarP','CRUD\CrudController@guardarPersona');

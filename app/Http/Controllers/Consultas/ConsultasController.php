@@ -9,6 +9,7 @@ use App\Persona;
 use App\Estado;
 use App\Municipio;
 use App\Parroquia;
+use App\NivelEducativo;
 
 class ConsultasController extends Controller
 {
@@ -28,4 +29,7 @@ class ConsultasController extends Controller
     public function parroquias(Request $request){// Funcion q trae las parroquias segun se seleccione municipio
     	return Parroquia::where('municipio_id',$request->id)->get();
     }
+    public function nivelInstruccion(){
+    	return NivelEducativo::get();
+    }	
 }

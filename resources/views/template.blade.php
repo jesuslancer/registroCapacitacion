@@ -21,7 +21,7 @@
 </head>
 
 <body id="page-top">
-
+<div id='app'></div>{{-- Se necesita para evitar el error de vue --}}
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <div class="container">
@@ -55,7 +55,7 @@
   <section id="about">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12 mx-auto">
+        <div class="col-12 mx-auto">
         
           @yield('content')
           
@@ -87,6 +87,13 @@
   <script src="js/app.js" charset="utf-8"></script>
   <!-- Sweetalert2 -->
   <script src="../node_modules/sweetalert2/dist/sweetalert2.js"></script>
+  <!-- vee-validate -->
+  <script src="../node_modules/vee-validate/dist/vee-validate.js"></script>
+  <script src="../node_modules/vee-validate/dist/locale/es.js"></script>
+  <!-- VueSelect2 -->
+  <script src="../node_modules/vue-select/dist/vue-select.js"></script>
+  <!-- Vue-pagination -->
+  <script src="../node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js"></script>
   
 </body>
 <style>
@@ -95,7 +102,10 @@
 }
 </style>
 <script>
-  
+Vue.component('v-select', VueSelect.VueSelect);
+Vue.use(VeeValidate);
+Vue.use("vuejs-uib-pagination")
+
     $(document).ready(function(event){
       var tecla;
   $('.solo-numerosCharlie').keypress(function(event){

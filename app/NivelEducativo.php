@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class NivelEducativo extends Model
 {
-    protected $table = 'cesuv.nivel_educativp';
+    protected $table = 'cesuv.nivel_educativo';
 }

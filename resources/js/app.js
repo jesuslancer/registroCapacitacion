@@ -6,13 +6,15 @@
  */
 
 require('./bootstrap');
-
+import Vue from 'vue';
 window.Vue = require('vue');
 window.$ = require('jquery');
 require('popper.js');
 require('jquery');
 require('bootstrap');
 require('sweetalert2');
+require('vee-validate');
+require('vuejs-uib-pagination');
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,6 +35,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-/*const app = new Vue({
+const app = new Vue({
     el: '#app'
-});*///DA ERROR
+})///DA ERROR
