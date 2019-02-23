@@ -4,25 +4,27 @@
 <script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>   
 
     <div id="captacion" v-cloak>
-        <div class="d-md-flex justify-content-center"> {{-- Inicio busqueda --}}
-            <form class="form-inline " @submit.prevent="consulta()" data-vv-scope="cedula">
-                <label for="">Cédula de Identidad:</label> <br>
-                    
-                <div class="input-group mx-2" >
-                    <div class="input-group-prepend">
-                        <select class="form-control" v-model="nac">
-                            <option value="V">V</option>
-                            <option value="E">E</option>
-                        </select>
+        <div v-show="vista1">
+            <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
+                <form class="form-inline " @submit.prevent="consulta()" data-vv-scope="cedula">
+                    <label for="">Cédula de Identidad:</label> <br>
+                        
+                    <div class="input-group mx-2" >
+                        <div class="input-group-prepend">
+                            <select class="form-control" v-model="nac">
+                                <option value="V">V</option>
+                                <option value="E">E</option>
+                            </select>
+                        </div>
+                        <input  v-validate.initial="'required|numeric|min:6|max:8'" maxlength="8" placeholder="Ej:12345678" id="Cedula" v-model="cedula"  data-vv-name="cédula" id="Cedula" type="text" class="form-control solo-numerosCharlie" title="Rellene este campo">
+                        <div class="input-group-btn">
+                            <button :disabled="errors.has('cedula.cédula')" type="submit" title="Buscar" class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                    <input  v-validate.initial="'required|numeric|min:6|max:8'" maxlength="8" placeholder="Ej:12345678" id="Cedula" v-model="cedula"  data-vv-name="cédula" id="Cedula" type="text" class="form-control solo-numerosCharlie" title="Rellene este campo">
-                    <div class="input-group-btn">
-                        <button :disabled="errors.has('cedula.cédula')" type="submit" title="Buscar" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div><br>
-            </form> 
+                </form> 
+            </div>
         </div>
             <br>
         <div v-if="existeP" class="d-md-flex justify-content-center">
@@ -50,7 +52,7 @@
                 </h2>
             </div>
             <br>
-            <div class="d-md-flex  mb-3"> {{-- Teléfonos --}} 
+            <div class="d-md-flex"> {{-- Teléfonos --}} 
                 <div class="col">
                     <label>Celular(*)</label>
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form2.celular')}">
@@ -123,6 +125,24 @@
                     </div>
                         <span v-show="errors.has('form2.nivel de instrucción académica')" class="text-danger"> @{{ errors.first('form2.nivel de instrucción académica') }} </span>
                 </div>
+                <div class="col">
+                    <label>Estado Civil</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form2.estado civil')}">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text fa fa-ring" id="basic-addon7"></span>
+                        </div>
+                        <select style= name="estadoCivil" class="form-control row-1 " v-validate.initial="'required'" data-vv-name="estado civil" v-model="estadoCivil" aria-describedby="basic-addon7">
+                            <option value="" disabled selected>Seleccione</option>
+                            <option value="1">SOLTERO(A)</option>
+                            <option value="2">UNIDO(A)</option>
+                            <option value="3">CASADO(A)</option>
+                            <option value="4">VIUDO(A)</option>
+                            <option value="5">DIVORCIADO(A)</option>
+                            <option value="6">SEPARADO(A)</option>
+                        </select>
+                    </div>
+                     <span v-show="errors.has('form2.estado civil')" class="text-danger"> @{{ errors.first('form2.estado civil') }} </span>
+                </div>
             </div> <br>
             <div class="d-md-flex">
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.estado')}">
@@ -153,7 +173,7 @@
             <div class="d-md-flex">
                 <div class="col":class="{'has-feedback has-error':errors.has('form2.urbanización/sector')}">
                     <label>Urbanización/Sector(*)</label>
-                        <input type="text" class="form-control" placeholder="Urb. Ejemplo" v-model="urbanizacion" v-validate.initial="'required|min:2'" data-vv-name="urbanización/sector">
+                        <input  type="text" class="form-control" placeholder="Urb. Ejemplo" v-model="urbanizacion" v-validate.initial="'required|min:2'" data-vv-name="urbanización/sector">
                         <span v-show="errors.has('form2.urbanización/sector')" class="text-danger">@{{ errors.first('form2.urbanización/sector') }}</span>
                 </div>
                 <div class="col":class="{'has-feedback has-error':errors.has('form2.avenida/calle')}">
@@ -165,18 +185,25 @@
             <div class="d-md-flex">
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.edificio/casa/quinta')}">
                     <label>Edificio/Casa/Quinta(*)</label>
-                        <input type="text" class="form-control" placeholder="Edif. Ejemplo" v-model="edificio" v-validate.initial="'required|min:2'"  data-vv-name="edificio/casa/quinta"> 
+                        <input type="text" class="form-control" placeholder="Edif. Ejemplo" v-model="edificio" v-validate.initial="'required|min:2|max:250'"  data-vv-name="edificio/casa/quinta"> 
                         <span v-show="errors.has('form2.edificio/casa/quinta')" class="text-danger">@{{ errors.first('form2.edificio/casa/quinta') }}</span>
                 </div>
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.piso')}">
                     <label>Piso</label>
-                        <input type="text" class="form-control" placeholder="Piso. Ejemplo" v-model="piso" aria-label="Correo1" v-validate="'min:2'"  data-vv-name="piso"> 
+                        <input type="text" class="form-control" placeholder="Piso. Ejemplo" v-model="piso" aria-label="Correo1" v-validate="'min:2|max:250'"  data-vv-name="piso"> 
                         <span v-show="errors.has('form2.piso')" class="text-danger">@{{ errors.first('form2.piso') }}</span>
                 </div>
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.apto')}">
                     <label>Apto</label>
-                        <input type="text" class="form-control" placeholder="Apto. Ejemplo" v-model="apto" aria-label="Correo1" v-validate="'min:2'"  data-vv-name="apto"> 
+                        <input type="text" class="form-control" placeholder="Apto. Ejemplo" v-model="apto" aria-label="Correo1" v-validate="'min:2|max:250'"  data-vv-name="apto"> 
                         <span v-show="errors.has('form2.apto')" class="text-danger">@{{ errors.first('form2.apto') }}</span>
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col" :class="{'has-feedback has-error':errors.has('form2.comunidad')}">
+                    <label>Nombre Comunidad(*)</label>
+                    <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="comunidad">
+                    <span v-show="errors.has('form2.comunidad')" class="text-danger">@{{ errors.first('form2.comunidad') }}</span>
                 </div>
             </div> <br>
             <div class="d-md-flex">
@@ -195,7 +222,50 @@
                 </div>
             </div>
             </form> 
-        </div>
+        </div> {{-- Fin Datos Adicionales --}}
+        <div v-show="vista2" class="container-fluid">{{-- Inicio vista2 --}}
+            <form data-vv-name="form3">
+                <div class="d-flex justify-content-center">
+                    <h2 class="titulo">
+                        <small style="color:rgb(73, 129, 56);">Datos Formativos</small>
+                    </h2>
+                </div>
+                <div class="d-md-flex">
+                    <div class="col">
+                        <div class=" table table-bordered" >
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nivel Educativo</th>
+                                            <th>Título Obtenido</th>
+                                            <th>Colegio, Instituto o Universidad</th>
+                                            <th>Fecha Graduación</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tr >
+                                        <td>UNIVERSITARIO</td>
+                                        <td>INGENIERO</td>
+                                        <td>CUC</td>
+                                        <td>25-08-1990</td>
+                                        <td>
+                                            <a class='btn btn-danger' @click="" title="Eliminar" >
+                                                <span class="fa fa-laugh"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                    </div>
+                </div>
+            </form>
+        
+        </div>{{-- Fin vista2 --}}
     </div>
+<style>
+[v-cloak]{ /*Permite que cargue las librerias antes que el html*/
+    display: none;
+}
+</style>
 @stop
 

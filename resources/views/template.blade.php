@@ -105,20 +105,26 @@
 Vue.component('v-select', VueSelect.VueSelect);
 Vue.use(VeeValidate);
 Vue.use("vuejs-uib-pagination")
+$(document).ready(function(event){
+    var tecla;
+    $('.solo-numerosCharlie').keypress(function(event){//Funcion para definir solo numeros en un input. By:Charlie.Aular
+        tecla = (document.all) ? event.keyCode : event.which;
+        if (tecla == 8 || tecla == 0 ) {
+            return true;
+        }
+        patron =/[0-9]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
 
-    $(document).ready(function(event){
-      var tecla;
-  $('.solo-numerosCharlie').keypress(function(event){
-      tecla = (document.all) ? event.keyCode : event.which;
-      if (tecla == 8 || tecla == 0 ) {
-          return true;
-      }
-      patron =/[0-9]/;
-      tecla_final = String.fromCharCode(tecla);
-      return patron.test(tecla_final);
+    })
+  $(".UpperCase").on("keypress", function () {// Funcion para convertir a mayusculas en un input. By:Jesus.Rivera
+    $input=$(this);
+      setTimeout(function () {
+       $input.val($input.val().toUpperCase());
+      },50);
+ })
 
-  })
-  })
+})
   window.Laravel = <?php echo json_encode([
       'csrfToken' => csrf_token(),
   ]); ?>

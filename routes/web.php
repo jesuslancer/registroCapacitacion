@@ -11,12 +11,14 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () {// Instancia la primera vista
     return view('index');
 });
+//Consultas
 Route::get('consultaCedula/{nac}/{cedula}','Consultas\ConsultasController@consulta');
 Route::post('estados','Consultas\ConsultasController@estados');
 Route::post('municipios','Consultas\ConsultasController@municipios');
 Route::post('parroquias','Consultas\ConsultasController@parroquias');
 Route::post('nivelInstruccion','Consultas\ConsultasController@nivelInstruccion');
+//Acciones
 Route::post('guardarP','CRUD\CrudController@guardarPersona');
