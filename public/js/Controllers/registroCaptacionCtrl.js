@@ -11,8 +11,8 @@ window.onload = function(){
 			var self = this
 		},
 		data:{
-			existeP:true,
-			vista1:true,
+			existeP:false,
+			vista1:false,
 			vista2:true,
 			cedula:'',
 			nac:'V',
@@ -37,10 +37,23 @@ window.onload = function(){
 			nivel:'',
 			estadoCivil:'',
 			comunidad:'',
+			tipoI:'',
+			institucion:'',
+			nivel:'',
+			categoria:'',
+			area:'',
+			programa:'',
+			titulo:'',
 			estados:[],
 			municipios:[],
 			parroquias:[],
 			niveles:[],
+			instituciones:[],
+			categorias:[],
+			areas:[],
+			programas:[],
+			titulos:[],
+			fecha1:[],
 
 		},
 		methods:{
@@ -99,18 +112,49 @@ window.onload = function(){
 
 			},
 			getMunicipios() {// Consultas los municipios segun los estados
-				axios.post('municipios', {id:this.estado})
+				axios.post('municipios', {'id':this.estado})
 				.then(r => {
 					this.municipios = r.data
 					this.parroquias.length = 0
 				})
 			},
 			getParroquias() {// Consultas las parroquias segun los municipios
-				axios.post('parroquias', {id:this.municipio})
+				axios.post('parroquias', {'id':this.municipio})
 				.then(r => {
 					this.parroquias = r.data
 				})
 			},
+			getInstituciones(valor) {// Consultas las instituciones educativas segun los tipos de inst
+				axios.post('instituciones', {'id':valor})
+				.then(r => {
+					this.instituciones = r.data
+				})
+			},
+			getCategorias(valor) {// Consultas las categorias educativas segun los niveles
+				axios.post('categorias', {'id':valor})
+				.then(r => {
+					this.categorias = r.data
+				})
+			},
+			getAreaConocimiento(valor) {// Consultas las categorias educativas segun los niveles
+				axios.post('areasConocimientos', {'id':valor})
+				.then(r => {
+					this.areas = r.data
+				})
+			},
+			getProgramaEstudio(valor) {// Consultas las categorias educativas segun los niveles
+				axios.post('programas', {'id':valor})
+				.then(r => {
+					this.programas = r.data
+				})
+			},
+			getTituloCarrera(valor) {// Consultas las categorias educativas segun los niveles
+				axios.post('titulos', {'id':valor})
+				.then(r => {
+					this.titulos = r.data
+				})
+			},
+
 			limpiar(){//Vacia cada variables del formulario
 				this.cedula='';
 				this.nac='V';
@@ -175,6 +219,10 @@ window.onload = function(){
 				
 				
 			},
+			guardarTitulo(){
+				alert('guardando...')
+
+			},
 			formatoVw(date){// Formatea las fechas segun la vista
 				var f2 = date.split('-')
 				var fecha = f2[2].length==4? f2[0]+'-'+f2[1]+'-'+f2[2]:f2[2]+'-'+f2[1]+'-'+f2[0]
@@ -188,4 +236,9 @@ window.onload = function(){
 		}
 
 	})
+	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
+	$.fn.modal.Constructor.prototype.enforceFocus = function() {};//Estas dos lineas son para corregir error en firefox donde los date picker no funcionan los eses y años
+	$('#modalTitulo').on('hidden.bs.modal', function(e){// se configuran los modales de manera global
+			//profesionales.limpiarTitulo()// se ejecuta la funcion llamandolo desde el objeto vue
+		});
 }

@@ -20,5 +20,10 @@ Route::post('estados','Consultas\ConsultasController@estados');
 Route::post('municipios','Consultas\ConsultasController@municipios');
 Route::post('parroquias','Consultas\ConsultasController@parroquias');
 Route::post('nivelInstruccion','Consultas\ConsultasController@nivelInstruccion');
+Route::post('instituciones','Consultas\ConsultasController@instituciones');
+Route::post('categorias','Consultas\ConsultasController@categorias');
+Route::post('areasConocimientos','Consultas\ConsultasController@areasConocimientos');
+Route::post('programas','Consultas\ConsultasController@programas');
+Route::post('titulos','Consultas\ConsultasController@titulos');
 //Acciones
 Route::post('guardarP','CRUD\CrudController@guardarPersona');

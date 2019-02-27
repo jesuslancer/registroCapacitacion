@@ -224,42 +224,156 @@
             </form> 
         </div> {{-- Fin Datos Adicionales --}}
         <div v-show="vista2" class="container-fluid">{{-- Inicio vista2 --}}
-            <form data-vv-name="form3">
                 <div class="d-flex justify-content-center">
                     <h2 class="titulo">
                         <small style="color:rgb(73, 129, 56);">Datos Formativos</small>
                     </h2>
                 </div>
-                <div class="d-md-flex">
-                    <div class="col">
-                        <div class=" table table-bordered" >
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Nivel Educativo</th>
-                                            <th>Título Obtenido</th>
-                                            <th>Colegio, Instituto o Universidad</th>
-                                            <th>Fecha Graduación</th>
-                                            <th>Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tr >
-                                        <td>UNIVERSITARIO</td>
-                                        <td>INGENIERO</td>
-                                        <td>CUC</td>
-                                        <td>25-08-1990</td>
-                                        <td>
-                                            <a class='btn btn-danger' @click="" title="Eliminar" >
-                                                <span class="fa fa-laugh"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                    </div>
+                <br> 
+                <div class="d-flex justify-content-start">
+                    <h3 class="titulo">
+                        <small style="color:rgb(73, 129, 56);">Títulos Académicos</small> 
+                        <span>
+                            <button  type="button" title="Agregar título academico" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </span>
+                    </h3>
                 </div>
-            </form>
-        
+                <br>
+                <div class="d-md-flex"> {{-- Inicio Tabla titulos --}}
+                    <div class="col">
+                        <div class=" table table-hover" >
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Nivel Educativo</th>
+                                        <th>Título Obtenido</th>
+                                        <th>Colegio, Instituto o Universidad</th>
+                                        <th>Fecha Graduación</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tr class="text-center">
+                                    <td>UNIVERSITARIO</td>
+                                    <td>INGENIERO</td>
+                                    <td>CUC</td>
+                                    <td>25-08-1990</td>
+                                    <td>
+                                        <a class='btn btn-danger' @click="" title="Eliminar" >
+                                            <span class="fa fa-eraser"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> {{-- Fin titulos --}}
+                <div class="row"> {{-- Inicio modal titulos --}}
+                    <div id="modalTitulo" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLabel">Título Académico Obtenido</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form name="form" data-vv-scope="form" @submit.prevent="guardarTitulo()" @keyup.enter="guardarTitulo()">
+                                    <div class="row ">
+                                        <span class="col">Colegio, Instituto o Universidad </span>
+                                    </div> <br>
+                                    <div class="row">
+                                        <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.tipo instituciones')}">
+                                            <label for="TipoI">Tipo de Institucion(*)</label>
+                                            <select class="form-control"  @change="getInstituciones(tipoI)" v-validate.initial="'required'" data-vv-name="tipo instituciones" v-model="tipoI" >
+                                                <option disabled selected value="">Seleccione</option>
+                                                <option value="1">COLEGIO UNIVERSITARIO</option>
+                                                <option value="2">INSTITUTO UNIVERSITARIO</option>
+                                                <option value="3">UNIVERSIDAD</option>
+                                                <option value="4">UNIVERSIDAD EN EL EXTERIOR</option>
+                                            </select>
+                                            <span v-show="errors.has('form.tipo instituciones')" class="text-danger">@{{ errors.first('form.tipo instituciones') }}</span>
+                                        </div>
+                                        <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.instituciones educativas')}">
+                                            <label for="Institucion">Instituciones Educativas(*)</label>
+                                            <select :disabled="tipoI==''"  class="form-control" v-validate.initial="'required'" data-vv-name="instituciones educativas"  v-model="institucion">
+                                                <option value="" disabled selected>Seleccione</option>
+                                                <option :value="x" v-for="x in instituciones">@{{ x.denominacion_institucion }} </option>
+                                            </select>
+                                            <span v-show="errors.has('form.instituciones educativas')" class="text-danger">@{{ errors.first('form.instituciones educativas') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                            <span class="col">Titulo Universitario </span>
+                                        </div> <br>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.nivel educativo')}">
+                                                <label for="nivel">Nivel Educativo(*)</label>
+                                                <select class="form-control" @change="getCategorias(nivel)" data-vv-scope="form" data-vv-name="nivel educativo" v-validate.initial="'required'" v-model="nivel" >
+                                                    <option disabled selected value="">Seleccione</option>
+                                                    <option value="6">EDUCACIÓN TÉCNICA SUPERIOR</option>
+                                                    <option value="7">EDUCACIÓN PROFESIONAL UNIVERSITARIA</option>
+                                                </select>
+                                                <span v-show="errors.has('form.nivel educativo')" class="text-danger">@{{ errors.first('form.nivel educativo') }}</span>
+                                            </div>
+                                            <div class="col" :class="{'has-feedback has-error':errors.has('form.categoria educación')}">
+                                                <label for="Categoria">Categoria de educación(*)</label>
+                                                <select :disabled="nivel==''" @change="getAreaConocimiento(categoria)" data-vv-scope="form"  class="form-control" data-vv-name="categoria educación" v-validate.initial="'required'" v-model="categoria">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x.id" v-for="x in categorias">@{{ x.descripcion }} </option>
+                                                </select>   
+                                                <span v-show="errors.has('form.categoria educación')" class="text-danger">@{{ errors.first('form.categoria educación') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.área de conocimiento')}">
+                                                <label for="Area">Área de conocimiento(*)</label>
+                                                <select :disabled="categoria==''" @change="getProgramaEstudio(area)" data-vv-scope="form" name="Area" id="Area" class="form-control" data-vv-name="área de conocimiento" v-validate.initial="'required'" v-model="area">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x.id" v-for="x in areas">@{{ x.descripcion }} </option>
+                                                </select>
+                                                <span v-show="errors.has('form.área de conocimiento')" class="text-danger">@{{ errors.first('form.área de conocimiento') }}</span>
+                                            </div>
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.programa estudio')}">
+                                                <label for="Programa">Programa de estudio(*)</label>
+                                                <select :disabled="area==''" @change="getTituloCarrera(programa)" data-vv-scope="form" name="Programa" id="Programa" class="form-control" data-vv-name="programa estudio" v-validate.initial="'required'" v-model="programa">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x.id" v-for="x in programas">@{{ x.descripcion }} </option>
+                                                </select>
+                                                <span v-show="errors.has('form.programa estudio')" class="text-danger">@{{ errors.first('form.programa estudio') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.titulo')}">
+                                                <label for="Titulo">Titulos de la carrera(*)</label>
+                                                <select :disabled="programa==''" name="Titulo" id="Titulo" data-vv-scope="form" class="form-control" data-vv-name="titulo" v-validate.initial="'required'" v-model="titulo">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x" v-for="x in titulos">@{{ x.descripcion }} </option>
+                                                </select>
+                                                <span v-show="errors.has('form.titulo')" class="text-danger">@{{ errors.first('form.titulo') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.fecha graduación')}">
+                                                <label for="Fecha Graduacion">Fecha de culminación(*)</label>
+                                                <input type="text" autocomplete="off" data-vv-scope="form" class="form-control" data-vv-scope="form" id="fechaGraduacion1" v-validate.initial="'required'" name="Fecha Graduacion" data-vv-name="fecha graduación" v-model="fecha1">
+                                                <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" @click="limpiarTitulo()"  class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" :disabled="errors.any('form')" class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                </div> {{-- Fin modal titulos --}}
         </div>{{-- Fin vista2 --}}
     </div>
 <style>
