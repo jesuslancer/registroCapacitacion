@@ -14,7 +14,6 @@
   <link href="vendar/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="css/fontawesome/css/all.css" rel="stylesheet">
-
   <!-- Custom styles for this template -->
   <link href="css/scrolling-nav.css" rel="stylesheet">
   <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -94,6 +93,7 @@
   <script src="../node_modules/vue-select/dist/vue-select.js"></script>
   <!-- Vue-pagination -->
   <script src="../node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js"></script>
+
   
 </body>
 <style>
@@ -105,6 +105,7 @@
 Vue.component('v-select', VueSelect.VueSelect);
 Vue.use(VeeValidate);
 Vue.use("vuejs-uib-pagination")
+
 $(document).ready(function(event){
     var tecla;
     $('.solo-numerosCharlie').keypress(function(event){//Funcion para definir solo numeros en un input. By:Charlie.Aular
@@ -117,7 +118,7 @@ $(document).ready(function(event){
         return patron.test(tecla_final);
 
     })
-  $(".UpperCase").on("keypress", function () {// Funcion para convertir a mayusculas en un input. By:Jesus.Rivera
+  $(".UpperCase").on("keypress", function () {// Funcion para convertir a mayusculas en un input. 
     $input=$(this);
       setTimeout(function () {
        $input.val($input.val().toUpperCase());

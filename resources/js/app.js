@@ -12,8 +12,6 @@ window.$ = require('jquery');
 require('popper.js');
 require('jquery');
 require('bootstrap');
-require('sweetalert2');
-require('vee-validate');
 require('vuejs-uib-pagination');
 
 /**
@@ -37,4 +35,5 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app'
-})///DA ERROR
+})
+

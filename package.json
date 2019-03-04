@@ -30,7 +30,6 @@
         "vee-validate": "^2.1.7",
         "vue-router": "^3.0.2",
         "vue-select": "^2.5.1",
-        "vuejs-datepicker": "^1.5.4",
         "vuejs-uib-pagination": "^1.0.6",
         "vuetify": "^1.5.1"
     }

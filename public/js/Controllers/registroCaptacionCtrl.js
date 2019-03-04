@@ -9,6 +9,7 @@ window.onload = function(){
 		},
 		mounted(){
 			var self = this
+			
 		},
 		data:{
 			existeP:false,
@@ -44,6 +45,7 @@ window.onload = function(){
 			area:'',
 			programa:'',
 			titulo:'',
+			fecha1:null,
 			estados:[],
 			municipios:[],
 			parroquias:[],
@@ -53,7 +55,6 @@ window.onload = function(){
 			areas:[],
 			programas:[],
 			titulos:[],
-			fecha1:[],
 
 		},
 		methods:{

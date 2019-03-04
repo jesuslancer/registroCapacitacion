@@ -3,6 +3,8 @@
 
 <script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>   
 
+
+
     <div id="captacion" v-cloak>
         <div v-show="vista1">
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
@@ -358,7 +360,7 @@
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.fecha graduación')}">
                                                 <label for="Fecha Graduacion">Fecha de culminación(*)</label>
-                                                <input type="text" autocomplete="off" data-vv-scope="form" class="form-control" data-vv-scope="form" id="fechaGraduacion1" v-validate.initial="'required'" name="Fecha Graduacion" data-vv-name="fecha graduación" v-model="fecha1">
+                                                {{-- AQUI VA EL DATEPICKER --}}
                                                 <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
                                             </div>
                                         </div>
