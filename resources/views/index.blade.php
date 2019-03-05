@@ -6,6 +6,10 @@
 
 
     <div id="captacion" v-cloak>
+    <vuejs-datepicker></vuejs-datepicker> {{-- SE AGREGO ESTA LINEA --}}
+    <custom-datepicker></custom-datepicker> {{-- SE AGREGO ESTA LINEA --}}
+    
+    
         <div v-show="vista1">
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
                 <form class="form-inline " @submit.prevent="consulta()" data-vv-scope="cedula">
