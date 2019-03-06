@@ -256,11 +256,11 @@
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
-                                <tr class="text-center">
-                                    <td>UNIVERSITARIO</td>
-                                    <td>INGENIERO</td>
-                                    <td>CUC</td>
-                                    <td>25-08-1990</td>
+                                <tr class="text-center" v-for="(r, index) in array">
+                                    <td>@{{ r.nivelDescripcion }}</td>
+                                    <td>@{{ r.titulo }}</td>
+                                    <td>@{{ r.institucion }}</td>
+                                    <td></td>
                                     <td>
                                         <a class='btn btn-danger' @click="" title="Eliminar" >
                                             <span class="fa fa-eraser"></span>
@@ -366,7 +366,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" @click="limpiarTitulo()"  class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                            <button type="submit" :disabled="errors.any('form')" class="btn btn-primary">Guardar</button>
+                                            <button type="submit" :disabled="errors.any('form')"  class="btn btn-primary">Guardar</button>
                                         </div>
                                     </form>
                                 </div>
