@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <datepicker :language="es" ></datepicker>    
+    <datepicker @input="$emit('input', $event)" :value="value" :language="es" ></datepicker>    
 </div>
 
 </template>
@@ -9,9 +9,10 @@
 import Datepicker from 'vuejs-datepicker';
 import { es } from 'vuejs-datepicker/dist/locale'
 export default {
+  props:['value'],
   data(){
     return {
-        es:es
+        es:es,
     }
   },
   components:{

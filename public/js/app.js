@@ -1775,11 +1775,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['value'],
   data: function data() {
     return {
       es: vuejs_datepicker_dist_locale__WEBPACK_IMPORTED_MODULE_1__["es"]
     };
   },
+  methods: {},
   components: {
     Datepicker: vuejs_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
@@ -36862,7 +36864,20 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("datepicker", { attrs: { language: _vm.es } })], 1)
+  return _c(
+    "div",
+    [
+      _c("datepicker", {
+        attrs: { value: _vm.value, language: _vm.es },
+        on: {
+          input: function($event) {
+            return _vm.$emit("input", $event)
+          }
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

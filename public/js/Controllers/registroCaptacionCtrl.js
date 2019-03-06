@@ -46,7 +46,7 @@ window.onload = function(){
 			area:'',
 			programa:'',
 			titulo:'',
-			fecha1:null,
+			fechaLaLacra:new Date(),
 			estados:[],
 			municipios:[],
 			parroquias:[],
