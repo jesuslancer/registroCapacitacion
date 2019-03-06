@@ -6,8 +6,8 @@
 
 
     <div id="captacion" v-cloak>
-    <vuejs-datepicker></vuejs-datepicker> {{-- SE AGREGO ESTA LINEA --}}
-    <custom-datepicker></custom-datepicker> {{-- SE AGREGO ESTA LINEA --}}
+     {{-- SE AGREGO ESTA LINEA --}}
+    <custom-datepicker v-model="fechaLaLacra"></custom-datepicker> {{-- SE AGREGO ESTA LINEA --}}
     
     
         <div v-show="vista1">
