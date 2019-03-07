@@ -13,6 +13,8 @@ require('popper.js');
 require('jquery');
 require('bootstrap');
 require('vuejs-uib-pagination');
+require('sweetalert2');
+require('vue-moment');
 import Datepicker from 'vuejs-datepicker';
 
 /**

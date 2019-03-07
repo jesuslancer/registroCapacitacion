@@ -8,12 +8,12 @@ window.onload = function(){
 			this.getNivel();
 		},
 		mounted(){
-			var self = this
+			
 			
 		},
 		data:{
-			existeP:false,
-			vista1:false,
+			existeP:true,
+			vista1:true,
 			vista2:true,
 			existeT:true,
 			cedula:'',
@@ -46,7 +46,7 @@ window.onload = function(){
 			area:'',
 			programa:'',
 			titulo:'',
-			fechaLaLacra:new Date(),
+			fechaTitulo:new Date(),
 			estados:[],
 			municipios:[],
 			parroquias:[],
@@ -60,7 +60,7 @@ window.onload = function(){
 			paginacionTitulo:{
 				paginate:{currentPage:1},
 				totalItems:null,
-				itemsPerPage:1
+				itemsPerPage:3
 			},
 
 		},
@@ -190,7 +190,7 @@ window.onload = function(){
 				this.municipios=[];
 				this.parroquias=[];
 			},
-			clean(){// Fncion que inicia la accion de limpiar
+			clean(){// Funcion que inicia la accion de limpiar
 				Swal.fire({
 				  title: '¿Esta Seguro(a)?',
 				  text: "Estimado(a) Usuario(a), esta acción eliminara los datos que no ha guardado",
@@ -224,9 +224,9 @@ window.onload = function(){
 				this.fecha1=null;
 			},
 			guardarTitulo(){//Funcionn para guardar en un array los titulos academicos
-				//this.$validator.validateAll('form').
-				//then(() => {
-					//if (!this.errors.any('form')) {
+				this.$validator.validateAll('form').
+				then(() => {
+					if (!this.errors.any('form')) {
 						var existeT = false;
 						this.titulosRegistrados.forEach((value)=>{
 							if (value['titulo_carrera_id']== this.titulo.id) {
@@ -241,16 +241,30 @@ window.onload = function(){
 						if (!existeT) {
 								this.titulosRegistrados.push({'nivelDescripcion':this.nivel==6?'EDUCACIÓN TÉCNICA SUPERIOR':'EDUCACIÓN PROFESIONAL UNIVERSITARIA',
 									'titulo_carrera_id':this.titulo.id,'titulo':this.titulo.descripcion,'institucion_educativa_id':this.institucion.id,
-									'institucion':this.institucion.denominacion_institucion, 'exonerado':this.titulo.exonerado, /*'fecha':this.fecha1,*/'nivel_educativo_id':this.nivel})
+									'institucion':this.institucion.denominacion_institucion, 'exonerado':this.titulo.exonerado, 'fecha':this.convertirAnioAFecha(this.fechaTitulo),'nivel_educativo_id':this.nivel})
 								this.paginacionTitulo.totalItems=this.titulosRegistrados.length
 						}
 						$('#modalTitulo').modal('hide');
+						if ($('.modal-backdrop').is(':visible')) {
+						  $('body').removeClass('modal-open'); 
+						  $('.modal-backdrop').remove(); 
+						};
 						this.limpiarTitulo()
-					//} else {
+					} else {
 						Swal.fire('¡Atención!','Estimado(a) usuario(a), tiene campos requeridos por favor verifique','error')
-					//}
-				//})
+					}
+				})
 			},
+			eliminarTitulo(index){//Funcion para eliminar en vista los titulos registrados
+				this.titulosRegistrados.splice(index,1);
+			},
+			convertirAnioAFecha(fecha){// Se creo esta funcion como solucion al formato del datepicker
+				var dia = fecha.getDate();
+				var mes = fecha.getMonth() + 1;
+				var anio = fecha.getFullYear();
+				return anio+'-'+mes +'-'+dia
+			},
+	
 			next(){
 				axios.post('guardarP',{'idP':this.personaId,'telf1':this.telf1,'telf2':this.telf2,'telf3':this.telf3,'correo1':this.correo1,'correo2':this.correo2,
 					'urb':this.urbanizacion,'av':this.avenida,'edf':this.edificio,'piso':this.piso,'apto':this.apto,'ref':this.referencia,'parroquia':
@@ -270,7 +284,7 @@ window.onload = function(){
 				var fecha = f2[2].length==4? f2[0]+'-'+f2[1]+'-'+f2[2]:f2[2]+'-'+f2[1]+'-'+f2[0]
 				return fecha
 			},
-			formatoDB (date) {// Formatea las fecahs segun la bd
+			formatoDB (date) {// Formatea las fechas segun la bd
 				var f2 = date.split('-')
 				var fecha = f2[2].length==4? f2[2]+'-'+f2[1]+'-'+f2[0]:f2[0]+'-'+f2[1]+'-'+f2[2]
 				return fecha

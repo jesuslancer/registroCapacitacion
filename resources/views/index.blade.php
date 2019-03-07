@@ -5,11 +5,7 @@
 
 
 
-    <div id="captacion" v-cloak>
-     {{-- SE AGREGO ESTA LINEA --}}
-    <custom-datepicker v-model="fechaLaLacra"></custom-datepicker> {{-- SE AGREGO ESTA LINEA --}}
-    
-    
+    <div id="captacion" v-cloak>    
         <div v-show="vista1">
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
                 <form class="form-inline " @submit.prevent="consulta()" data-vv-scope="cedula">
@@ -92,7 +88,7 @@
                     <span v-show="errors.has('form2.otro telefóno')" class="text-danger"> @{{ errors.first('form2.otro telefóno') }} </span>
 
                 </div>
-            </div>
+            </div>          
             <div class="d-md-flex">{{-- Correos --}}
                 <div class="col">
                     <label>Correo Principal(*)</label>
@@ -219,6 +215,22 @@
                     <span v-show="errors.has('form2.punto de referencia')" class="text-danger">@{{ errors.first('form2.punto de referencia') }}</span>
                 </div>
             </div> <br>
+            <div class="d-md-flex">
+                <div class="col-12">
+                    <h4> ¿Poseé Carnet de la Patria?</h4> 
+                    {{-- AQUI VA EL SWITCH --}}
+                </div>
+            </div>
+            <div class="d-md-flex">
+                <div class="col" >
+                    <label>Serial</label>
+                    <input type="text" class="form-control"  name="" value="" maxlength="10" placeholder="0001234567">
+                </div>
+                <div class="col" >
+                    <label>Código</label>
+                    <input type="text" class="form-control"  name="" value="" maxlength="10" placeholder="0001234567">
+                </div>
+            </div> <br>
             <div class="d-flex justify-content-between">
                 <div>
                     <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-stop-circle"></span> Cancelar</button>
@@ -240,16 +252,16 @@
                     <h3 class="titulo">
                         <small style="color:rgb(73, 129, 56);">Títulos Académicos</small> 
                         <span>
-                            <button  type="button" title="Agregar título academico" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
+                            <button  type="button" title="Agregar título academico" v-show="titulosRegistrados.length <= 2" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </span>
                     </h3>
                 </div>
                 <br>
-                <div class="d-md-flex"> {{-- Inicio Tabla titulos --}}
-                    <div class="col">
-                        <div class=" table table-hover" >
+                <div class="d-md-flex" > {{-- Inicio Tabla titulos --}}
+                    <div class="col ">
+                        <div class="table table-hover card" v-show="titulosRegistrados.length > 0" >
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="text-center">
@@ -264,9 +276,9 @@
                                     <td>@{{ r.nivelDescripcion }}</td>
                                     <td>@{{ r.titulo }}</td>
                                     <td>@{{ r.institucion }}</td>
-                                    <td></td>
+                                    <td>@{{ formatoVw(r.fecha) }}</td>
                                     <td>
-                                        <a class='btn btn-danger' @click="" title="Eliminar" >
+                                        <a class='btn btn-danger' @click="eliminarTitulo(index)" title="Eliminar" >
                                             <span class="fa fa-eraser"></span>
                                         </a>
                                     </td>
@@ -364,7 +376,7 @@
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.fecha graduación')}">
                                                 <label for="Fecha Graduacion">Fecha de culminación(*)</label>
-                                                {{-- AQUI VA EL DATEPICKER --}}
+                                                <custom-datepicker v-model="fechaTitulo"></custom-datepicker>
                                                 <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
                                             </div>
                                         </div>
@@ -375,9 +387,7 @@
                                     </form>
                                 </div>
                             </div>
-                            
                         </div>
-                        
                     </div>
                 </div> {{-- Fin modal titulos --}}
         </div>{{-- Fin vista2 --}}
