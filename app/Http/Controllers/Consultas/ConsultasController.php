@@ -9,12 +9,15 @@ use App\Persona;
 use App\Estado;
 use App\Municipio;
 use App\Parroquia;
-use App\InstitucionEducativa;
 use App\NivelEducativo;
 use App\CategoriaEducacion;
 use App\AreaConocimiento;
 use App\ProgramaEstudio;
 use App\TituloCarrera;
+use App\OcupacionClase;
+use App\OcupacionDivision;
+use App\OcupacionGrupo;
+use App\OcupacionSeccion;
 
 class ConsultasController extends Controller
 {
@@ -38,9 +41,6 @@ class ConsultasController extends Controller
     public function nivelInstruccion(){//Trae los niveles de instruccion
     	return NivelEducativo::get();
     }	
-    public function instituciones(Request $request){//Trae las instituciones segun el tipo 
-    	return InstitucionEducativa::where('tipoinstitucioneducativa_id',$request->id)->get();
-    }
     public function categorias(Request $request){//Trae las categorias segun el nivel 
     	return CategoriaEducacion::where('nivel_educativo_id',$request->id)->get();
     }
@@ -52,5 +52,8 @@ class ConsultasController extends Controller
     }
     public function titulos(Request $request){//Trae los programas segun la el area 
     	return TituloCarrera::where('programa_estudio_id',$request->id)->get();
+    }
+    public function ocupaciones (){//Consultas las ocupaciones clases, para el select2
+    	return OcupacionClase::all();
     }
 }

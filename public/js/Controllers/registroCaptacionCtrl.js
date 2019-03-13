@@ -6,6 +6,7 @@ window.onload = function(){
 			this.$validator.localize('es')//define vee-validate a español
 			this.getEstados();
 			this.getNivel();
+			this.getOcupaciones();
 		},
 		mounted(){
 			var self = this
@@ -14,11 +15,12 @@ window.onload = function(){
 		},
 		data:{
 			existeP:false,
-			vista1:false,
-			vista2:true,
-			existeT:true,
+			vista1:true,
+			vista2:true,			
+			cargando:false,
 			estatusCarnet:false,
 			estatusTitulo:false,
+			estatusOcupacion:false,
 			cedula:'',
 			nac:'V',
 			personaId:'',
@@ -44,37 +46,42 @@ window.onload = function(){
 			comunidad:'',
 			serial:'',
 			codigo:'',
-			tipoI:'',
-			institucion:'',
 			nivel:'',
 			categoria:'',
 			area:'',
 			programa:'',
 			titulo:'',
+			ocupacion:'',
 			fechaTitulo:new Date(),
 			estados:[],
 			municipios:[],
 			parroquias:[],
 			niveles:[],
-			instituciones:[],
 			categorias:[],
 			areas:[],
 			programas:[],
 			titulos:[],
 			titulosRegistrados:[],
+			ocupaciones:[],
+			ocupacionesPer:[],
 			paginacionTitulo:{
 				paginate:{currentPage:1},
 				totalItems:null,
-				itemsPerPage:3
+				itemsPerPage:5
+			},
+			paginacionOcupacion:{
+				paginate:{currentPage:1},
+				totalItems:null,
+				itemsPerPage:5
 			},
 
 		},
 		methods:{
 			consulta(){//Consulta inicial de persona con la cedula
+				this.cargando = true
 				axios.get('consultaCedula/'+ this.nac + '/' + this.cedula)
 				.then(r=>{
 					if (r.data != 'vacio') {
-								//this.loading1 = false
 								this.existeP=true;
 								this.personaId = r.data.id
 								this.nombrePersona = r.data.primer_nombre + ' ' + r.data.segundo_nombre + ' ' + r.data.primer_apellido + ' ' + r.data.segundo_apellido
@@ -99,6 +106,7 @@ window.onload = function(){
 									this.serial = r.data.serial_carnet_patria
 									this.codigo = r.data.codigo_carnet_patria
 								}
+								this.cargando = false
 							} else {
 								this.existeP=false;
 								Swal.fire({
@@ -107,8 +115,7 @@ window.onload = function(){
 									  type: 'error',
 									  confirmButtonText: 'OK'
 									})
-								//this.loading1 = false*/
-
+								this.cargando = false
 							}
 							this.getEstados()
 				})
@@ -147,12 +154,6 @@ window.onload = function(){
 					this.parroquias = r.data
 				})
 			},
-			getInstituciones(valor) {// Consultas las instituciones educativas segun los tipos de inst
-				axios.post('instituciones', {'id':valor})
-				.then(r => {
-					this.instituciones = r.data
-				})
-			},
 			getCategorias(valor) {// Consultas las categorias educativas segun los niveles
 				axios.post('categorias', {'id':valor})
 				.then(r => {
@@ -177,7 +178,12 @@ window.onload = function(){
 					this.titulos = r.data
 				})
 			},
-
+			getOcupaciones (){// Consultar Ocupacion laborales para select2
+				axios.post('ocupaciones')
+				.then(r => {
+					this.ocupaciones = r.data
+				})
+			},
 			limpiar(){//Vacia cada variables del formulario
 				this.cedula='';
 				this.nac='V';
@@ -229,13 +235,11 @@ window.onload = function(){
 
 			},
 			limpiarTitulo(){
-				this.tipoI="";
-				this.institucion="";
-				this.nivel="";
-				this.titulo="";
-				this.categoria="";
-				this.area="";
-				this.programa="";
+				this.nivel='';
+				this.titulo='';
+				this.categoria='';
+				this.area='';
+				this.programa='';
 				this.fecha1=null;
 			},
 			guardarTitulo(){//Funcionn para guardar en un array los titulos academicos
@@ -249,14 +253,23 @@ window.onload = function(){
 	 							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar este estudio.','error')
 							}
 						})
-						if (this.titulosRegistrados.length>=3) {
+						if (this.titulosRegistrados.length>=5) {
 							existeE = true;
 							Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas estudios.','error')
 						}
 						if (!existeT) {
-								this.titulosRegistrados.push({'nivelDescripcion':this.nivel==6?'EDUCACIÓN TÉCNICA SUPERIOR':'EDUCACIÓN PROFESIONAL UNIVERSITARIA',
-									'titulo_carrera_id':this.titulo.id,'titulo':this.titulo.descripcion,'institucion_educativa_id':this.institucion.id,
-									'institucion':this.institucion.denominacion_institucion, 'exonerado':this.titulo.exonerado, 'fecha':this.convertirAnioAFecha(this.fechaTitulo),'nivel_educativo_id':this.nivel})
+							var n = ''
+							if(this.nivel==6){
+										n = 'EDUCACIÓN TÉCNICA SUPERIOR'
+									}else if (this.nivel==7) {
+										n = 'EDUCACIÓN PROFESIONAL UNIVERSITARIA'
+									}else if (this.nivel==4) {
+										n = 'DESARROLLO PERSONAL Y LABORAL NO PROFESIONAL'
+									}else if (this.nivel==5) {
+										n = 'EDUCACIÓN MEDIA'
+									}
+								this.titulosRegistrados.push({'nivelDescripcion':n,'titulo_carrera_id':this.titulo.id,'titulo':this.titulo.descripcion,
+									'fecha':this.convertirAnioAFecha(this.fechaTitulo),'nivel_educativo_id':this.nivel})
 								this.paginacionTitulo.totalItems=this.titulosRegistrados.length
 						}
 						$('#modalTitulo').modal('hide');
@@ -272,6 +285,30 @@ window.onload = function(){
 			},
 			eliminarTitulo(index){//Funcion para eliminar en vista los titulos registrados
 				this.titulosRegistrados.splice(index,1);
+			},
+			limpiarOcupacion(){
+				alert('aqui')
+			},
+			guardarOcupacion(a){
+				var existeO = false;
+				this.ocupacionesPer.forEach((value)=>{
+							if (value['ocupacion_clase_id']== a.id) {
+								existeO = true;
+	 							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar esta ocupación.','error')
+							}
+						})
+				if (this.ocupacionesPer.length>=5) {
+							existeO = true;
+							Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas ocupaciones.','error')
+						}
+				if (!existeO) {
+					this.ocupacionesPer.push({'codigo':a.codigo,'denominacion':a.denominacion, 'ocupacion_clase_id':a.id})
+				}
+						this.limpiarOcupacion()
+				
+			},
+			eliminarOcupacion(index){//Funcion para eliminar en vista los titulos registrados
+				this.ocupacionesPer.splice(index,1);
 			},
 			convertirAnioAFecha(fecha){// Se creo esta funcion como solucion al formato del datepicker
 				var dia = fecha.getDate();
@@ -294,6 +331,19 @@ window.onload = function(){
 				
 				
 			},
+			next2(){// Funcion que guarda la ocupacion y titulo registrados, tambien  cambia a la vista 3
+				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer}).then(r =>{
+						if (r.data=='guardo') {
+							this.existeP=false;
+							this.vista1=false;
+							this.vista2=false;
+							this.vista3=true;
+							alert('listo2')
+						}
+					})
+				
+				
+			},
 			formatoVw(date){// Formatea las fechas segun la vista
 				var f2 = date.split('-')
 				var fecha = f2[2].length==4? f2[0]+'-'+f2[1]+'-'+f2[2]:f2[2]+'-'+f2[1]+'-'+f2[0]
@@ -310,6 +360,11 @@ window.onload = function(){
 		    return this.titulosRegistrados
 		      	.slice(((this.paginacionTitulo.paginate.currentPage - 1) * this.paginacionTitulo.itemsPerPage),
 					(this.paginacionTitulo.paginate.currentPage * this.paginacionTitulo.itemsPerPage));
+			},
+			array2 () {//Arreglo de los titulos
+		    return this.ocupacionesPer
+		      	.slice(((this.paginacionOcupacion.paginate.currentPage - 1) * this.paginacionOcupacion.itemsPerPage),
+					(this.paginacionOcupacion.paginate.currentPage * this.paginacionTitulo.itemsPerPage));
 			},
 		},
 		watch:{

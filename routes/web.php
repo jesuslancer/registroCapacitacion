@@ -25,5 +25,8 @@ Route::post('categorias','Consultas\ConsultasController@categorias');
 Route::post('areasConocimientos','Consultas\ConsultasController@areasConocimientos');
 Route::post('programas','Consultas\ConsultasController@programas');
 Route::post('titulos','Consultas\ConsultasController@titulos');
+Route::post('ocupaciones','Consultas\ConsultasController@ocupaciones');
+
 //Acciones
 Route::post('guardarP','CRUD\CrudController@guardarPersona');
+Route::post('guardarTO','CRUD\CrudController@guardarTO');

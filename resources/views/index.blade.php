@@ -23,6 +23,8 @@
                             <button :disabled="errors.has('cedula.cédula')" type="submit" title="Buscar" class="btn btn-primary">
                                 <i class="fa fa-search"></i>
                             </button>
+                            <img slot="spinner" class="spinner" v-show="cargando" src="img/cargando.gif">
+
                         </div>
                     </div>
                 </form> 
@@ -254,21 +256,21 @@
                     </h2>
                 </div>
                 <div class="d-md-flex">
-                <div class="col-12" v-show="titulosRegistrados.length < 1">
-                    <h5> ¿Poseé Titulos Académicos Universitarios?</h5> 
-                    <div class="form-check">
-                        <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
-                        <span class="text-success" v-show="estatusCarnet">SI</span>                      
-                        <span class="text-danger" v-show="!estatusCarnet">NO</span>                      
+                    <div class="col-12" v-show="titulosRegistrados.length < 1">
+                        <h5> ¿Poseé Titulos Académicos?</h5> 
+                        <div class="form-check">
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
+                            <span class="text-success" v-show="estatusTitulo">SI</span>                      
+                            <span class="text-danger" v-show="!estatusTitulo">NO</span>                      
+                        </div>
                     </div>
                 </div>
-            </div>
                 <br> 
                 <div class="d-flex justify-content-start">
                     <h3 class="titulo" v-show="estatusTitulo">
                         <small style="color:rgb(73, 129, 56);">Títulos Académicos</small> 
                         <span>
-                            <button  type="button" title="Agregar título academico" v-show="titulosRegistrados.length <= 2" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
+                            <button dis type="button" title="Agregar título academico" v-show="titulosRegistrados.length < 5" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </span>
@@ -283,7 +285,6 @@
                                     <tr class="text-center">
                                         <th>Nivel Educativo</th>
                                         <th>Título Obtenido</th>
-                                        <th>Colegio, Instituto o Universidad</th>
                                         <th>Fecha Graduación</th>
                                         <th>Acción</th>
                                     </tr>
@@ -291,7 +292,6 @@
                                 <tr class="text-center" v-for="(r, index) in array">
                                     <td>@{{ r.nivelDescripcion }}</td>
                                     <td>@{{ r.titulo }}</td>
-                                    <td>@{{ r.institucion }}</td>
                                     <td>@{{ formatoVw(r.fecha) }}</td>
                                     <td>
                                         <a class='btn btn-danger' @click="eliminarTitulo(index)" title="Eliminar" >
@@ -316,30 +316,6 @@
                                 <div class="modal-body">
                                     <form name="form" data-vv-scope="form" @submit.prevent="guardarTitulo()" @keyup.enter="guardarTitulo()">
                                     <div class="row ">
-                                        <span class="col">Colegio, Instituto o Universidad </span>
-                                    </div> <br>
-                                    <div class="row">
-                                        <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.tipo instituciones')}">
-                                            <label for="TipoI">Tipo de Institucion(*)</label>
-                                            <select class="form-control"  @change="getInstituciones(tipoI)" v-validate.initial="'required'" data-vv-name="tipo instituciones" v-model="tipoI" >
-                                                <option disabled selected value="">Seleccione</option>
-                                                <option value="1">COLEGIO UNIVERSITARIO</option>
-                                                <option value="2">INSTITUTO UNIVERSITARIO</option>
-                                                <option value="3">UNIVERSIDAD</option>
-                                                <option value="4">UNIVERSIDAD EN EL EXTERIOR</option>
-                                            </select>
-                                            <span v-show="errors.has('form.tipo instituciones')" class="text-danger">@{{ errors.first('form.tipo instituciones') }}</span>
-                                        </div>
-                                        <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.instituciones educativas')}">
-                                            <label for="Institucion">Instituciones Educativas(*)</label>
-                                            <select :disabled="tipoI==''"  class="form-control" v-validate.initial="'required'" data-vv-name="instituciones educativas"  v-model="institucion">
-                                                <option value="" disabled selected>Seleccione</option>
-                                                <option :value="x" v-for="x in instituciones">@{{ x.denominacion_institucion }} </option>
-                                            </select>
-                                            <span v-show="errors.has('form.instituciones educativas')" class="text-danger">@{{ errors.first('form.instituciones educativas') }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row ">
                                             <span class="col">Titulo Universitario </span>
                                         </div> <br>
                                         <div class="row">
@@ -347,6 +323,8 @@
                                                 <label for="nivel">Nivel Educativo(*)</label>
                                                 <select class="form-control" @change="getCategorias(nivel)" data-vv-scope="form" data-vv-name="nivel educativo" v-validate.initial="'required'" v-model="nivel" >
                                                     <option disabled selected value="">Seleccione</option>
+                                                    <option value="4">DESARROLLO PERSONAL Y LABORAL NO PROFESIONAL</option>
+                                                    <option value="5">EDUCACIÓN MEDIA</option>
                                                     <option value="6">EDUCACIÓN TÉCNICA SUPERIOR</option>
                                                     <option value="7">EDUCACIÓN PROFESIONAL UNIVERSITARIA</option>
                                                 </select>
@@ -406,6 +384,70 @@
                         </div>
                     </div>
                 </div> {{-- Fin modal titulos --}}
+
+                <div class="d-md-flex">
+                    <div class="col-12" v-show="ocupacionesPer.length < 1">
+                        <h5> ¿Poseé Ocupación Laboral?</h5> 
+                        <div class="form-check">
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusOcupacion" name="" value="">  
+                            <span class="text-success" v-show="estatusOcupacion">SI</span>                      
+                            <span class="text-danger" v-show="!estatusOcupacion">NO</span>                      
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-start">
+                    <h3 class="titulo" v-show="estatusOcupacion">
+                        <small style="color:rgb(73, 129, 56);">Ocupaciónes Laborales</small> 
+                    </h3>
+                </div>
+                <form class="form-group" v-show="ocupacionesPer.length <5">
+                    <div class="row">
+                        <div class=" col-12" v-show="estatusOcupacion">
+                            <v-select placeholder="Busque y Seleccione..." v-model="ocupacion" label="denominacion"  :options="ocupaciones" >
+                                <span slot="no-options">
+                                  ¡Disculpe! No se consigue su busqueda.
+                                </span>
+                            </v-select>
+                        </div>
+                    </div>
+                        <div v-show="estatusOcupacion">
+                            <button type="button" :disabled="!ocupacion" class="btn btn-dark" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
+                        </div>
+                    <br>
+                </form>
+                <div class="d-md-flex" > {{-- Inicio Tabla Ocupaciones Laborales --}}
+                    <div class="col ">
+                        <div class="table table-hover card" v-show="ocupacionesPer.length > 0" >
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Código</th>
+                                        <th>Denominacion</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tr class="text-center" v-for="(r, index) in array2">
+                                    <td>@{{ r.codigo }}</td>
+                                    <td>@{{ r.denominacion }}</td>
+                                    <td>
+                                        <a class='btn btn-danger' @click="eliminarOcupacion(index)" title="Eliminar" >
+                                            <span class="fa fa-eraser"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> {{-- Fin Ocupaciones Laborales --}}
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
+                    </div>
+                    <div>
+                        <button type="button" @click="next2" class="btn btn-success"  {{-- :disabled="errors.any('form2')" --}}>Siguiente <span class="fa fa-chevron-right"></span></button>
+                    </div>
+                </div>
         </div>{{-- Fin vista2 --}}
     </div>
 <style>
