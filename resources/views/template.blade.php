@@ -12,6 +12,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="vendar/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../node_modules/bootstrap4-toggle/css/bootstrap4-toggle.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="css/fontawesome/css/all.css" rel="stylesheet">
   <!-- Custom styles for this template -->

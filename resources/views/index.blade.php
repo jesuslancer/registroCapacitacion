@@ -217,26 +217,32 @@
             </div> <br>
             <div class="d-md-flex">
                 <div class="col-12">
-                    <h4> ¿Poseé Carnet de la Patria?</h4> 
-                    {{-- AQUI VA EL SWITCH --}}
+                    <h5> ¿Poseé Carnet de la Patria?</h5> 
+                    <div class="form-check">
+                        <input type="checkbox" class="btn btn-outline-primary" v-model="estatusCarnet" name="" value="">  
+                        <span class="text-success" v-show="estatusCarnet">SI</span>                      
+                        <span class="text-danger" v-show="!estatusCarnet">NO</span>                      
+                    </div>
                 </div>
             </div>
-            <div class="d-md-flex">
-                <div class="col" >
-                    <label>Serial</label>
-                    <input type="text" class="form-control"  name="" value="" maxlength="10" placeholder="0001234567">
-                </div>
-                <div class="col" >
-                    <label>Código</label>
-                    <input type="text" class="form-control"  name="" value="" maxlength="10" placeholder="0001234567">
-                </div>
+            <div class="d-md-flex" >
+                    <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.serial')}">
+                        <label>Serial</label>
+                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="serial" v-model="serial"  v-validate.initial="'required|numeric'" maxlength="10" placeholder="0001234567">
+                    <span v-show="errors.has('form2.serial')" class="text-danger">@{{ errors.first('form2.serial') }}</span>
+                    </div>
+                    <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.código')}">
+                        <label>Código</label>
+                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="código" v-model="codigo" v-validate.initial="'required|numeric'" maxlength="10" placeholder="0001234567">
+                    <span v-show="errors.has('form2.código')" class="text-danger">@{{ errors.first('form2.código') }}</span>
+                    </div>
             </div> <br>
             <div class="d-flex justify-content-between">
                 <div>
                     <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-stop-circle"></span> Cancelar</button>
                 </div>
                 <div>
-                    <button type="button" @click="next" class="btn btn-success" :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
+                    <button type="button" @click="next" class="btn btn-success"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
                 </div>
             </div>
             </form> 
@@ -247,9 +253,19 @@
                         <small style="color:rgb(73, 129, 56);">Datos Formativos</small>
                     </h2>
                 </div>
+                <div class="d-md-flex">
+                <div class="col-12" v-show="titulosRegistrados.length < 1">
+                    <h5> ¿Poseé Titulos Académicos Universitarios?</h5> 
+                    <div class="form-check">
+                        <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
+                        <span class="text-success" v-show="estatusCarnet">SI</span>                      
+                        <span class="text-danger" v-show="!estatusCarnet">NO</span>                      
+                    </div>
+                </div>
+            </div>
                 <br> 
                 <div class="d-flex justify-content-start">
-                    <h3 class="titulo">
+                    <h3 class="titulo" v-show="estatusTitulo">
                         <small style="color:rgb(73, 129, 56);">Títulos Académicos</small> 
                         <span>
                             <button  type="button" title="Agregar título academico" v-show="titulosRegistrados.length <= 2" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">

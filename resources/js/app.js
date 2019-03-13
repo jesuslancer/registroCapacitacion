@@ -12,11 +12,11 @@ window.$ = require('jquery');
 require('popper.js');
 require('jquery');
 require('bootstrap');
+require('bootstrap4-toggle');
 require('vuejs-uib-pagination');
 require('sweetalert2');
 require('vue-moment');
 import Datepicker from 'vuejs-datepicker';
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

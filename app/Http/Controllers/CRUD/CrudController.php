@@ -26,6 +26,8 @@ class CrudController extends Controller
     	$persona->urbanizacion_sector = $request->urb;
     	$persona->punto_referencia = $request->ref;
     	$persona->comunidad = $request->comunidad;
+    	$persona->serial_carnet_patria = $request->serial;
+    	$persona->codigo_carnet_patria = $request->codigo;
 		$persona->save();
 		return 'guardo';
     }

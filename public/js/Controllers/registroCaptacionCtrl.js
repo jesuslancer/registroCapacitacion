@@ -8,14 +8,17 @@ window.onload = function(){
 			this.getNivel();
 		},
 		mounted(){
-			
-			
+			var self = this
+		
+		
 		},
 		data:{
-			existeP:true,
-			vista1:true,
+			existeP:false,
+			vista1:false,
 			vista2:true,
 			existeT:true,
+			estatusCarnet:false,
+			estatusTitulo:false,
 			cedula:'',
 			nac:'V',
 			personaId:'',
@@ -39,6 +42,8 @@ window.onload = function(){
 			nivel:'',
 			estadoCivil:'',
 			comunidad:'',
+			serial:'',
+			codigo:'',
 			tipoI:'',
 			institucion:'',
 			nivel:'',
@@ -89,6 +94,11 @@ window.onload = function(){
 								this.piso = r.data.piso
 								this.referencia = r.data.punto_referencia
 								this.comunidad = r.data.comunidad
+								if (r.data.serial_carnet_patria != null ) {
+									this.estatusCarnet = true
+									this.serial = r.data.serial_carnet_patria
+									this.codigo = r.data.codigo_carnet_patria
+								}
 							} else {
 								this.existeP=false;
 								Swal.fire({
@@ -102,6 +112,11 @@ window.onload = function(){
 							}
 							this.getEstados()
 				})
+			},
+			mostrarCarnet(estatusCarnet){
+				alert(estatusCarnet)
+				this.estatusCarnet = !this.estatusCarnet
+				checked == this.estatusCarnet
 			},
 			getNivel(){//Consulta todos los niveles educativos
 				axios.post('nivelInstruccion')
@@ -265,10 +280,10 @@ window.onload = function(){
 				return anio+'-'+mes +'-'+dia
 			},
 	
-			next(){
+			next(){// Funcion que guarda la persona y cambia a la vista 2
 				axios.post('guardarP',{'idP':this.personaId,'telf1':this.telf1,'telf2':this.telf2,'telf3':this.telf3,'correo1':this.correo1,'correo2':this.correo2,
 					'urb':this.urbanizacion,'av':this.avenida,'edf':this.edificio,'piso':this.piso,'apto':this.apto,'ref':this.referencia,'parroquia':
-					this.parroquia,'nivel':this.nivel,'estadoCivil':this.estadoCivil,'comunidad':this.comunidad}).then(r =>{
+					this.parroquia,'nivel':this.nivel,'estadoCivil':this.estadoCivil,'comunidad':this.comunidad,'serial':this.serial,'codigo':this.codigo}).then(r =>{
 						if (r.data=='guardo') {
 							this.existeP=false;
 							this.vista1=false;
@@ -296,8 +311,14 @@ window.onload = function(){
 		      	.slice(((this.paginacionTitulo.paginate.currentPage - 1) * this.paginacionTitulo.itemsPerPage),
 					(this.paginacionTitulo.paginate.currentPage * this.paginacionTitulo.itemsPerPage));
 			},
+		},
+		watch:{
+			estatusCarnet(nuevo,viejo){
+				var that = this
+ console.log('new: %s, old: %s', nuevo, viejo)
+				
+			}
 		}
-
 	})
 	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 	$.fn.modal.Constructor.prototype.enforceFocus = function() {};//Estas dos lineas son para corregir error en firefox donde los date picker no funcionan los eses y años
