@@ -7,7 +7,7 @@
             <p>Estimado(a) Usuario(a), escriba la Cédula de identidad y presione buscar. luego complete los datos y continue el registro</p>      
         </div>  
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
-                <form class="form-inline " @submit.prevent="consulta" data-vv-scope="cedula">
+                <form class="form-inline " @submit.prevent="consulta" @keyup.enter="consulta" data-vv-scope="cedula">
                     <label for="">Cédula de Identidad:</label> <br>
                     <div class="input-group mx-2" >
                         <div class="input-group-prepend">
@@ -150,7 +150,7 @@
             <div class="d-md-flex">
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.estado')}">
                     <label> Estado</label>
-                    <select @change="getMunicipios" name="estado" class="form-control" v-model="estado" data-vv-name="estado" v-validate.initial="'required'">
+                    <select @change="getMunicipios(estado)" name="estado" class="form-control" v-model="estado" data-vv-name="estado" v-validate.initial="'required'">
                         <option value="" disabled selected>Seleccione</option>
                         <option :value="x.id" v-for="x in estados">@{{ x.denominacion }}</option>
                     </select>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.municipio')}">
                     <label> Municipio</label>
-                    <select @change="getParroquias" name="municipio" class="form-control" data-vv-name="municipio" v-model="municipio" v-validate.initial="'required'">
+                    <select @change="getParroquias(municipio)" name="municipio" class="form-control" data-vv-name="municipio" v-model="municipio" v-validate.initial="'required'">
                         <option  value="" disabled selected>Seleccione</option>
                         <option :value="x.id" v-for="x in municipios">@{{ x.denominacion }}</option>
                     </select>
@@ -218,7 +218,7 @@
             </div> <br>
             <div class="d-md-flex">
                 <div class="col-12">
-                    <h5> ¿Poseé Carnet de la Patria?</h5><p>Si la respuesta es afirmativa, haga click en el cuadro y complete los datos.</p> 
+                    <h5> ¿Poseé carnet de la patria?</h5><p>Si la respuesta es afirmativa, haga click en el cuadro y complete los datos.</p> 
                     <div class="form-check">
                         <input type="checkbox" class="btn btn-outline-primary" v-model="estatusCarnet" name="" value="">  
                         <span class="text-success" v-show="estatusCarnet">SI</span>                      
@@ -259,7 +259,7 @@
             </div>  
                 <div class="d-md-flex">
                     <div class="col-12" >
-                        <h5> ¿Poseé Experiencia Agricola?</h5> <p>Si poseé experiencia agricola, especifique en los siguientes recuadros: </p>
+                        <h5> ¿Poseé experiencia agricola?</h5> <p>Si poseé experiencia agricola, especifique en los siguientes recuadros: </p>
                         <div class="form-check">
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="" value="">  
                             <span class="text-success" v-show="estatusAnimal">Experiencia Agricola Animal</span>                      
@@ -274,7 +274,7 @@
                 <br>  
                 <div class="d-md-flex">
                     <div class="col-12" v-show="titulosRegistrados.length < 1">
-                        <h5> ¿Poseé Titulos Académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el boton agregar: "<i class=" fa fa-plus"></i>".</p>
+                        <h5> ¿Poseé titulos académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el boton agregar: "<i class=" fa fa-plus"></i>".</p>
                         <div class="form-check">
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
                             <span class="text-success" v-show="estatusTitulo">SI</span>                      
@@ -309,8 +309,8 @@
                                     </tr>
                                 </thead>
                                 <tr class="text-center" v-for="(r, index) in array">
-                                    <td>@{{ r.nivelDescripcion }}</td>
-                                    <td>@{{ r.titulo }}</td>
+                                    <td>@{{ r.nivelDescripcion.toUpperCase() }}</td>
+                                    <td>@{{ r.titulo.toUpperCase() }}</td>
                                     <td>@{{ r.fecha }}</td>
                                     <td>
                                         <a class='btn btn-danger' @click="eliminarTitulo(index)" title="Eliminar" >
@@ -334,9 +334,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <form name="form" data-vv-scope="form" @submit.prevent="guardarTitulo()" @keyup.enter="guardarTitulo()">
-                                    <div class="row ">
-                                            <span class="col">Titulo Universitario </span>
-                                        </div> <br>
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.nivel educativo')}">
                                                 <label for="nivel">Nivel Educativo(*)</label>
@@ -406,7 +403,7 @@
 
                 <div class="d-md-flex">
                     <div class="col-12" v-show="ocupacionesPer.length < 1">
-                        <h5> ¿Poseé Ocupación Laboral?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, busque y pulse el boton Selección: "<i class=" fa fa-chevron-down"></i>".</p>
+                        <h5> ¿Poseé ocupación laboral?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, busque y pulse el boton Selección: "<i class=" fa fa-chevron-down"></i>".</p>
                         <div class="form-check">
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusOcupacion" name="" value="">  
                             <span class="text-success" v-show="estatusOcupacion">SI</span>                      
@@ -432,11 +429,10 @@
                         </div>
                     </div>
                         <div v-show="estatusOcupacion">
-                            <button type="button" :disabled="!ocupacion" class="btn btn-success" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
+                            <button type="button" :disabled="!ocupacion" class="btn btn-success" @click="guardarOcupacion(ocupacion)">Selección<span class="fa fa-chevron-down"></span></button>
                         </div>
                     <br>
                 </form>
-
                 <p v-show="ocupacionesPer.length > 0">Lista Ocupaciones Laborales:</p>
                 <div class="d-md-flex" > {{-- Inicio Tabla Ocupaciones Laborales --}}
                     <div class="col ">
@@ -445,13 +441,13 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>Código</th>
-                                        <th>Denominacion</th>
+                                        <th>Denominación</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tr class="text-center" v-for="(r, index) in array2">
                                     <td>@{{ r.codigo }}</td>
-                                    <td>@{{ r.denominacion }}</td>
+                                    <td>@{{ r.denominacion.toUpperCase() }}</td>
                                     <td>
                                         <a class='btn btn-danger' @click="eliminarOcupacion(index)" title="Eliminar" >
                                             <span class="fa fa-eraser"></span>
@@ -462,14 +458,119 @@
                         </div>
                     </div>
                 </div> {{-- Fin Ocupaciones Laborales --}}
-                <div class="d-flex justify-content-between">
+                <div class="d-md-flex">
+                    <div class="col-12">
+                        <h5> ¿Poseé vinculación con algun espacio productivo actualmente?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el boton agregar: "<i class=" fa fa-plus"></i>":</p>
+                        <div class="form-check">
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusEspacio" name="" value="">  
+                            <span class="text-success" v-show="estatusEspacio">SI</span>                      
+                            <span class="text-danger" v-show="!estatusEspacio">NO</span>                      
+                        </div>
+                    </div>
+                </div> <br>
+                <div class="d-flex justify-content-start">
+                    <h3 class="titulo" v-show="estatusEspacio">
+                        <small style="color:rgb(73, 129, 56);">Espacios Productivos</small> 
+                        <span>
+                            <button dis type="button" @click="banderaEspacio=true" title="Agregar Espacio Productivo" v-show="espacioProductivo.length < 5" data-toggle="modal" data-target="#modalEspacio" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </span>
+                    </h3>
+                </div> <br>
+                <p v-show="espacioProductivo.length > 0">Lista Espacios Productivos:</p>
+                <div class="d-md-flex" > {{-- Inicio Tabla titulos --}}
+                    <div class="col ">
+                        <div class="table table-hover card" v-show="espacioProductivo.length > 0" >
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Nombre Comunidad</th>
+                                        <th>Estado</th>
+                                        <th>Municipio</th>
+                                        <th>Parroquia</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tr class="text-center" v-for="(r, index) in array3">
+                                    <td>@{{ r.comunidad }}</td>
+                                    <td>@{{ r.estadoE.toUpperCase()}}</td>
+                                    <td>@{{ r.municipioE.toUpperCase() }}</td>
+                                    <td>@{{ r.parroquiaE.toUpperCase() }}</td>
+                                    <td>
+                                        <a class='btn btn-danger' @click="eliminarEspacio(index)" title="Eliminar" >
+                                            <span class="fa fa-eraser"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div> {{-- Fin titulos --}}
+
+                <div class="row"> {{-- Inicio modal titulos --}}
+                    <div id="modalEspacio" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLabel">Espacio Productivo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form name="formE" data-vv-scope="formE" @submit.prevent="guardarEspacio()" @keyup.enter="guardarEspacio()">
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.nombre comunidad')}">
+                                                <label for="nombre comunidad">Nombre Comunidad(*)</label>
+                                                <input  data-vv-name="nombre comunidad" v-validate.initial="{required:true}" type="text" class="form-control" placeholder="Ej: Nombre comunidad" minlength="2" maxlength="150"  v-model="comunidadE" aria-label="nombre comunidad" aria-describedby="basic-addon1">
+                                                <span v-show="errors.has('formE.nombre comunidad')" class="text-danger">@{{ errors.first('formE.nombre comunidad') }}</span>
+                                            </div>
+                                        </div>
+                                         <div class="d-md-flex">
+                                            <div class="col" :class="{'has-feedback has-error':errors.has('formE.estado')}">
+                                                <label> Estado</label>
+                                                <select @change="getMunicipios(estadoE.id)" name="estado" class="form-control" v-model="estadoE" data-vv-name="estado" v-validate.initial="'required'">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x" v-for="x in estados">@{{ x.denominacion }}</option>
+                                                </select>
+                                            <span v-show="errors.has('formE.estado')" class="text-danger">@{{ errors.first('formE.estado') }}</span>
+                                            </div>
+                                            <div class="col" :class="{'has-feedback has-error':errors.has('formE.municipio')}">
+                                                <label> Municipio</label>
+                                                <select @change="getParroquias(municipioE.id)" name="municipio" class="form-control" data-vv-name="municipio" v-model="municipioE" v-validate.initial="'required'">
+                                                    <option  value="" disabled selected>Seleccione</option>
+                                                    <option :value="x" v-for="x in municipiosE">@{{ x.denominacion }}</option>
+                                                </select>
+                                                <span v-show="errors.has('formE.municipio')" class="text-danger">@{{ errors.first('formE.municipio') }}</span>
+                                            </div>
+                                            <div class="col" :class="{'has-feedback has-error':errors.has('formE.parroquia')}">
+                                                <label> Parroquia</label>
+                                                <select name="parroquia" class="form-control" v-model="parroquiaE" data-vv-name="parroquia" v-validate.initial="'required'">
+                                                    <option value="" disabled selected>Seleccione</option>
+                                                    <option :value="x" v-for="x in parroquiasE">@{{ x.denominacion }}</option>
+                                                </select> 
+                                                <span v-show="errors.has('formE.parroquia')" class="text-danger">@{{ errors.first('formE.parroquia') }}</span>
+                                            </div>
+                                        </div> <br>
+                                        <div class="modal-footer">
+                                            <button type="button" @click="limpiarTitulo()"  class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                            <button type="submit" :disabled="errors.any('formE')"  class="btn btn-primary">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> {{-- Fin modal titulos --}}
+                <div class="d-flex justify-content-between"> {{-- botones siguientes --}}
                     <div>
                         <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
                         <button type="button" @click="next2" class="btn btn-primary"  {{-- :disabled="errors.any('form2')" --}}>Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
-                </div>
+                </div> {{-- fin botones --}}
         </div>{{-- Fin vista2 --}}
         <div v-show="vista3"> {{-- Inicio vista3 --}}
             aqui va la vista 3

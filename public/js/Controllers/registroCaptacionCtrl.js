@@ -24,6 +24,8 @@ window.onload = function(){
 			estatusVegetal:false,
 			estatusAnimal:false,
 			estatusOcupacion:false,
+			estatusEspacio:false,
+			banderaEspacio:false,
 			cedula:'',
 			nac:'V',
 			personaId:'',
@@ -44,6 +46,9 @@ window.onload = function(){
 			estado:'',
 			municipio:'',
 			parroquia:'',
+			estadoE:'',
+			municipioE:'',
+			parroquiaE:'',
 			nivel:'',
 			nivelModal:'',
 			estadoCivil:'',
@@ -56,10 +61,13 @@ window.onload = function(){
 			programa:'',
 			titulo:'',
 			ocupacion:'',
+			comunidadE:'',
 			fechaTitulo:new Date(),
 			estados:[],
 			municipios:[],
 			parroquias:[],
+			municipiosE:[],
+			parroquiasE:[],
 			niveles:[],
 			categorias:[],
 			areas:[],
@@ -68,12 +76,18 @@ window.onload = function(){
 			titulosRegistrados:[],
 			ocupaciones:[],
 			ocupacionesPer:[],
+			espacioProductivo:[],
 			paginacionTitulo:{
 				paginate:{currentPage:1},
 				totalItems:null,
 				itemsPerPage:5
 			},
 			paginacionOcupacionesPer:{
+				paginate:{currentPage:1},
+				totalItems:null,
+				itemsPerPage:5
+			},
+			paginacionEspacioProductivo:{
 				paginate:{currentPage:1},
 				totalItems:null,
 				itemsPerPage:5
@@ -110,9 +124,9 @@ window.onload = function(){
 							this.estatusVegetal = r.data['persona'].experiencia_agricola_vegetal
 							this.estado = r.data['persona'].parroquia ? r.data['persona'].parroquia.municipio.estado.id : '' 
 							if (this.estado) {
-								this.getMunicipios()
+								this.getMunicipios(this.estado)
 								this.municipio = r.data['persona'].parroquia.municipio.id
-								this.getParroquias()
+								this.getParroquias(this.municipio)
 								this.parroquia = r.data['persona'].parroquia_id
 							}
 							if (r.data['persona'].serial_carnet_patria != null ) {
@@ -136,7 +150,15 @@ window.onload = function(){
 										'ocupacion_clase_id':value.ocupacion_clase_id})
 									this.paginacionOcupacionesPer.totalItems=this.paginacionOcupacionesPer.length
 								})
-
+							}
+							if (r.data['espacios'].length > 0) {
+								r.data['espacios'].forEach((value)=>{
+									this.estatusEspacio = true
+									this.espacioProductivo.push({'comunidad':value.comunidad,'estadoE':value.parroquia.municipio.estado.denominacion,
+									'municipioE':value.parroquia.municipio.denominacion,'parroquiaE':value.parroquia.denominacion,'parroquia_id':value.parroquia.id})
+									this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
+									
+								})
 							}
 							this.cargando = false
 						} else {
@@ -172,16 +194,24 @@ window.onload = function(){
 				})				
 
 			},
-			getMunicipios() {// Consultas los municipios segun los estados
-				axios.post('municipios', {'id':this.estado})
+			getMunicipios(e) {// Consultas los municipios segun los estados
+				axios.post('municipios', {'id':e})
 				.then(r => {
-					this.municipios = r.data
+					if (this.banderaEspacio) {
+						this.municipiosE = r.data
+					}else{
+						this.municipios = r.data
+					}
 				})
 			},
-			getParroquias() {// Consultas las parroquias segun los municipios
-				axios.post('parroquias', {'id':this.municipio})
+			getParroquias(m) {// Consultas las parroquias segun los municipios
+				axios.post('parroquias', {'id':m})
 				.then(r => {
-					this.parroquias = r.data
+					if (this.banderaEspacio) {
+						this.parroquiasE = r.data
+					}else{
+						this.parroquias = r.data
+					}
 				})
 			},
 			getCategorias(valor) {// Consultas las categorias educativas segun los niveles
@@ -243,11 +273,14 @@ window.onload = function(){
 				this.codigo='';
 				this.titulosRegistrados=[];
 				this.ocupacionesPer=[];
+				this.espacioProductivo=[];
 				this.estatusCarnet =false;
 				this.estatusTitulo =false;
 				this.estatusOcupacion =false;
 				this.estatusAnimal =false;
 				this.estatusVegetal =false;
+				this.estatusEspacio =false;
+
 			},
 			clean(){// Funcion que inicia la accion de limpiar
 				Swal.fire({
@@ -330,24 +363,60 @@ window.onload = function(){
 			guardarOcupacion(a){
 				var existeO = false;
 				this.ocupacionesPer.forEach((value)=>{
-							if (value['ocupacion_clase_id']== a.id) {
-								existeO = true;
-	 							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar esta ocupación.','error')
-							}
-						})
+					if (value['ocupacion_clase_id']== a.id) {
+						existeO = true;
+							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar esta ocupación.','error')
+					}
+				})	
 				if (this.ocupacionesPer.length>=5) {
-							existeO = true;
-							Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas ocupaciones.','error')
-						}
+						existeO = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas ocupaciones.','error')
+					}
 				if (!existeO) {
 					this.ocupacionesPer.push({'codigo':a.codigo,'denominacion':a.denominacion, 'ocupacion_clase_id':a.id})
 					this.paginacionOcupacionesPer.totalItems=this.paginacionOcupacionesPer.length
 				}
-						this.limpiarOcupacion()
+				this.limpiarOcupacion()
 				
 			},
 			eliminarOcupacion(index){//Funcion para eliminar en vista los titulos registrados
 				this.ocupacionesPer.splice(index,1);
+			},
+			limpiarEspacio(){
+				this.comunidadE='';
+				this.parroquiaE='';
+				this.parroquiasE=[];
+				this.municipioE='';
+				this.municipiosE=[];
+				this.estadoE='';
+			},
+			guardarEspacio(){//Se guarda los espacios productivos
+				var existeEs = false;
+				this.espacioProductivo.forEach((value)=>{
+					if (value['parroquia_id']==this.parroquiaE.id) {
+						existeEs = true;
+							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar este espacio productivo.','error')
+					}
+				})
+				if (this.espacioProductivo.length>=5) {
+						existeEs = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas espacios productivos.','error')
+					}
+				if (!existeEs) {
+					this.espacioProductivo.push({'comunidad':this.comunidadE,'estadoE':this.estadoE.denominacion, 'municipioE':this.municipioE.denominacion,
+						'parroquiaE':this.parroquiaE.denominacion,'parroquia_id':this.parroquiaE.id})
+					this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
+					$('#modalEspacio').modal('hide');
+					if ($('.modal-backdrop').is(':visible')) {
+					  $('body').removeClass('modal-open'); 
+					  $('.modal-backdrop').remove(); 
+					};
+				}
+				this.limpiarEspacio()
+
+			},
+			eliminarEspacio(index){//Funcion para eliminar en vista los titulos registrados
+				this.espacioProductivo.splice(index,1);
 			},
 			convertirAnioAFecha(fecha){// Se creo esta funcion como solucion al formato del datepicker
 				var dia = fecha.getDate();
@@ -371,8 +440,8 @@ window.onload = function(){
 				
 			},
 			next2(){// Funcion que guarda la ocupacion y titulo registrados, tambien  cambia a la vista 3
-				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer, 'animal':this.estatusAnimal,
-					'vegetal':this.estatusVegetal}).then(r =>{
+				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer, 'espacio':this.espacioProductivo,
+				 'animal':this.estatusAnimal,'vegetal':this.estatusVegetal}).then(r =>{
 						if (r.data=='guardo') {
 							this.existeP=false;
 							this.vista1=false;
@@ -411,6 +480,11 @@ window.onload = function(){
 		      	.slice(((this.paginacionOcupacionesPer.paginate.currentPage - 1) * this.paginacionOcupacionesPer.itemsPerPage),
 					(this.paginacionOcupacionesPer.paginate.currentPage * this.paginacionOcupacionesPer.itemsPerPage));
 			},
+			array3 () {//Arreglo de los titulos
+		    return this.espacioProductivo
+		      	.slice(((this.paginacionEspacioProductivo.paginate.currentPage - 1) * this.paginacionEspacioProductivo.itemsPerPage),
+					(this.paginacionEspacioProductivo.paginate.currentPage * this.paginacionEspacioProductivo.itemsPerPage));
+			},
 		},
 		
 	})
@@ -418,5 +492,9 @@ window.onload = function(){
 	$.fn.modal.Constructor.prototype.enforceFocus = function() {};//Estas dos lineas son para corregir error en firefox donde los date picker no funcionan los eses y años
 	$('#modalTitulo').on('hidden.bs.modal', function(e){// se configuran los modales de manera global
 			registro.limpiarTitulo()// se ejecuta la funcion llamandolo desde el objeto vue
-		});
+	});
+	$('#modalEspacio').on('hidden.bs.modal', function(e){// se configuran los modales de manera global
+			this.banderaEspacio = false
+			registro.limpiarEspacio()// se ejecuta la funcion llamandolo desde el objeto vue
+	});
 }

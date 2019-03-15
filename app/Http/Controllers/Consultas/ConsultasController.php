@@ -20,6 +20,8 @@ use App\OcupacionGrupo;
 use App\OcupacionSeccion;
 use App\DatosFormativos;
 use App\DatosOcupacion;
+use App\EspaciosProductivos;
+use App\OrganizacionesSociales;
 
 class ConsultasController extends Controller
 {
@@ -30,8 +32,9 @@ class ConsultasController extends Controller
     	}
     	$titulos = DatosFormativos::with('nivelEducativo','tituloCarrera')->where('persona_id',$persona->id)->get();
     	$ocupaciones = DatosOcupacion::with('ocupacionClase')->where('persona_id',$persona->id)->get();
+    	$espacios = EspaciosProductivos::with('parroquia.municipio.estado')->where('persona_id',$persona->id)->get();
 		//$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, en espera para validar
-    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones];
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();
