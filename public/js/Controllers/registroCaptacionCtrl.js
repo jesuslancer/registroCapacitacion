@@ -16,10 +16,13 @@ window.onload = function(){
 		data:{
 			existeP:false,
 			vista1:true,
-			vista2:true,			
+			vista2:false,			
+			vista3:false,			
 			cargando:false,
 			estatusCarnet:false,
 			estatusTitulo:false,
+			estatusVegetal:false,
+			estatusAnimal:false,
 			estatusOcupacion:false,
 			cedula:'',
 			nac:'V',
@@ -42,6 +45,7 @@ window.onload = function(){
 			municipio:'',
 			parroquia:'',
 			nivel:'',
+			nivelModal:'',
 			estadoCivil:'',
 			comunidad:'',
 			serial:'',
@@ -69,7 +73,7 @@ window.onload = function(){
 				totalItems:null,
 				itemsPerPage:5
 			},
-			paginacionOcupacion:{
+			paginacionOcupacionesPer:{
 				paginate:{currentPage:1},
 				totalItems:null,
 				itemsPerPage:5
@@ -81,47 +85,75 @@ window.onload = function(){
 				this.cargando = true
 				axios.get('consultaCedula/'+ this.nac + '/' + this.cedula)
 				.then(r=>{
+				this.limpiar()
 					if (r.data != 'vacio') {
-								this.existeP=true;
-								this.personaId = r.data.id
-								this.nombrePersona = r.data.primer_nombre + ' ' + r.data.segundo_nombre + ' ' + r.data.primer_apellido + ' ' + r.data.segundo_apellido
-								this.genero = r.data.sexo
-								this.fechaNac = this.formatoVw(r.data.fecha_nacimiento)
-								this.telf1 = r.data.telefono_1
-								this.telf2 = r.data.telefono_2
-								this.telf3 = r.data.telefono_3
-								this.correo1 = r.data.correo_principal
-								this.correo2 = r.data.correo_opcional
-								this.nivel = r.data.nivel_educativo_id == null?'':r.data.nivel_educativo_id //Se hace ternario, debido a que cuando 
-								this.estadoCivil = r.data.estado_civil_id == null?'':r.data.estado_civil_id //es null genera un error en los select
-								this.urbanizacion = r.data.urbanizacion_sector
-								this.avenida = r.data.avenida_calle
-								this.edificio = r.data.edificio_casa_quinta
-								this.apto = r.data.apartamento
-								this.piso = r.data.piso
-								this.referencia = r.data.punto_referencia
-								this.comunidad = r.data.comunidad
-								if (r.data.serial_carnet_patria != null ) {
-									this.estatusCarnet = true
-									this.serial = r.data.serial_carnet_patria
-									this.codigo = r.data.codigo_carnet_patria
-								}
-								this.cargando = false
-							} else {
-								this.existeP=false;
-								Swal.fire({
-									  title: '¡Atención!',
-									  text: 'Estimado(a) Usuario(a), no se consiguen datos',
-									  type: 'error',
-									  confirmButtonText: 'OK'
-									})
-								this.cargando = false
+							this.existeP=true;
+							this.personaId = r.data['persona'].id
+							this.nombrePersona = r.data['persona'].primer_nombre + ' ' + r.data['persona'].segundo_nombre + ' ' + r.data['persona'].primer_apellido + ' ' + r.data['persona'].segundo_apellido
+							this.genero = r.data['persona'].sexo
+							this.fechaNac = this.formatoVw(r.data['persona'].fecha_nacimiento)
+							this.telf1 = r.data['persona'].telefono_1
+							this.telf2 = r.data['persona'].telefono_2
+							this.telf3 = r.data['persona'].telefono_3
+							this.correo1 = r.data['persona'].correo_principal
+							this.correo2 = r.data['persona'].correo_opcional
+							this.nivel = r.data['persona'].nivel_educativo_id == null?'':r.data['persona'].nivel_educativo_id //Se hace ternario, debido a que cuando 
+							this.estadoCivil = r.data['persona'].estado_civil_id == null?'':r.data['persona'].estado_civil_id //es null genera un error en los select
+							this.urbanizacion = r.data['persona'].urbanizacion_sector
+							this.avenida = r.data['persona'].avenida_calle
+							this.edificio = r.data['persona'].edificio_casa_quinta
+							this.apto = r.data['persona'].apartamento
+							this.piso = r.data['persona'].piso
+							this.referencia = r.data['persona'].punto_referencia
+							this.comunidad = r.data['persona'].comunidad
+							this.estatusAnimal = r.data['persona'].experiencia_agricola_animal
+							this.estatusVegetal = r.data['persona'].experiencia_agricola_vegetal
+							this.estado = r.data['persona'].parroquia ? r.data['persona'].parroquia.municipio.estado.id : '' 
+							if (this.estado) {
+								this.getMunicipios()
+								this.municipio = r.data['persona'].parroquia.municipio.id
+								this.getParroquias()
+								this.parroquia = r.data['persona'].parroquia_id
 							}
-							this.getEstados()
+							if (r.data['persona'].serial_carnet_patria != null ) {
+								this.estatusCarnet = true
+								this.serial = r.data['persona'].serial_carnet_patria
+								this.codigo = r.data['persona'].codigo_carnet_patria
+							}
+							if (r.data['titulos'].length > 0) {
+								r.data['titulos'].forEach((value)=>{
+									this.estatusTitulo=true
+									this.titulosRegistrados.push({'nivelDescripcion':value.nivel_educativo.descripcion,'titulo_carrera_id':value.titulo_carrera_id,
+										'titulo':value.titulo_carrera.descripcion,'fecha':this.formatoVw(value.fecha_graduacion),
+										'nivel_educativo_id':value.nivel_educativo_id})
+									this.paginacionTitulo.totalItems=this.titulosRegistrados.length
+								})
+							}
+							if (r.data['ocupaciones'].length > 0) {
+								r.data['ocupaciones'].forEach((value)=>{
+									this.estatusOcupacion=true
+									this.ocupacionesPer.push({'codigo':value.codigo,'denominacion':value.ocupacion_clase.denominacion, 
+										'ocupacion_clase_id':value.ocupacion_clase_id})
+									this.paginacionOcupacionesPer.totalItems=this.paginacionOcupacionesPer.length
+								})
+
+							}
+							this.cargando = false
+						} else {
+							this.existeP=false;
+							Swal.fire({
+								  title: '¡Atención!',
+								  text: 'Estimado(a) Usuario(a), no se consiguen datos',
+								  type: 'error',
+								  confirmButtonText: 'OK'
+								})
+							this.cargando = false
+							this.limpiar()
+						}
+						this.getEstados()
 				})
 			},
 			mostrarCarnet(estatusCarnet){
-				alert(estatusCarnet)
 				this.estatusCarnet = !this.estatusCarnet
 				checked == this.estatusCarnet
 			},
@@ -137,7 +169,6 @@ window.onload = function(){
 				axios.post('estados')
 				.then(r => {
 					this.estados = r.data
-					this.parroquias.length = 0
 				})				
 
 			},
@@ -145,7 +176,6 @@ window.onload = function(){
 				axios.post('municipios', {'id':this.estado})
 				.then(r => {
 					this.municipios = r.data
-					this.parroquias.length = 0
 				})
 			},
 			getParroquias() {// Consultas las parroquias segun los municipios
@@ -185,7 +215,6 @@ window.onload = function(){
 				})
 			},
 			limpiar(){//Vacia cada variables del formulario
-				this.cedula='';
 				this.nac='V';
 				this.personaId='';
 				this.nombrePersona='';
@@ -210,22 +239,31 @@ window.onload = function(){
 				this.comunidad='';
 				this.municipios=[];
 				this.parroquias=[];
+				this.serial='';
+				this.codigo='';
+				this.titulosRegistrados=[];
+				this.ocupacionesPer=[];
+				this.estatusCarnet =false;
+				this.estatusTitulo =false;
+				this.estatusOcupacion =false;
+				this.estatusAnimal =false;
+				this.estatusVegetal =false;
 			},
 			clean(){// Funcion que inicia la accion de limpiar
 				Swal.fire({
 				  title: '¿Esta Seguro(a)?',
-				  text: "Estimado(a) Usuario(a), esta acción eliminara los datos que no ha guardado",
+				  text: "Estimado(a) Usuario(a), esta acción LIMPIARA del formulario los datos que no haya guardado",
 				  type: 'warning',
 				  showCancelButton: true,
 				  confirmButtonColor: '#3085d6',
 				  cancelButtonColor: '#d33',
-				  confirmButtonText: '¡Si, Borrar!',
+				  confirmButtonText: '¡Si, Limpiar!',
 				  cancelButtonText: 'Cancelar'
 				}).then((result) => {
 				  if (result.value) {
 				    Swal.fire(
-				      '¡Borrado!',
-				      'Los datos se borraron.',
+				      '¡Limpiado!',
+				      'Los datos se Limpiaron.',
 				      'success'
 				    )
 				    	this.limpiar();
@@ -235,7 +273,7 @@ window.onload = function(){
 
 			},
 			limpiarTitulo(){
-				this.nivel='';
+				this.nivelModal='';
 				this.titulo='';
 				this.categoria='';
 				this.area='';
@@ -259,17 +297,17 @@ window.onload = function(){
 						}
 						if (!existeT) {
 							var n = ''
-							if(this.nivel==6){
+							if(this.nivelModal==6){
 										n = 'EDUCACIÓN TÉCNICA SUPERIOR'
-									}else if (this.nivel==7) {
+									}else if (this.nivelModal==7) {
 										n = 'EDUCACIÓN PROFESIONAL UNIVERSITARIA'
-									}else if (this.nivel==4) {
+									}else if (this.nivelModal==4) {
 										n = 'DESARROLLO PERSONAL Y LABORAL NO PROFESIONAL'
-									}else if (this.nivel==5) {
+									}else if (this.nivelModal==5) {
 										n = 'EDUCACIÓN MEDIA'
 									}
 								this.titulosRegistrados.push({'nivelDescripcion':n,'titulo_carrera_id':this.titulo.id,'titulo':this.titulo.descripcion,
-									'fecha':this.convertirAnioAFecha(this.fechaTitulo),'nivel_educativo_id':this.nivel})
+									'fecha':this.convertirAnioAFecha(this.fechaTitulo),'nivel_educativo_id':this.nivelModal})
 								this.paginacionTitulo.totalItems=this.titulosRegistrados.length
 						}
 						$('#modalTitulo').modal('hide');
@@ -287,7 +325,7 @@ window.onload = function(){
 				this.titulosRegistrados.splice(index,1);
 			},
 			limpiarOcupacion(){
-				alert('aqui')
+				this.ocupacion = ""
 			},
 			guardarOcupacion(a){
 				var existeO = false;
@@ -303,6 +341,7 @@ window.onload = function(){
 						}
 				if (!existeO) {
 					this.ocupacionesPer.push({'codigo':a.codigo,'denominacion':a.denominacion, 'ocupacion_clase_id':a.id})
+					this.paginacionOcupacionesPer.totalItems=this.paginacionOcupacionesPer.length
 				}
 						this.limpiarOcupacion()
 				
@@ -325,24 +364,30 @@ window.onload = function(){
 							this.existeP=false;
 							this.vista1=false;
 							this.vista2=true;
-							alert('listo')
+							this.vista3=false;
 						}
 					})
 				
 				
 			},
 			next2(){// Funcion que guarda la ocupacion y titulo registrados, tambien  cambia a la vista 3
-				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer}).then(r =>{
+				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer, 'animal':this.estatusAnimal,
+					'vegetal':this.estatusVegetal}).then(r =>{
 						if (r.data=='guardo') {
 							this.existeP=false;
 							this.vista1=false;
 							this.vista2=false;
 							this.vista3=true;
-							alert('listo2')
 						}
 					})
 				
 				
+			},
+			atras(){//Funcion para regresar a la vista 1
+				this.existeP=true;
+				this.vista1=true;
+				this.vista2=false;
+				this.vista3=false;
 			},
 			formatoVw(date){// Formatea las fechas segun la vista
 				var f2 = date.split('-')
@@ -363,17 +408,11 @@ window.onload = function(){
 			},
 			array2 () {//Arreglo de los titulos
 		    return this.ocupacionesPer
-		      	.slice(((this.paginacionOcupacion.paginate.currentPage - 1) * this.paginacionOcupacion.itemsPerPage),
-					(this.paginacionOcupacion.paginate.currentPage * this.paginacionTitulo.itemsPerPage));
+		      	.slice(((this.paginacionOcupacionesPer.paginate.currentPage - 1) * this.paginacionOcupacionesPer.itemsPerPage),
+					(this.paginacionOcupacionesPer.paginate.currentPage * this.paginacionOcupacionesPer.itemsPerPage));
 			},
 		},
-		watch:{
-			estatusCarnet(nuevo,viejo){
-				var that = this
- console.log('new: %s, old: %s', nuevo, viejo)
-				
-			}
-		}
+		
 	})
 	var enforceModalFocusFn = $.fn.modal.Constructor.prototype.enforceFocus;
 	$.fn.modal.Constructor.prototype.enforceFocus = function() {};//Estas dos lineas son para corregir error en firefox donde los date picker no funcionan los eses y años

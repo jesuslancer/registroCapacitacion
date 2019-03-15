@@ -12,7 +12,6 @@ window.$ = require('jquery');
 require('popper.js');
 require('jquery');
 require('bootstrap');
-require('bootstrap4-toggle');
 require('vuejs-uib-pagination');
 require('sweetalert2');
 require('vue-moment');

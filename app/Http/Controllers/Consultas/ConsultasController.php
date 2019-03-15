@@ -18,16 +18,20 @@ use App\OcupacionClase;
 use App\OcupacionDivision;
 use App\OcupacionGrupo;
 use App\OcupacionSeccion;
+use App\DatosFormativos;
+use App\DatosOcupacion;
 
 class ConsultasController extends Controller
 {
     public function consulta($n,$c){// Funcion para consultar la persona
-    	$persona = Persona::with('parroquia')->where('nacionalidad',$n)->where('cedula_identidad',$c)->first();
+    	$persona = Persona::with('parroquia.municipio.estado')->where('nacionalidad',$n)->where('cedula_identidad',$c)->first();
     	if (empty($persona)) {
     		return 'vacio';
     	}
+    	$titulos = DatosFormativos::with('nivelEducativo','tituloCarrera')->where('persona_id',$persona->id)->get();
+    	$ocupaciones = DatosOcupacion::with('ocupacionClase')->where('persona_id',$persona->id)->get();
 		//$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, en espera para validar
-    	return $persona;
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();

@@ -33,6 +33,7 @@ class CrudController extends Controller
 		$persona->save();
 		return 'guardo';
     }
+
     public function guardarTO(Request $request){//Funcion para guardar los titulos y Ocupaciones de la persona
         DatosFormativos::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
         DatosOcupacion::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
@@ -42,7 +43,7 @@ class CrudController extends Controller
                 $otrosTi->persona_id = $request->idP;
                 $otrosTi->titulo_carrera_id = $value['titulo_carrera_id'];
                 $otrosTi->nivel_educativo_id = $value['nivel_educativo_id'];
-                $otrosTi->fecha_graducacion = $value['fecha'];
+                $otrosTi->fecha_graduacion = $value['fecha'];
                 $otrosTi->save();
             }
         }
@@ -55,8 +56,11 @@ class CrudController extends Controller
                 $otrosTi->save();
             }
         }
-    	dd($request->all());
-
+        $persona = Persona::find($request->idP);
+        $persona->experiencia_agricola_animal = $request->vegetal;
+        $persona->experiencia_agricola_vegetal =$request->animal;
+        $persona->save();		
+        return 'guardo';
     }
 }
 	

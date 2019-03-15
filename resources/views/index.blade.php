@@ -1,16 +1,14 @@
 @extends('template')
 @section('content')
-
 <script src="{{ asset('js/Controllers/registroCaptacionCtrl.js') }}"></script>   
-
-
-
-    <div id="captacion" v-cloak>    
+    <div id="captacion" v-cloak>  
         <div v-show="vista1">
+        <div>
+            <p>Estimado(a) Usuario(a), escriba la Cédula de identidad y presione buscar. luego complete los datos y continue el registro</p>      
+        </div>  
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
-                <form class="form-inline " @submit.prevent="consulta()" data-vv-scope="cedula">
+                <form class="form-inline " @submit.prevent="consulta" data-vv-scope="cedula">
                     <label for="">Cédula de Identidad:</label> <br>
-                        
                     <div class="input-group mx-2" >
                         <div class="input-group-prepend">
                             <select class="form-control" v-model="nac">
@@ -18,13 +16,14 @@
                                 <option value="E">E</option>
                             </select>
                         </div>
-                        <input  v-validate.initial="'required|numeric|min:6|max:8'" maxlength="8" placeholder="Ej:12345678" id="Cedula" v-model="cedula"  data-vv-name="cédula" id="Cedula" type="text" class="form-control solo-numerosCharlie" title="Rellene este campo">
+                        <div :class="{'has-feedback has-error':errors.has('cedula.cédula')}">
+                            <input  v-validate.initial="'required|numeric|min:6|max:8'" data-vv-scope="cedula" maxlength="8" placeholder="Ej:12345678" id="Cedula" v-model="cedula"  data-vv-name="cédula" id="Cedula" type="text" class="form-control solo-numerosCharlie" title="Rellene este campo">
+                            </div>
                         <div class="input-group-btn">
                             <button :disabled="errors.has('cedula.cédula')" type="submit" title="Buscar" class="btn btn-primary">
                                 <i class="fa fa-search"></i>
                             </button>
                             <img slot="spinner" class="spinner" v-show="cargando" src="img/cargando.gif">
-
                         </div>
                     </div>
                 </form> 
@@ -129,13 +128,13 @@
                     </div>
                         <span v-show="errors.has('form2.nivel de instrucción académica')" class="text-danger"> @{{ errors.first('form2.nivel de instrucción académica') }} </span>
                 </div>
-                <div class="col">
+                <div class="col" >
                     <label>Estado Civil</label>
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form2.estado civil')}">
                         <div class="input-group-prepend">
                             <span class="input-group-text fa fa-ring" id="basic-addon7"></span>
                         </div>
-                        <select style= name="estadoCivil" class="form-control row-1 " v-validate.initial="'required'" data-vv-name="estado civil" v-model="estadoCivil" aria-describedby="basic-addon7">
+                        <select style= name="estadoCivil" :disabled="estadoCivil!=''"  class="form-control row-1 " v-validate.initial="'required'" data-vv-name="estado civil" v-model="estadoCivil" aria-describedby="basic-addon7">
                             <option value="" disabled selected>Seleccione</option>
                             <option value="1">SOLTERO(A)</option>
                             <option value="2">UNIDO(A)</option>
@@ -219,7 +218,7 @@
             </div> <br>
             <div class="d-md-flex">
                 <div class="col-12">
-                    <h5> ¿Poseé Carnet de la Patria?</h5> 
+                    <h5> ¿Poseé Carnet de la Patria?</h5><p>Si la respuesta es afirmativa, haga click en el cuadro y complete los datos.</p> 
                     <div class="form-check">
                         <input type="checkbox" class="btn btn-outline-primary" v-model="estatusCarnet" name="" value="">  
                         <span class="text-success" v-show="estatusCarnet">SI</span>                      
@@ -230,12 +229,12 @@
             <div class="d-md-flex" >
                     <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.serial')}">
                         <label>Serial</label>
-                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="serial" v-model="serial"  v-validate.initial="'required|numeric'" maxlength="10" placeholder="0001234567">
+                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="serial" v-model="serial"  v-validate.initial="'required|numeric'" maxlength="7" placeholder="Ejemplo: 1234567">
                     <span v-show="errors.has('form2.serial')" class="text-danger">@{{ errors.first('form2.serial') }}</span>
                     </div>
                     <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.código')}">
                         <label>Código</label>
-                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="código" v-model="codigo" v-validate.initial="'required|numeric'" maxlength="10" placeholder="0001234567">
+                        <input type="text" class="form-control solo-numerosCharlie" data-vv-name="código" v-model="codigo" v-validate.initial="'required|numeric'" maxlength="7" placeholder="Ejemplo: 1234567">
                     <span v-show="errors.has('form2.código')" class="text-danger">@{{ errors.first('form2.código') }}</span>
                     </div>
             </div> <br>
@@ -244,7 +243,7 @@
                     <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-stop-circle"></span> Cancelar</button>
                 </div>
                 <div>
-                    <button type="button" @click="next" class="btn btn-success"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
+                    <button type="button" @click="next" class="btn btn-primary"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
                 </div>
             </div>
             </form> 
@@ -255,9 +254,27 @@
                         <small style="color:rgb(73, 129, 56);">Datos Formativos</small>
                     </h2>
                 </div>
+            <div>
+                <p>Estimado(a) Usuario(a), sino tiene titulos academicos u ocupaciones, puede continuar.</p>      
+            </div>  
+                <div class="d-md-flex">
+                    <div class="col-12" >
+                        <h5> ¿Poseé Experiencia Agricola?</h5> <p>Si poseé experiencia agricola, especifique en los siguientes recuadros: </p>
+                        <div class="form-check">
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="" value="">  
+                            <span class="text-success" v-show="estatusAnimal">Experiencia Agricola Animal</span>                      
+                            <span class="text-danger" v-show="!estatusAnimal">Experiencia Agricola Animal</span> 
+                            <br> 
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="" value="">  
+                            <span class="text-success" v-show="estatusVegetal">Experiencia Agricola Vegetal</span>                      
+                            <span class="text-danger" v-show="!estatusVegetal">Experiencia Agricola Vegetal</span>                      
+                        </div>
+                    </div>
+                </div>
+                <br>  
                 <div class="d-md-flex">
                     <div class="col-12" v-show="titulosRegistrados.length < 1">
-                        <h5> ¿Poseé Titulos Académicos?</h5> 
+                        <h5> ¿Poseé Titulos Académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el boton agregar: "<i class=" fa fa-plus"></i>".</p>
                         <div class="form-check">
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
                             <span class="text-success" v-show="estatusTitulo">SI</span>                      
@@ -277,6 +294,8 @@
                     </h3>
                 </div>
                 <br>
+
+                <p v-show="titulosRegistrados.length > 0">Lista titulos Registrados:</p>
                 <div class="d-md-flex" > {{-- Inicio Tabla titulos --}}
                     <div class="col ">
                         <div class="table table-hover card" v-show="titulosRegistrados.length > 0" >
@@ -292,7 +311,7 @@
                                 <tr class="text-center" v-for="(r, index) in array">
                                     <td>@{{ r.nivelDescripcion }}</td>
                                     <td>@{{ r.titulo }}</td>
-                                    <td>@{{ formatoVw(r.fecha) }}</td>
+                                    <td>@{{ r.fecha }}</td>
                                     <td>
                                         <a class='btn btn-danger' @click="eliminarTitulo(index)" title="Eliminar" >
                                             <span class="fa fa-eraser"></span>
@@ -321,7 +340,7 @@
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.nivel educativo')}">
                                                 <label for="nivel">Nivel Educativo(*)</label>
-                                                <select class="form-control" @change="getCategorias(nivel)" data-vv-scope="form" data-vv-name="nivel educativo" v-validate.initial="'required'" v-model="nivel" >
+                                                <select class="form-control" @change="getCategorias(nivelModal)" data-vv-scope="form" data-vv-name="nivel educativo" v-validate.initial="'required'" v-model="nivelModal" >
                                                     <option disabled selected value="">Seleccione</option>
                                                     <option value="4">DESARROLLO PERSONAL Y LABORAL NO PROFESIONAL</option>
                                                     <option value="5">EDUCACIÓN MEDIA</option>
@@ -370,12 +389,12 @@
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('form.fecha graduación')}">
                                                 <label for="Fecha Graduacion">Fecha de culminación(*)</label>
-                                                <custom-datepicker v-model="fechaTitulo"></custom-datepicker>
+                                                <custom-datepicker  v-model="fechaTitulo"></custom-datepicker>
                                                 <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" @click="limpiarTitulo()"  class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <button type="button" @click="limpiarTitulo()"  class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                                             <button type="submit" :disabled="errors.any('form')"  class="btn btn-primary">Guardar</button>
                                         </div>
                                     </form>
@@ -387,7 +406,7 @@
 
                 <div class="d-md-flex">
                     <div class="col-12" v-show="ocupacionesPer.length < 1">
-                        <h5> ¿Poseé Ocupación Laboral?</h5> 
+                        <h5> ¿Poseé Ocupación Laboral?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, busque y pulse el boton Selección: "<i class=" fa fa-chevron-down"></i>".</p>
                         <div class="form-check">
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusOcupacion" name="" value="">  
                             <span class="text-success" v-show="estatusOcupacion">SI</span>                      
@@ -401,10 +420,11 @@
                         <small style="color:rgb(73, 129, 56);">Ocupaciónes Laborales</small> 
                     </h3>
                 </div>
+                <br>
                 <form class="form-group" v-show="ocupacionesPer.length <5">
                     <div class="row">
                         <div class=" col-12" v-show="estatusOcupacion">
-                            <v-select placeholder="Busque y Seleccione..." v-model="ocupacion" label="denominacion"  :options="ocupaciones" >
+                            <v-select placeholder="Escriba y seleccione..." v-model="ocupacion" label="denominacion"  :options="ocupaciones" >
                                 <span slot="no-options">
                                   ¡Disculpe! No se consigue su busqueda.
                                 </span>
@@ -412,10 +432,12 @@
                         </div>
                     </div>
                         <div v-show="estatusOcupacion">
-                            <button type="button" :disabled="!ocupacion" class="btn btn-dark" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
+                            <button type="button" :disabled="!ocupacion" class="btn btn-success" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
                         </div>
                     <br>
                 </form>
+
+                <p v-show="ocupacionesPer.length > 0">Lista Ocupaciones Laborales:</p>
                 <div class="d-md-flex" > {{-- Inicio Tabla Ocupaciones Laborales --}}
                     <div class="col ">
                         <div class="table table-hover card" v-show="ocupacionesPer.length > 0" >
@@ -442,13 +464,16 @@
                 </div> {{-- Fin Ocupaciones Laborales --}}
                 <div class="d-flex justify-content-between">
                     <div>
-                        <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
+                        <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
-                        <button type="button" @click="next2" class="btn btn-success"  {{-- :disabled="errors.any('form2')" --}}>Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary"  {{-- :disabled="errors.any('form2')" --}}>Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div>
         </div>{{-- Fin vista2 --}}
+        <div v-show="vista3"> {{-- Inicio vista3 --}}
+            aqui va la vista 3
+        </div> {{-- Fin vista3 --}}
     </div>
 <style>
 [v-cloak]{ /*Permite que cargue las librerias antes que el html*/
