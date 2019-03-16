@@ -17,7 +17,7 @@ window.onload = function(){
 			existeP:false,
 			vista1:true,
 			vista2:false,			
-			vista3:false,			
+			vista3:true,			
 			cargando:false,
 			estatusCarnet:false,
 			estatusTitulo:false,
@@ -63,6 +63,28 @@ window.onload = function(){
 			ocupacion:'',
 			comunidadE:'',
 			fechaTitulo:new Date(),
+			base:'',
+			ciudades:'',
+			clap:'',
+			comunas:'',
+			conuqueros:'',
+			corredores:'',
+			fundos:'',
+			institucion:'',
+			organizacion:'',
+			otros:'',
+			urbanismos:'',
+			basess:[],
+			ciudadess:[],
+			claps:[],
+			comunass:[],
+			conuqueross:[],
+			corredoress:[],
+			fundoss:[],
+			instituciones:[],
+			organizaciones:[],
+			otross:[],
+			urbanismoss:[],
 			estados:[],
 			municipios:[],
 			parroquias:[],
@@ -92,7 +114,6 @@ window.onload = function(){
 				totalItems:null,
 				itemsPerPage:5
 			},
-
 		},
 		methods:{
 			consulta(){//Consulta inicial de persona con la cedula
@@ -273,7 +294,17 @@ window.onload = function(){
 				this.codigo='';
 				this.titulosRegistrados=[];
 				this.ocupacionesPer=[];
-				this.espacioProductivo=[];
+				this.basess=[];
+				this.ciudadess=[];
+				this.claps=[];
+				this.comunass=[];
+				this.conuqueross=[];
+				this.corredoress=[];
+				this.fundoss=[];
+				this.instituciones=[];
+				this.organizaciones=[];
+				this.otross=[];
+				this.urbanismoss=[];
 				this.estatusCarnet =false;
 				this.estatusTitulo =false;
 				this.estatusOcupacion =false;
@@ -418,6 +449,235 @@ window.onload = function(){
 			eliminarEspacio(index){//Funcion para eliminar en vista los titulos registrados
 				this.espacioProductivo.splice(index,1);
 			},
+			
+			guardarItem(i,n){ //se agrega segun el item q se pase
+				this.$validator.validateAll('form3').
+				then(() => {
+				if (n==1) {
+					var eb= false
+					this.basess.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							eb = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.basess.length>=5) {
+						eb = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!eb) {
+					this.basess.push({'denominacion':i})
+					this.base='';
+
+					}
+				}
+				if (n==2) {
+					var ec= false
+					this.ciudadess.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							ec = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.ciudadess.length>=5) {
+						ec = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!ec) {
+					this.ciudadess.push({'denominacion':i})
+					this.ciudades='';
+					}
+				}
+				if (n==3) {
+					var ecl= false
+					this.claps.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							ecl = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.claps.length>=5) {
+						ecl = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!ecl) {
+					this.claps.push({'denominacion':i})
+					this.clap='';
+					}
+				}
+				if (n==4) {
+					var eco= false
+					this.comunass.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							eco = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.comunass.length>=5) {
+						eco = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!eco) {
+					this.comunass.push({'denominacion':i})
+					this.comunas='';
+					}
+				}
+				if (n==5) {
+					var econ= false
+					this.conuqueross.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							econ = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.conuqueross.length>=5) {
+						econ = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!econ) {
+					this.conuqueross.push({'denominacion':i})
+					this.conuqueros='';
+					}
+				}
+				if (n==6) {
+					var ecor= false
+					this.corredoress.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							ecor = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.corredoress.length>=5) {
+						ecor = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!ecor) {
+					this.corredoress.push({'denominacion':i})
+					this.corredores='';
+					}
+				}
+				if (n==7) {
+					var ef= false
+					this.fundoss.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							ef = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.fundoss.length>=5) {
+						ef = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!ef) {
+					this.fundoss.push({'denominacion':i})
+					this.fundos='';
+					}
+				}
+				if (n==8) {
+					var ei= false
+					this.instituciones.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							ei = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.instituciones.length>=5) {
+						ei = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!ei) {
+					this.instituciones.push({'denominacion':i})
+					this.institucion='';
+					}
+				}
+				if (n==9) {
+					var eor = false
+					this.organizaciones.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							eor = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.organizaciones.length>=5) {
+						eor = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!eor) {
+					this.organizaciones.push({'denominacion':i})
+					this.organizacion='';
+					}
+				}
+				if (n==10) {
+					var et = false
+					this.otross.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							et = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.otross.length>=5) {
+						et = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!et) {
+					this.otross.push({'denominacion':i})
+					this.otros='';
+					}
+				}
+				if (n==11) {
+					var eu = false
+					this.urbanismoss.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							eu = true;
+								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.urbanismoss.length>=5) {
+						eu = true;
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+					}
+					if (!eu) {
+					this.urbanismoss.push({'denominacion':i})
+					this.urbanismos='';
+					}
+				}
+				})
+			},
+			eliminarItem(index,n){//Se elimina segun el item q pase
+				if (n==1) {
+					this.basess.splice(index,1);
+				}
+				if (n==2) {
+					this.ciudadess.splice(index,1);
+				}
+				if (n==3) {
+					this.claps.splice(index,1);
+				}
+				if (n==4) {
+					this.comunass.splice(index,1);
+				}
+				if (n==5) {
+					this.conuqueross.splice(index,1);
+				}
+				if (n==6) {
+					this.corredoress.splice(index,1);
+				}
+				if (n==7) {
+					this.fundoss.splice(index,1);
+				}
+				if (n==8) {
+					this.instituciones.splice(index,1);
+				}
+				if (n==9) {
+					this.organizaciones.splice(index,1);
+				}
+				if (n==10) {
+					this.otross.splice(index,1);
+				}
+				if (n==11) {
+					this.urbanismoss.splice(index,1);
+				}
+			},
 			convertirAnioAFecha(fecha){// Se creo esta funcion como solucion al formato del datepicker
 				var dia = fecha.getDate();
 				var mes = fecha.getMonth() + 1;
@@ -449,13 +709,30 @@ window.onload = function(){
 							this.vista3=true;
 						}
 					})
-				
-				
+			},
+			guardadoFinal(){//Funcion que guarda todos los arreglos de la vista 3
+				axios.post('guardadoFinal',{'idP':this.personaId,'bases':this.basess,'ciudades':this.ciudadess,'claps':this.claps,'comunas':this.comunass,
+					'conuqueros':this.conuqueross, 'corredores':this.corredoress,'fundos':this.fundoss,'instituciones':this.instituciones,
+					'organizaciones':this.organizaciones,'otros':this.otross,'urbanismos':this.urbanismoss}).then(r=>{
+						if (r.data=='guardo') {
+						Swal.fire('¡Atención!','Estimado usuario(a), Se guardaron sus datos correctamente.','success')
+							this.existeP=false;
+							this.vista1=true;
+							this.vista2=false;
+							this.vista3=false;
+						}
+					})
 			},
 			atras(){//Funcion para regresar a la vista 1
 				this.existeP=true;
 				this.vista1=true;
 				this.vista2=false;
+				this.vista3=false;
+			},
+			atras2(){//Funcion para regresar a la vista 1
+				this.existeP=false;
+				this.vista1=false;
+				this.vista2=true;
 				this.vista3=false;
 			},
 			formatoVw(date){// Formatea las fechas segun la vista

@@ -65,7 +65,6 @@
                         <input  data-vv-name="celular" v-validate.initial="{required:true,numeric:true,min:11,regex:/^(0412|0414|0416|0424|0426)[0-9]/i}" type="text" class="form-control solo-numerosCharlie" placeholder="Ej:04121234567" minlength="11" maxlength="11"  v-model="telf1" aria-label="Telefono1" aria-describedby="basic-addon1">
                     </div>
                         <span v-show="errors.has('form2.celular')" class="text-danger"> @{{ errors.first('form2.celular') }} </span>
-
                 </div>
                 <div class="col">
                     <label>Habitación</label>
@@ -472,7 +471,7 @@
                     <h3 class="titulo" v-show="estatusEspacio">
                         <small style="color:rgb(73, 129, 56);">Espacios Productivos</small> 
                         <span>
-                            <button dis type="button" @click="banderaEspacio=true" title="Agregar Espacio Productivo" v-show="espacioProductivo.length < 5" data-toggle="modal" data-target="#modalEspacio" class="btn btn-success">
+                            <button  type="button" @click="banderaEspacio=true" title="Agregar Espacio Productivo" v-show="espacioProductivo.length < 5" data-toggle="modal" data-target="#modalEspacio" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </span>
@@ -568,12 +567,307 @@
                         <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
-                        <button type="button" @click="next2" class="btn btn-primary"  {{-- :disabled="errors.any('form2')" --}}>Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary"  >Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
         </div>{{-- Fin vista2 --}}
         <div v-show="vista3"> {{-- Inicio vista3 --}}
-            aqui va la vista 3
+           <div class="container-fluid">  {{-- Inicio Datos Adicionales --}}
+                <form data-vv-scope="form3">
+                    <div class="d-flex justify-content-center">
+                        <h2 class="titulo">
+                            <small style="color:rgb(73, 129, 56);">Organizaciones Sociales</small>
+                        </h2>
+                    </div>
+                </form>
+            </div>
+            <form data-vv-scope="form3">
+            <div>
+                <p>Estimado(a) Usuario(a), si pertenece a organizaciones sociales, escriba en el área correspondiente y pulse el boton "<i class="fa fa-plus"></i>"; Podra agregar un maximo de 5 por cada organizacion social.</p>  
+            </div>
+            <div class="d-md-flex"> {{-- Teléfonos --}} 
+                <div class="col-md-4">
+                    <label>Base Misiones</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.base misiones')}">
+                        <input  data-vv-name="base misiones" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Base Misiones" minlength="2" maxlength="150"  v-model="base" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="basess.length >=5 || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span v-show="errors.has('form3.base misiones')" class="text-danger">@{{ errors.first('form3.base misiones') }}</span>
+                </div>
+                <div class="col-md-4">
+                    <label>Ciudades Priorizadas</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.ciudades priorizadas')}">
+                        <input  data-vv-name="ciudades priorizadas" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Ciudades priorizadas" minlength="2" maxlength="150"  v-model="ciudades" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="ciudadess.length >=5 || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.ciudades priorizadas')" class="text-danger"> @{{ errors.first('form3.ciudades priorizadas') }} </span>
+                </div>
+                <div class="col-md-4">
+                    <label>Clap</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.clap')}">
+                        <input  data-vv-name="clap" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Clap" minlength="2" maxlength="150"  v-model="clap">
+                        <div class="input-group-prepend" >
+                            <button  type="submit" :disabled="claps.length >=5 || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.clap')" class="text-danger"> @{{ errors.first('form3.clap') }} </span>
+                </div>
+            </div>  <br>
+            <div class="d-md-flex">
+                <div class="col-md-4" >
+                    <div v-show="basess.length > 0">
+                        <li class="list-group-item active">Lista Base de Misiones</li>
+                        <ul class="list-group" v-for="(r, index) in basess">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,1)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="ciudadess.length > 0">
+                        <li class="list-group-item active">Lista Ciudades Priorizadas</li>
+                        <ul class="list-group" v-for="(r, index) in ciudadess">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,2)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="claps.length > 0">
+                        <li class="list-group-item active">Lista Claps</li>
+                        <ul class="list-group" v-for="(r, index) in claps">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,3)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="d-md-flex">
+               <div class="col-md-4">
+                    <label>Comunas</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.comunas')}">
+                        <input  data-vv-name="comunas" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Comunas" minlength="2" maxlength="150"  v-model="comunas" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="comunass.length >=5 || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span v-show="errors.has('form3.comunas')" class="text-danger">@{{ errors.first('form3.comunas') }}</span>
+                </div>
+                <div class="col-md-4">
+                    <label>Conuqueros</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.conuqueros')}">
+                        <input  data-vv-name="conuqueros" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Conuqueros" minlength="2" maxlength="150"  v-model="conuqueros" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="conuqueross.length >=5 || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.conuqueros')" class="text-danger"> @{{ errors.first('form3.conuqueros') }} </span>
+                </div>
+                <div class="col-md-4">
+                    <label>Corredores</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.corredores')}">
+                        <input  data-vv-name="corredores" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Corredores" minlength="2" maxlength="150"  v-model="corredores">
+                        <div class="input-group-prepend" >
+                            <button  type="submit" :disabled="corredoress.length >=5 || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.corredores')" class="text-danger"> @{{ errors.first('form3.corredores') }} </span>
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col-md-4" >
+                    <div v-show="comunass.length > 0">
+                        <li class="list-group-item active">Lista Comunas</li>
+                        <ul class="list-group" v-for="(r, index) in comunass">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,4)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="conuqueross.length > 0">
+                        <li class="list-group-item active">Lista Conuqueros</li>
+                        <ul class="list-group" v-for="(r, index) in conuqueross">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,5)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="corredoress.length > 0">
+                        <li class="list-group-item active">Lista Corredores</li>
+                        <ul class="list-group" v-for="(r, index) in corredoress">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,6)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="d-md-flex">
+               <div class="col-md-4">
+                    <label>Fundos/Zamoranos</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.fundos')}">
+                        <input  data-vv-name="fundos" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Fundos/Zamoranos" minlength="2" maxlength="150"  v-model="fundos" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="fundoss.length >=5 || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span v-show="errors.has('form3.fundos')" class="text-danger">@{{ errors.first('form3.fundos') }}</span>
+                </div>
+                <div class="col-md-4">
+                    <label>Instituciones</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.instituciones')}">
+                        <input  data-vv-name="instituciones" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Instituciones" minlength="2" maxlength="150"  v-model="institucion" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="instituciones.length >=5 || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.instituciones')" class="text-danger"> @{{ errors.first('form3.instituciones') }} </span>
+                </div>
+                <div class="col-md-4">
+                    <label>Organizaciones/Movimientos</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.organizacion')}">
+                        <input  data-vv-name="organizacion" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Organizaciones/Movimientos" minlength="2" maxlength="150"  v-model="organizacion" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="organizaciones.length >=5 || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.organizacion')" class="text-danger"> @{{ errors.first('form3.organizacion') }} </span>
+                </div>
+            </div> <br>
+            <div class="d-md-flex">
+                <div class="col-md-4" >
+                    <div v-show="fundoss.length > 0">
+                        <li class="list-group-item active">Lista Fundos/Zamoranos</li>
+                        <ul class="list-group" v-for="(r, index) in fundoss">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,7)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="instituciones.length > 0">
+                        <li class="list-group-item active">Lista Instituciones</li>
+                        <ul class="list-group" v-for="(r, index) in instituciones">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,8)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="organizaciones.length > 0">
+                        <li class="list-group-item active">Lista Organizaciones/Movimientos</li>
+                        <ul class="list-group" v-for="(r, index) in organizaciones">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,9)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="d-md-flex">
+               <div class="col-md-4">
+                    <label>Otros</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.otros')}">
+                        <input  data-vv-name="otros" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Otros" minlength="2" maxlength="150"  v-model="otros" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="otross.length >=5 || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span v-show="errors.has('form3.otros')" class="text-danger">@{{ errors.first('form3.otros') }}</span>
+                </div>
+                <div class="col-md-4">
+                    <label>Urbanismos</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.urbanismos')}">
+                        <input  data-vv-name="urbanismos" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Urbanismos" minlength="2" maxlength="150"  v-model="urbanismos" >
+                        <div class="input-group-prepend">
+                            <button  type="submit" :disabled="urbanismoss.length >=5 || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.urbanismos')" class="text-danger"> @{{ errors.first('form3.urbanismos') }} </span>
+                </div>                
+            </div><br>
+            <div class="d-md-flex">
+                <div class="col-md-4" >
+                    <div v-show="otross.length > 0">
+                        <li class="list-group-item active">Lista Otros</li>
+                        <ul class="list-group" v-for="(r, index) in otross">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,10)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="urbanismoss.length > 0">
+                        <li class="list-group-item active">Lista Urbanismos</li>
+                        <ul class="list-group" v-for="(r, index) in urbanismoss">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,11)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </div> <br>
+            <div class="d-flex justify-content-between"> {{-- botones siguientes --}}
+                    <div>
+                        <button type="button" @click="atras2" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
+                    </div>
+                    <div>
+                        <button type="button" @click="guardadoFinal" class="btn btn-success" >Guardar <span class="fa fa-chevron-right"></span></button>
+                    </div>
+                </div> {{-- fin botones --}}
+            </form>
+
         </div> {{-- Fin vista3 --}}
     </div>
 <style>

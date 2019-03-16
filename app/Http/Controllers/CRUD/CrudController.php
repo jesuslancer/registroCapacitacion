@@ -6,8 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Persona;
 use App\DatosFormativos;
-use App\DatosOcupacion;
 use App\EspaciosProductivos;
+use App\DatosOcupacion;
+use App\BaseMisiones;
+use App\CiudadesPriorizadas;
+use App\Clap;
+use App\Comunas;
+use App\Conuqueros;
+use App\Corredores;
+use App\FundosZamoranos;
+use App\Instituciones;
+use App\OrganizacionesMovimientos;
+use App\Otros;
+use App\Urbanismos;
+
 
 class CrudController extends Controller
 {
@@ -71,6 +83,106 @@ class CrudController extends Controller
         $persona->experiencia_agricola_animal = $request->vegetal;
         $persona->experiencia_agricola_vegetal =$request->animal;
         $persona->save();		
+        return 'guardo';
+    }
+    public function guardadoFinal(Request $request){//Funcion que guarda los datos finales, de organizaciones sociales
+    	BaseMisiones::where('persona_id',$request->idP)->forceDelete();
+		CiudadesPriorizadas::where('persona_id',$request->idP)->forceDelete();
+		Clap::where('persona_id',$request->idP)->forceDelete();
+		Comunas::where('persona_id',$request->idP)->forceDelete();
+		Conuqueros::where('persona_id',$request->idP)->forceDelete();
+		Corredores::where('persona_id',$request->idP)->forceDelete();
+		FundosZamoranos::where('persona_id',$request->idP)->forceDelete();
+		Instituciones::where('persona_id',$request->idP)->forceDelete();
+		OrganizacionesMovimientos::where('persona_id',$request->idP)->forceDelete();
+		Otros::where('persona_id',$request->idP)->forceDelete();
+		Urbanismos::where('persona_id',$request->idP)->forceDelete();//---> se eliminan todos antes de guardar 
+		if (!empty($request->bases)) {
+        	foreach ($request->bases as  $value) {
+	            $item = new BaseMisiones();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+	        	$item->save();
+        	}
+        }
+        if (!empty($request->ciudades)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new CiudadesPriorizadas();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+	        	$item->save();
+        	}
+        }
+        if (!empty($request->claps)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Clap();
+	        	$item->denominacion = $value['denominacion'];
+        		$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->comunas)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Comunas();
+	        	$item->denominacion = $value['denominacion'];
+        		$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->conuqueros)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Conuqueros();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+	        	$item->save();
+        	}
+        }
+        if (!empty($request->corredores)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Corredores();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->fundos)) {
+            $item = new FundosZamoranos();
+        	$item->denominacion = $request['denominacion'];
+        	$item->persona_id = $request->idP;
+       		$item->save();
+        }
+        if (!empty($request->instituciones)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Instituciones();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->organizaciones)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new OrganizacionesMovimientos();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->otros)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Otros();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
+        if (!empty($request->urbanismos)) {
+        	foreach ($request->ciudades as  $value) {
+	            $item = new Urbanismos();
+	        	$item->denominacion = $value['denominacion'];
+	        	$item->persona_id = $request->idP;
+        		$item->save();
+        	}
+        }
         return 'guardo';
     }
 }

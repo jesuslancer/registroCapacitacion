@@ -30,3 +30,4 @@ Route::post('ocupaciones','Consultas\ConsultasController@ocupaciones');
 //Acciones
 Route::post('guardarP','CRUD\CrudController@guardarPersona');
 Route::post('guardarTO','CRUD\CrudController@guardarTO');
+Route::post('guardadoFinal','CRUD\CrudController@guardadoFinal');
