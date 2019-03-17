@@ -22,6 +22,17 @@ use App\DatosFormativos;
 use App\DatosOcupacion;
 use App\EspaciosProductivos;
 use App\OrganizacionesSociales;
+use App\BaseMisiones;
+use App\CiudadesPriorizadas;
+use App\Clap;
+use App\Comunas;
+use App\Conuqueros;
+use App\Corredores;
+use App\FundosZamoranos;
+use App\Instituciones;
+use App\OrganizacionesMovimientos;
+use App\Otros;
+use App\Urbanismos;
 
 class ConsultasController extends Controller
 {
@@ -33,8 +44,19 @@ class ConsultasController extends Controller
     	$titulos = DatosFormativos::with('nivelEducativo','tituloCarrera')->where('persona_id',$persona->id)->get();
     	$ocupaciones = DatosOcupacion::with('ocupacionClase')->where('persona_id',$persona->id)->get();
     	$espacios = EspaciosProductivos::with('parroquia.municipio.estado')->where('persona_id',$persona->id)->get();
+    	$bases = BaseMisiones::where('persona_id',$persona->id)->get();
+    	$claps = Clap::where('persona_id',$persona->id)->get();
+    	$comunas = Comunas::where('persona_id',$persona->id)->get();
+    	$conuqueros = Conuqueros::where('persona_id',$persona->id)->get();
+    	$corredores = Corredores::where('persona_id',$persona->id)->get();
+    	$fundos = FundosZamoranos::where('persona_id',$persona->id)->get();
+    	$instituciones = Instituciones::where('persona_id',$persona->id)->get();
+    	$organizaciones = OrganizacionesMovimientos::where('persona_id',$persona->id)->get();
+    	$otros = Otros::where('persona_id',$persona->id)->get();
+    	$urbanismos = Urbanismos::where('persona_id',$persona->id)->get();
+    	$ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
 		//$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, en espera para validar
-    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios];
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();

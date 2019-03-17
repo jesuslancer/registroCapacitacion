@@ -4,7 +4,7 @@
     <div id="captacion" v-cloak>  
         <div v-show="vista1">
         <div>
-            <p>Estimado(a) Usuario(a), escriba la Cédula de identidad y presione buscar. luego complete los datos y continue el registro</p>      
+            <p>Estimado(a) usuario(a), escriba la Cédula de Identidad y presione buscar. luego complete los datos y continue el registro</p>      
         </div>  
             <div class="d-md-flex justify-content-center" > {{-- Inicio busqueda --}}
                 <form class="form-inline " @submit.prevent="consulta" @keyup.enter="consulta" data-vv-scope="cedula">
@@ -254,7 +254,7 @@
                     </h2>
                 </div>
             <div>
-                <p>Estimado(a) Usuario(a), sino tiene titulos academicos u ocupaciones, puede continuar.</p>      
+                <p>Estimado(a) usuario(a), complete los datos formativos, de no poseer ninguno, puede continuar.</p>      
             </div>  
                 <div class="d-md-flex">
                     <div class="col-12" >
@@ -583,7 +583,7 @@
             </div>
             <form data-vv-scope="form3">
             <div>
-                <p>Estimado(a) Usuario(a), si pertenece a organizaciones sociales, escriba en el área correspondiente y pulse el boton "<i class="fa fa-plus"></i>"; Podra agregar un maximo de 5 por cada organizacion social.</p>  
+                <p>Estimado(a) usuario(a), si pertenece a organizaciones sociales, escriba en el área correspondiente y pulse el boton "<i class="fa fa-plus"></i>"; Podra agregar un maximo de 5 por cada organizacion social.</p>  
             </div>
             <div class="d-md-flex"> {{-- Teléfonos --}} 
                 <div class="col-md-4">

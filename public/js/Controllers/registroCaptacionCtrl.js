@@ -10,14 +10,12 @@ window.onload = function(){
 		},
 		mounted(){
 			var self = this
-		
-		
 		},
 		data:{
 			existeP:false,
 			vista1:true,
 			vista2:false,			
-			vista3:true,			
+			vista3:false,			
 			cargando:false,
 			estatusCarnet:false,
 			estatusTitulo:false,
@@ -178,7 +176,61 @@ window.onload = function(){
 									this.espacioProductivo.push({'comunidad':value.comunidad,'estadoE':value.parroquia.municipio.estado.denominacion,
 									'municipioE':value.parroquia.municipio.denominacion,'parroquiaE':value.parroquia.denominacion,'parroquia_id':value.parroquia.id})
 									this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
-									
+								})
+							}
+							if (r.data['bases'].length > 0) {
+								r.data['bases'].forEach((value)=>{
+									this.basess.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['ciudades'].length > 0) {
+								r.data['ciudades'].forEach((value)=>{
+									this.ciudadess.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['claps'].length > 0) {
+								r.data['claps'].forEach((value)=>{
+									this.claps.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['comunas'].length > 0) {
+								r.data['comunas'].forEach((value)=>{
+									this.comunass.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['conuqueros'].length > 0) {
+								r.data['conuqueros'].forEach((value)=>{
+									this.conuqueross.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['corredores'].length > 0) {
+								r.data['corredores'].forEach((value)=>{
+									this.corredoress.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['fundos'].length > 0) {
+								r.data['fundos'].forEach((value)=>{
+									this.fundoss.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['instituciones'].length > 0) {
+								r.data['instituciones'].forEach((value)=>{
+									this.instituciones.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['organizaciones'].length > 0) {
+								r.data['organizaciones'].forEach((value)=>{
+									this.organizaciones.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['otros'].length > 0) {
+								r.data['otros'].forEach((value)=>{
+									this.otross.push({'denominacion':value.denominacion})
+								})
+							}
+							if (r.data['urbanismos'].length > 0) {
+								r.data['urbanismos'].forEach((value)=>{
+									this.urbanismoss.push({'denominacion':value.denominacion})
 								})
 							}
 							this.cargando = false
@@ -294,6 +346,7 @@ window.onload = function(){
 				this.codigo='';
 				this.titulosRegistrados=[];
 				this.ocupacionesPer=[];
+				this.espacioProductivo=[];
 				this.basess=[];
 				this.ciudadess=[];
 				this.claps=[];
@@ -720,6 +773,7 @@ window.onload = function(){
 							this.vista1=true;
 							this.vista2=false;
 							this.vista3=false;
+							this.cedula="";
 						}
 					})
 			},
