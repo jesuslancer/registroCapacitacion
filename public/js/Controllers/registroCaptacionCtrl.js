@@ -380,7 +380,7 @@ window.onload = function(){
 				  if (result.value) {
 				    Swal.fire(
 				      '¡Limpiado!',
-				      'Los datos se Limpiaron.',
+				      'Los datos se limpiaron.',
 				      'success'
 				    )
 				    	this.limpiar();
@@ -405,12 +405,12 @@ window.onload = function(){
 						this.titulosRegistrados.forEach((value)=>{
 							if (value['titulo_carrera_id']== this.titulo.id) {
 								existeT = true;
-	 							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar este estudio.','error')
+	 							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar este estudio.','error')
 							}
 						})
 						if (this.titulosRegistrados.length>=5) {
 							existeE = true;
-							Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas estudios.','error')
+							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más estudios.','error')
 						}
 						if (!existeT) {
 							var n = ''
@@ -449,12 +449,12 @@ window.onload = function(){
 				this.ocupacionesPer.forEach((value)=>{
 					if (value['ocupacion_clase_id']== a.id) {
 						existeO = true;
-							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar esta ocupación.','error')
+							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar esta ocupación.','error')
 					}
 				})	
 				if (this.ocupacionesPer.length>=5) {
 						existeO = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas ocupaciones.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más ocupaciones.','error')
 					}
 				if (!existeO) {
 					this.ocupacionesPer.push({'codigo':a.codigo,'denominacion':a.denominacion, 'ocupacion_clase_id':a.id})
@@ -479,12 +479,12 @@ window.onload = function(){
 				this.espacioProductivo.forEach((value)=>{
 					if (value['parroquia_id']==this.parroquiaE.id) {
 						existeEs = true;
-							Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar este espacio productivo.','error')
+							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar este espacio productivo.','error')
 					}
 				})
 				if (this.espacioProductivo.length>=5) {
 						existeEs = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas espacios productivos.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más espacios productivos.','error')
 					}
 				if (!existeEs) {
 					this.espacioProductivo.push({'comunidad':this.comunidadE,'estadoE':this.estadoE.denominacion, 'municipioE':this.municipioE.denominacion,
@@ -511,12 +511,12 @@ window.onload = function(){
 					this.basess.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							eb = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.basess.length>=5) {
 						eb = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!eb) {
 					this.basess.push({'denominacion':i})
@@ -529,12 +529,12 @@ window.onload = function(){
 					this.ciudadess.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							ec = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.ciudadess.length>=5) {
 						ec = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!ec) {
 					this.ciudadess.push({'denominacion':i})
@@ -546,12 +546,12 @@ window.onload = function(){
 					this.claps.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							ecl = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.claps.length>=5) {
 						ecl = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!ecl) {
 					this.claps.push({'denominacion':i})
@@ -563,12 +563,12 @@ window.onload = function(){
 					this.comunass.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							eco = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.comunass.length>=5) {
 						eco = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar más.','error')
 					}
 					if (!eco) {
 					this.comunass.push({'denominacion':i})
@@ -580,12 +580,12 @@ window.onload = function(){
 					this.conuqueross.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							econ = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.conuqueross.length>=5) {
 						econ = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!econ) {
 					this.conuqueross.push({'denominacion':i})
@@ -602,7 +602,7 @@ window.onload = function(){
 					})
 					if (this.corredoress.length>=5) {
 						ecor = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!ecor) {
 					this.corredoress.push({'denominacion':i})
@@ -614,12 +614,12 @@ window.onload = function(){
 					this.fundoss.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							ef = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.fundoss.length>=5) {
 						ef = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!ef) {
 					this.fundoss.push({'denominacion':i})
@@ -631,12 +631,12 @@ window.onload = function(){
 					this.instituciones.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							ei = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.instituciones.length>=5) {
 						ei = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!ei) {
 					this.instituciones.push({'denominacion':i})
@@ -648,12 +648,12 @@ window.onload = function(){
 					this.organizaciones.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							eor = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.organizaciones.length>=5) {
 						eor = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!eor) {
 					this.organizaciones.push({'denominacion':i})
@@ -665,12 +665,12 @@ window.onload = function(){
 					this.otross.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							et = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.otross.length>=5) {
 						et = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!et) {
 					this.otross.push({'denominacion':i})
@@ -682,12 +682,12 @@ window.onload = function(){
 					this.urbanismoss.forEach((value)=>{
 						if (i=='' || value['denominacion']==i) {
 							eu = true;
-								Swal.fire('¡Atención!','Estimado usuario(a), no puede volver agregar el mismo.','error')
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
 						}
 					})
 					if (this.urbanismoss.length>=5) {
 						eu = true;
-						Swal.fire('¡Atención!','Estimado usuario(a), no puede agregar mas.','error')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
 					}
 					if (!eu) {
 					this.urbanismoss.push({'denominacion':i})
@@ -768,7 +768,7 @@ window.onload = function(){
 					'conuqueros':this.conuqueross, 'corredores':this.corredoress,'fundos':this.fundoss,'instituciones':this.instituciones,
 					'organizaciones':this.organizaciones,'otros':this.otross,'urbanismos':this.urbanismoss}).then(r=>{
 						if (r.data=='guardo') {
-						Swal.fire('¡Atención!','Estimado usuario(a), Se guardaron sus datos correctamente.','success')
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), Se guardaron sus datos correctamente.','success')
 							this.existeP=false;
 							this.vista1=true;
 							this.vista2=false;
