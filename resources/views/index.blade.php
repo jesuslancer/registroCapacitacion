@@ -219,19 +219,20 @@
                 <div class="col-12">
                     <h5> ¿Poseé carnet de la patria?</h5><p>Si la respuesta es afirmativa, haga click en el cuadro y complete los datos.</p> 
                     <div class="form-check">
-                        <input type="checkbox" class="btn btn-outline-primary" v-model="estatusCarnet" name="" value="">  
-                        <span class="text-success" v-show="estatusCarnet">SI</span>                      
-                        <span class="text-danger" v-show="!estatusCarnet">NO</span>                      
+                        <input type="radio" class="btn btn-outline-primary" v-model="estatusCarnet" name="" value="1">  
+                        <span class="text-success" >SI</span>                      
+                        <input type="radio" class="btn btn-outline-danger" v-model="estatusCarnet" name="" value="2">  
+                        <span class="text-danger" >NO</span> 
                     </div>
                 </div>
             </div>
             <div class="d-md-flex" >
-                    <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.serial')}">
+                    <div class="col" v-if="estatusCarnet==1" :class="{'has-feedback has-error':errors.has('form2.serial')}">
                         <label>Serial</label>
                         <input type="text" class="form-control solo-numerosCharlie" data-vv-name="serial" v-model="serial"  v-validate.initial="'required|numeric|min:7|max:7'" maxlength="7" placeholder="Ejemplo: 1234567">
                     <span v-show="errors.has('form2.serial')" class="text-danger">@{{ errors.first('form2.serial') }}</span>
                     </div>
-                    <div class="col" v-if="estatusCarnet" :class="{'has-feedback has-error':errors.has('form2.código')}">
+                    <div class="col" v-if="estatusCarnet==1" :class="{'has-feedback has-error':errors.has('form2.código')}">
                         <label>Código</label>
                         <input type="text" class="form-control solo-numerosCharlie" data-vv-name="código" v-model="codigo" v-validate.initial="'required|numeric|min:7|max:7'" maxlength="7" placeholder="Ejemplo: 1234567">
                     <span v-show="errors.has('form2.código')" class="text-danger">@{{ errors.first('form2.código') }}</span>
@@ -275,15 +276,16 @@
                     <div class="col-12" v-show="titulosRegistrados.length < 1">
                         <h5> ¿Poseé titulos académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>".</p>
                         <div class="form-check">
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="">  
-                            <span class="text-success" v-show="estatusTitulo">SI</span>                      
-                            <span class="text-danger" v-show="!estatusTitulo">NO</span>                      
+                            <input type="radio" class="btn btn-outline-primary" v-model="estatusTitulo" name="" value="1">  
+                            <span class="text-success" >SI</span>                      
+                            <input type="radio" class="btn btn-outline-danger" v-model="estatusTitulo" name="" value="2">  
+                            <span class="text-danger" >NO</span>                      
                         </div>
                     </div>
                 </div>
                 <br> 
                 <div class="d-flex justify-content-start">
-                    <h3 class="titulo" v-show="estatusTitulo">
+                    <h3 class="titulo" v-show="estatusTitulo==1">
                         <small style="color:rgb(73, 129, 56);">Títulos Académicos</small> 
                         <span>
                             <button dis type="button" title="Agregar título academico" v-show="titulosRegistrados.length < 5" data-toggle="modal" data-target="#modalTitulo" class="btn btn-success">
@@ -404,22 +406,24 @@
                     <div class="col-12" v-show="ocupacionesPer.length < 1">
                         <h5> ¿Poseé ocupación laboral?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, busque y pulse el botón <span class="text-success">Selección</span>: "<i class=" fa fa-chevron-down"></i>".</p>
                         <div class="form-check">
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusOcupacion" name="" value="">  
-                            <span class="text-success" v-show="estatusOcupacion">SI</span>                      
-                            <span class="text-danger" v-show="!estatusOcupacion">NO</span>                      
+                              
+                            <input type="radio" class="btn btn-outline-primary" v-model="estatusOcupacion" name="" value="1">  
+                            <span class="text-success" >SI</span>                      
+                            <input type="radio" class="btn btn-outline-danger" v-model="estatusOcupacion" name="" value="2">  
+                            <span class="text-danger" >NO</span>                 
                         </div>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-start">
-                    <h3 class="titulo" v-show="estatusOcupacion">
+                    <h3 class="titulo" v-show="estatusOcupacion==1">
                         <small style="color:rgb(73, 129, 56);">Ocupaciónes Laborales</small> 
                     </h3>
                 </div>
                 <br>
                 <form class="form-group" v-show="ocupacionesPer.length <5">
                     <div class="row">
-                        <div class=" col-12" v-show="estatusOcupacion">
+                        <div class=" col-12" v-show="estatusOcupacion==1">
                             <v-select placeholder="Escriba y seleccione..." v-model="ocupacion" label="denominacion"  :options="ocupaciones" >
                                 <span slot="no-options">
                                   ¡Disculpe! No se consigue su búsqueda.
@@ -461,14 +465,15 @@
                     <div class="col-12">
                         <h5> ¿Poseé vinculación con algun espacio productivo actualmente?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>":</p>
                         <div class="form-check">
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusEspacio" name="" value="">  
-                            <span class="text-success" v-show="estatusEspacio">SI</span>                      
-                            <span class="text-danger" v-show="!estatusEspacio">NO</span>                      
+                            <input type="radio" class="btn btn-outline-primary" v-model="estatusEspacio" name="" value="1">  
+                            <span class="text-success">SI</span>                      
+                            <input type="radio" class="btn btn-outline-danger" v-model="estatusEspacio" name="" value="2">  
+                            <span class="text-danger">NO</span>                     
                         </div>
                     </div>
                 </div> <br>
                 <div class="d-flex justify-content-start">
-                    <h3 class="titulo" v-show="estatusEspacio">
+                    <h3 class="titulo" v-show="estatusEspacio==1">
                         <small style="color:rgb(73, 129, 56);">Espacios Productivos</small> 
                         <span>
                             <button  type="button" @click="banderaEspacio=true" title="Agregar Espacio Productivo" v-show="espacioProductivo.length < 5" data-toggle="modal" data-target="#modalEspacio" class="btn btn-success">
@@ -592,7 +597,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.base misiones')}">
                         <input  data-vv-name="base misiones" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Base Misiones" minlength="2" maxlength="150"  v-model="base" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="basess.length >=5 || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
+                            <button  type="button" :disabled="basess.length >=5 || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -604,7 +609,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.ciudades priorizadas')}">
                         <input  data-vv-name="ciudades priorizadas" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Ciudades priorizadas" minlength="2" maxlength="150"  v-model="ciudades" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="ciudadess.length >=5 || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
+                            <button  type="button" :disabled="ciudadess.length >=5 || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -616,7 +621,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.clap')}">
                         <input  data-vv-name="clap" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Clap" minlength="2" maxlength="150"  v-model="clap">
                         <div class="input-group-prepend" >
-                            <button  type="submit" :disabled="claps.length >=5 || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
+                            <button  type="button" :disabled="claps.length >=5 || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -666,7 +671,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.comunas')}">
                         <input  data-vv-name="comunas" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Comunas" minlength="2" maxlength="150"  v-model="comunas" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="comunass.length >=5 || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
+                            <button  type="button" :disabled="comunass.length >=5 || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -678,7 +683,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.conuqueros')}">
                         <input  data-vv-name="conuqueros" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Conuqueros" minlength="2" maxlength="150"  v-model="conuqueros" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="conuqueross.length >=5 || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
+                            <button  type="button" :disabled="conuqueross.length >=5 || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -690,7 +695,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.corredores')}">
                         <input  data-vv-name="corredores" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Corredores" minlength="2" maxlength="150"  v-model="corredores">
                         <div class="input-group-prepend" >
-                            <button  type="submit" :disabled="corredoress.length >=5 || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
+                            <button  type="button" :disabled="corredoress.length >=5 || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -740,7 +745,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.fundos')}">
                         <input  data-vv-name="fundos" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Fundos/Zamoranos" minlength="2" maxlength="150"  v-model="fundos" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="fundoss.length >=5 || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
+                            <button  type="button" :disabled="fundoss.length >=5 || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -752,7 +757,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.instituciones')}">
                         <input  data-vv-name="instituciones" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Instituciones" minlength="2" maxlength="150"  v-model="institucion" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="instituciones.length >=5 || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
+                            <button  type="button" :disabled="instituciones.length >=5 || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -764,7 +769,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.organizacion')}">
                         <input  data-vv-name="organizacion" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Organizaciones/Movimientos" minlength="2" maxlength="150"  v-model="organizacion" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="organizaciones.length >=5 || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
+                            <button  type="button" :disabled="organizaciones.length >=5 || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -814,7 +819,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.otros')}">
                         <input  data-vv-name="otros" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Otros" minlength="2" maxlength="150"  v-model="otros" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="otross.length >=5 || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
+                            <button  type="button" :disabled="otross.length >=5 || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -826,7 +831,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.urbanismos')}">
                         <input  data-vv-name="urbanismos" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Urbanismos" minlength="2" maxlength="150"  v-model="urbanismos" >
                         <div class="input-group-prepend">
-                            <button  type="submit" :disabled="urbanismoss.length >=5 || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
+                            <button  type="button" :disabled="urbanismoss.length >=5 || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>

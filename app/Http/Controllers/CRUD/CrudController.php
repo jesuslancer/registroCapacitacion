@@ -146,10 +146,12 @@ class CrudController extends Controller
         	}
         }
         if (!empty($request->fundos)) {
-            $item = new FundosZamoranos();
-        	$item->denominacion = $request['denominacion'];
-        	$item->persona_id = $request->idP;
-       		$item->save();
+            foreach ($request->ciudades as  $value) {
+                $item = new FundosZamoranos();
+            	$item->denominacion = $value['denominacion'];
+            	$item->persona_id = $request->idP;
+           		$item->save();
+            }
         }
         if (!empty($request->instituciones)) {
         	foreach ($request->ciudades as  $value) {

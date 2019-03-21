@@ -17,12 +17,12 @@ window.onload = function(){
 			vista2:false,			
 			vista3:false,			
 			cargando:false,
-			estatusCarnet:false,
-			estatusTitulo:false,
+			estatusCarnet:2,
+			estatusTitulo:2,
 			estatusVegetal:false,
 			estatusAnimal:false,
-			estatusOcupacion:false,
-			estatusEspacio:false,
+			estatusOcupacion:2,
+			estatusEspacio:2,
 			banderaEspacio:false,
 			cedula:'',
 			nac:'V',
@@ -149,13 +149,13 @@ window.onload = function(){
 								this.parroquia = r.data['persona'].parroquia_id
 							}
 							if (r.data['persona'].serial_carnet_patria != null ) {
-								this.estatusCarnet = true
+								this.estatusCarnet = 1
 								this.serial = r.data['persona'].serial_carnet_patria
 								this.codigo = r.data['persona'].codigo_carnet_patria
 							}
 							if (r.data['titulos'].length > 0) {
 								r.data['titulos'].forEach((value)=>{
-									this.estatusTitulo=true
+									this.estatusTitulo=1
 									this.titulosRegistrados.push({'nivelDescripcion':value.nivel_educativo.descripcion,'titulo_carrera_id':value.titulo_carrera_id,
 										'titulo':value.titulo_carrera.descripcion,'fecha':this.formatoVw(value.fecha_graduacion),
 										'nivel_educativo_id':value.nivel_educativo_id})
@@ -164,7 +164,7 @@ window.onload = function(){
 							}
 							if (r.data['ocupaciones'].length > 0) {
 								r.data['ocupaciones'].forEach((value)=>{
-									this.estatusOcupacion=true
+									this.estatusOcupacion=1
 									this.ocupacionesPer.push({'codigo':value.codigo,'denominacion':value.ocupacion_clase.denominacion, 
 										'ocupacion_clase_id':value.ocupacion_clase_id})
 									this.paginacionOcupacionesPer.totalItems=this.paginacionOcupacionesPer.length
@@ -172,7 +172,7 @@ window.onload = function(){
 							}
 							if (r.data['espacios'].length > 0) {
 								r.data['espacios'].forEach((value)=>{
-									this.estatusEspacio = true
+									this.estatusEspacio = 1
 									this.espacioProductivo.push({'comunidad':value.comunidad,'estadoE':value.parroquia.municipio.estado.denominacion,
 									'municipioE':value.parroquia.municipio.denominacion,'parroquiaE':value.parroquia.denominacion,'parroquia_id':value.parroquia.id})
 									this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
@@ -247,10 +247,6 @@ window.onload = function(){
 						}
 						this.getEstados()
 				})
-			},
-			mostrarCarnet(estatusCarnet){
-				this.estatusCarnet = !this.estatusCarnet
-				checked == this.estatusCarnet
 			},
 			getNivel(){//Consulta todos los niveles educativos
 				axios.post('nivelInstruccion')
@@ -358,12 +354,12 @@ window.onload = function(){
 				this.organizaciones=[];
 				this.otross=[];
 				this.urbanismoss=[];
-				this.estatusCarnet =false;
-				this.estatusTitulo =false;
-				this.estatusOcupacion =false;
+				this.estatusCarnet =2;
+				this.estatusTitulo =2;
+				this.estatusOcupacion =2;
 				this.estatusAnimal =false;
 				this.estatusVegetal =false;
-				this.estatusEspacio =false;
+				this.estatusEspacio =2;
 
 			},
 			clean(){// Funcion que inicia la accion de limpiar
@@ -739,6 +735,9 @@ window.onload = function(){
 			},
 	
 			next(){// Funcion que guarda la persona y cambia a la vista 2
+				if(this.estatusCarnet == 2){
+					this.serial=''; this.codigo=''
+				}
 				axios.post('guardarP',{'idP':this.personaId,'telf1':this.telf1,'telf2':this.telf2,'telf3':this.telf3,'correo1':this.correo1,'correo2':this.correo2,
 					'urb':this.urbanizacion,'av':this.avenida,'edf':this.edificio,'piso':this.piso,'apto':this.apto,'ref':this.referencia,'parroquia':
 					this.parroquia,'nivel':this.nivel,'estadoCivil':this.estadoCivil,'comunidad':this.comunidad,'serial':this.serial,'codigo':this.codigo}).then(r =>{
