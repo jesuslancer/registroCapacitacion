@@ -22,7 +22,7 @@
 <body id="page-top">
 <div id='app'></div>{{-- Se necesita para evitar el error de vue --}}
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top text-black" style="background-color:#745483" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="http://150.187.42.6/?page_id=32">Fundación CIARA</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,10 +44,11 @@
     </div>
   </nav>
 
-  <header class="bg-primary text-white">
-    <div class="container text-center">
-      <h1>Sistema de Registro de Captación</h1>
-      <p class="lead">Fundación CIARA</p>
+  <header class="text-white" style="background-color: #745483">
+    <div class="text-center">
+      <img class="img-fluid" src="img/banners.jpg")">
+     {{--  <h1>Sistema de Registro de Captación</h1>
+      <p class="lead">Fundación CIARA</p> --}}
     </div>
   </header>
 
@@ -67,7 +68,7 @@
   
 <section></section>
   <!-- Footer -->
-  <footer class="py-3 bg-dark fixed-bottom">
+  <footer class="py-3 fixed-bottom" style="background-color: #745483">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; Sitio Web fundación CIARA 2019</p>
     </div>

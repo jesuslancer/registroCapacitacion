@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Consultas;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-//use Carbon\Carbon;
+use Carbon\Carbon;
 use App\Persona;
 use App\Estado;
 use App\Municipio;
@@ -33,6 +33,7 @@ use App\Instituciones;
 use App\OrganizacionesMovimientos;
 use App\Otros;
 use App\Urbanismos;
+use App\Consejos;
 
 class ConsultasController extends Controller
 {
@@ -53,10 +54,14 @@ class ConsultasController extends Controller
     	$instituciones = Instituciones::where('persona_id',$persona->id)->get();
     	$organizaciones = OrganizacionesMovimientos::where('persona_id',$persona->id)->get();
     	$otros = Otros::where('persona_id',$persona->id)->get();
-    	$urbanismos = Urbanismos::where('persona_id',$persona->id)->get();
-    	$ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
-		//$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, en espera para validar
-    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos];
+        $urbanismos = Urbanismos::where('persona_id',$persona->id)->get();
+        $ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
+    	$consejos = Consejos::where('persona_id',$persona->id)->get();
+		$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, solo entre 15 - 35
+        if ($edad < 15 || $edad > 35) {
+            return 'edades';
+        }
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();

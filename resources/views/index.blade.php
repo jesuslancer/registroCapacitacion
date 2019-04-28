@@ -120,7 +120,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text fa fa-book" id="basic-addon6"></span>
                         </div>
-                        <select name="nivel" class="form-control " aria-label="nivel" data-vv-name="nivel de instrucción académica" v-model="nivel" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                        <select  name="nivel" class="form-control " aria-label="nivel" data-vv-name="nivel de instrucción académica" v-model="nivel" aria-describedby="basic-addon6" v-validate.initial="'required'">
                                 <option  value="" disabled selected>Seleccione</option>
                                 <option :value="x.id" v-for=" x in niveles"> @{{ x.descripcion }} </option>
                         </select>
@@ -202,10 +202,10 @@
                 </div>
             </div> <br>
             <div class="d-md-flex">
-                <div class="col" :class="{'has-feedback has-error':errors.has('form2.comunidad')}">
-                    <label>Nombre Comunidad(*)</label>
+                <div class="col" :class="{'has-feedback has-error':errors.has('form2.Consejo Comunal')}">
+                    <label>Nombre Consejo Comunal(*)</label>
                     <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="comunidad">
-                    <span v-show="errors.has('form2.comunidad')" class="text-danger">@{{ errors.first('form2.comunidad') }}</span>
+                    <span v-show="errors.has('form2.Consejo Comunal')" class="text-danger">@{{ errors.first('form2.Consejo Comunal') }}</span>
                 </div>
             </div> <br>
             <div class="d-md-flex">
@@ -240,7 +240,7 @@
             </div> <br>
             <div class="d-flex justify-content-between">
                 <div>
-                    <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-stop-circle"></span> Cancelar</button>
+                    <button type="button" @click="clean" class="btn btn-danger "> <span class="fa fa-stop-circle"></span> Cancelar</button>
                 </div>
                 <div>
                     <button type="button" @click="next" class="btn btn-primary"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
@@ -261,13 +261,17 @@
                     <div class="col-12" >
                         <h5> ¿Poseé experiencia agrícola?</h5> <p>Si poseé experiencia agrícola, especifique en los siguientes recuadros: </p>
                         <div class="form-check">
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="" value="">  
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="">  
                             <span class="text-success" v-show="estatusAnimal">Experiencia Agrícola Animal</span>                      
                             <span class="text-danger" v-show="!estatusAnimal">Experiencia Agrícola Animal</span> 
                             <br> 
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="" value="">  
+                             <input type="text" v-if="estatusAnimal" class="form-control" data-vv-name="animales" minlength ="2" v-model="animales" v-validate.initial="'min:2|max:50'" maxlength="50" placeholder="Ejemplo: Animal">
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="">  
                             <span class="text-success" v-show="estatusVegetal">Experiencia Agrícola Vegetal</span>                      
-                            <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span>                      
+                            <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span> 
+                            <br>
+                             <input type="text" v-if="estatusVegetal" class="form-control" data-vv-name="vegetales" minlength ="2" v-model="vegetales" v-validate.initial="'min:2|max:50'" maxlength="50" placeholder="Ejemplo: Vegetal">
+
                         </div>
                     </div>
                 </div>
@@ -489,7 +493,10 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Nombre Comunidad</th>
+                                        <th>Nombre Consejo Comunal</th>
+                                        <th>Hectarias</th>
+                                        <th>Agua Directa</th>
+                                        <th>Agua de Manantial</th>
                                         <th>Estado</th>
                                         <th>Municipio</th>
                                         <th>Parroquia</th>
@@ -498,6 +505,9 @@
                                 </thead>
                                 <tr class="text-center" v-for="(r, index) in array3">
                                     <td>@{{ r.comunidad }}</td>
+                                    <td>@{{ r.hectarias }}</td>
+                                    <td>@{{ r.agua_directa ? 'SI' : 'NO' }}</td>
+                                    <td>@{{ r.agua_manantial ? 'SI' : 'NO' }}</td>
                                     <td>@{{ r.estadoE.toUpperCase()}}</td>
                                     <td>@{{ r.municipioE.toUpperCase() }}</td>
                                     <td>@{{ r.parroquiaE.toUpperCase() }}</td>
@@ -525,10 +535,33 @@
                                 <div class="modal-body">
                                     <form name="formE" data-vv-scope="formE" @submit.prevent="guardarEspacio()" @keyup.enter="guardarEspacio()">
                                         <div class="row">
-                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.nombre comunidad')}">
-                                                <label for="nombre comunidad">Nombre Comunidad(*)</label>
-                                                <input  data-vv-name="nombre comunidad" v-validate.initial="{required:true}" type="text" class="form-control" placeholder="Ej: Nombre comunidad" minlength="2" maxlength="150"  v-model="comunidadE" aria-label="nombre comunidad" aria-describedby="basic-addon1">
-                                                <span v-show="errors.has('formE.nombre comunidad')" class="text-danger">@{{ errors.first('formE.nombre comunidad') }}</span>
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.consejo comunal')}">
+                                                <label for="nombre comunidad">Nombre Consejo Comunal(*)</label>
+                                                <input  data-vv-name="consejo comunal" v-validate.initial="'required|min:2'" type="text" class="form-control" placeholder="Ej: Consejo Comunal" minlength="2" maxlength="150"  v-model="comunidadE" aria-describedby="basic-addon1">
+                                                <span v-show="errors.has('formE.consejo comunal')" class="text-danger">@{{ errors.first('formE.consejo comunal') }}</span>
+                                            </div>
+                                        </div> 
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.hectarias')}">
+                                                <label for="hectarias">Hectarias(*)</label>
+                                                <input  data-vv-name="hectarias" v-validate.initial="'required:true|numeric|max:5' " maxlength="5" type="text" class="form-control" placeholder="Ej: 10000"  v-model="hectarias" aria-describedby="basic-addon1">
+                                                <span v-show="errors.has('formE.hectarias')" class="text-danger">@{{ errors.first('formE.hectarias') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" >
+                                                <label for="hectarias">¿Hay agua directa?(*)</label>
+                                                <br> 
+                                                <input type="checkbox" class="btn btn-outline-primary" v-model="agua_directa" name=""> 
+                                                <span class="text-success" v-show="agua_directa">Agua Directa</span>                      
+                                                <span class="text-danger" v-show="!agua_directa">Agua Directa</span> 
+                                            </div>
+                                            <div class="col form-group" >
+                                                <label for="hectarias">¿Hay agua de manantial?(*)</label>
+                                                <br> 
+                                                <input type="checkbox" class="btn btn-outline-primary" v-model="agua_manantial" name=""> 
+                                                <span class="text-success" v-show="agua_manantial">Agua de Manantial</span>                      
+                                                <span class="text-danger" v-show="!agua_manantial">Agua de Manantial</span> 
                                             </div>
                                         </div>
                                          <div class="d-md-flex">
@@ -572,7 +605,9 @@
                         <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
-                        <button type="button" @click="next2" class="btn btn-primary"  >Siguiente <span class="fa fa-chevron-right"></span></button>
+
+
+                        <button type="button" @click="next2" class="btn btn-primary" :disabled="(estatusAnimal == false || estatusAnimal == undefined || animales == '') && (estatusVegetal == false || estatusVegetal == undefined || vegetales == '') && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
         </div>{{-- Fin vista2 --}}
@@ -597,7 +632,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.base misiones')}">
                         <input  data-vv-name="base misiones" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Base Misiones" minlength="2" maxlength="150"  v-model="base" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="basess.length >=5 || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
+                            <button  type="button" :disabled="basess.length >=2  || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -609,7 +644,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.ciudades priorizadas')}">
                         <input  data-vv-name="ciudades priorizadas" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Ciudades priorizadas" minlength="2" maxlength="150"  v-model="ciudades" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="ciudadess.length >=5 || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
+                            <button  type="button" :disabled="ciudadess.length >=2  || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -621,7 +656,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.clap')}">
                         <input  data-vv-name="clap" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Clap" minlength="2" maxlength="150"  v-model="clap">
                         <div class="input-group-prepend" >
-                            <button  type="button" :disabled="claps.length >=5 || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
+                            <button  type="button" :disabled="claps.length >=2  || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -671,7 +706,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.comunas')}">
                         <input  data-vv-name="comunas" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Comunas" minlength="2" maxlength="150"  v-model="comunas" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="comunass.length >=5 || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
+                            <button  type="button" :disabled="comunass.length >=2  || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -683,7 +718,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.conuqueros')}">
                         <input  data-vv-name="conuqueros" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Conuqueros" minlength="2" maxlength="150"  v-model="conuqueros" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="conuqueross.length >=5 || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
+                            <button  type="button" :disabled="conuqueross.length >=2  || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -695,7 +730,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.corredores')}">
                         <input  data-vv-name="corredores" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Corredores" minlength="2" maxlength="150"  v-model="corredores">
                         <div class="input-group-prepend" >
-                            <button  type="button" :disabled="corredoress.length >=5 || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
+                            <button  type="button" :disabled="corredoress.length >=2  || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -745,7 +780,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.fundos')}">
                         <input  data-vv-name="fundos" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Fundos/Zamoranos" minlength="2" maxlength="150"  v-model="fundos" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="fundoss.length >=5 || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
+                            <button  type="button" :disabled="fundoss.length >=2  || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -757,7 +792,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.instituciones')}">
                         <input  data-vv-name="instituciones" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Instituciones" minlength="2" maxlength="150"  v-model="institucion" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="instituciones.length >=5 || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
+                            <button  type="button" :disabled="instituciones.length >=2  || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -769,7 +804,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.organizacion')}">
                         <input  data-vv-name="organizacion" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Organizaciones/Movimientos" minlength="2" maxlength="150"  v-model="organizacion" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="organizaciones.length >=5 || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
+                            <button  type="button" :disabled="organizaciones.length >=2  || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -819,7 +854,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.otros')}">
                         <input  data-vv-name="otros" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Otros" minlength="2" maxlength="150"  v-model="otros" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="otross.length >=5 || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
+                            <button  type="button" :disabled="otross.length >=2  || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -831,12 +866,24 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.urbanismos')}">
                         <input  data-vv-name="urbanismos" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Urbanismos" minlength="2" maxlength="150"  v-model="urbanismos" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="urbanismoss.length >=5 || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
+                            <button  type="button" :disabled="urbanismoss.length >=2  || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
                         <span v-show="errors.has('form3.urbanismos')" class="text-danger"> @{{ errors.first('form3.urbanismos') }} </span>
+                </div>
+                <div class="col-md-4">
+                    <label>Consejos Comunales</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.consejos comunales')}">
+                        <input  data-vv-name="consejos comunales" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Consejos Comunales" minlength="2" maxlength="150"  v-model="consejos" >
+                        <div class="input-group-prepend">
+                            <button  type="button" :disabled="consejoss.length >=2 ||  consejos=='' || errors.has('form3.consejos')" title="Agregar" @click="guardarItem(consejos,12)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.consejos comunales')" class="text-danger"> @{{ errors.first('form3.consejos comunales') }} </span>
                 </div>                
             </div><br>
             <div class="d-md-flex">
@@ -858,6 +905,17 @@
                         <ul class="list-group" v-for="(r, index) in urbanismoss">
                           <li class="list-group-item">@{{ r.denominacion }}
                             <button type="button" class="close" @click="eliminarItem(index,11)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div v-show="consejoss.length > 0">
+                        <li class="list-group-item active">Lista Consejos Comunales</li>
+                        <ul class="list-group" v-for="(r, index) in consejoss">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,12)">
                                   <span aria-hidden="true">&times;</span>
                             </button>
                         </ul>

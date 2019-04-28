@@ -19,6 +19,7 @@ use App\Instituciones;
 use App\OrganizacionesMovimientos;
 use App\Otros;
 use App\Urbanismos;
+use App\Consejos;
 
 
 class CrudController extends Controller
@@ -76,12 +77,18 @@ class CrudController extends Controller
                 $otrosTi->persona_id = $request->idP;
                 $otrosTi->parroquia_id = $value['parroquia_id'];
                 $otrosTi->comunidad = strtoupper($value['comunidad']);
+                $otrosTi->hectarias = $value['hectarias'];
+                $otrosTi->agua_directa = $value['agua_directa'];
+                $otrosTi->agua_manantial = $value['agua_manantial'];
                 $otrosTi->save();
             }
         }
         $persona = Persona::find($request->idP);
         $persona->experiencia_agricola_animal = $request->vegetal;
         $persona->experiencia_agricola_vegetal =$request->animal;
+        $persona->tipo_vegetales = $request->vegetal ? strtoupper($request->animales): '';
+        $persona->tipo_animales = $request->animal ? strtoupper($request->animales): '';
+        $persona->id_user_updated = $request->idP;
         $persona->save();		
         return 'guardo';
     }
@@ -95,7 +102,8 @@ class CrudController extends Controller
 		FundosZamoranos::where('persona_id',$request->idP)->forceDelete();
 		Instituciones::where('persona_id',$request->idP)->forceDelete();
 		OrganizacionesMovimientos::where('persona_id',$request->idP)->forceDelete();
-		Otros::where('persona_id',$request->idP)->forceDelete();
+        Otros::where('persona_id',$request->idP)->forceDelete();
+		Consejos::where('persona_id',$request->idP)->forceDelete();
 		Urbanismos::where('persona_id',$request->idP)->forceDelete();//---> se eliminan todos antes de guardar 
 		if (!empty($request->bases)) {
         	foreach ($request->bases as  $value) {
@@ -178,8 +186,16 @@ class CrudController extends Controller
         	}
         }
         if (!empty($request->urbanismos)) {
-        	foreach ($request->ciudades as  $value) {
-	            $item = new Urbanismos();
+            foreach ($request->ciudades as  $value) {
+                $item = new Urbanismos();
+                $item->denominacion = $value['denominacion'];
+                $item->persona_id = $request->idP;
+                $item->save();
+            }
+        }
+        if (!empty($request->consejos)) {
+        	foreach ($request->consejos as  $value) {
+	            $item = new Consejos();
 	        	$item->denominacion = $value['denominacion'];
 	        	$item->persona_id = $request->idP;
         		$item->save();
