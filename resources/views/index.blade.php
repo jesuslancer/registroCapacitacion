@@ -240,7 +240,7 @@
             </div> <br>
             <div class="d-flex justify-content-between">
                 <div>
-                    <button type="button" @click="clean" class="btn btn-danger "> <span class="fa fa-stop-circle"></span> Cancelar</button>
+                    <button type="button" @click="clean" class="btn btn-danger"> <span class="fa fa-stop-circle"></span> Cancelar</button>
                 </div>
                 <div>
                     <button type="button" @click="next" class="btn btn-primary"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
