@@ -58,9 +58,9 @@ class ConsultasController extends Controller
         $ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
     	$consejos = Consejos::where('persona_id',$persona->id)->get();
 		$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, solo entre 15 - 35
-        if ($edad < 15 || $edad > 35) {
+        /*if ($edad < 15 || $edad > 35) {
             return 'edades';
-        }
+        }*///Validacion de edades
     	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos];
     }
     public function estados(){// Funcion q trae todos los estados

@@ -127,7 +127,7 @@ window.onload = function(){
 				axios.get('consultaCedula/'+ this.nac + '/' + this.cedula)
 				.then(r=>{
 				this.limpiar()
-				if (r.data == 'edades') {
+				/*if (r.data == 'edades') { // Validacion de las edades
 					this.existeP=false;
 							Swal.fire({
 								  title: '¡Atención!',
@@ -137,7 +137,7 @@ window.onload = function(){
 								})
 							this.cargando = false
 							this.limpiar()
-				}else if (r.data != 'vacio') {
+				}else*/ if (r.data != 'vacio') {
 							this.ya = r.data['persona'].id_user_updated == r.data['persona'].id ? true : false;
 							this.existeP=true;
 							this.personaId = r.data['persona'].id
