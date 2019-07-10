@@ -204,7 +204,7 @@
             <div class="d-md-flex">
                 <div class="col" :class="{'has-feedback has-error':errors.has('form2.Consejo Comunal')}">
                     <label>Nombre Consejo Comunal(*)</label>
-                    <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="comunidad">
+                    <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="Consejo Comunal">
                     <span v-show="errors.has('form2.Consejo Comunal')" class="text-danger">@{{ errors.first('form2.Consejo Comunal') }}</span>
                 </div>
             </div> <br>
