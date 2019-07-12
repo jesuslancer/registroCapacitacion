@@ -58609,6 +58609,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuejs-uib-pagination */ "./node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js");
+/* harmony import */ var vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_3__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -58634,6 +58636,8 @@ __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment
 
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_3___default.a);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

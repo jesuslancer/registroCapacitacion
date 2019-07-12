@@ -16,6 +16,7 @@
   <link href="css/fontawesome/css/all.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/scrolling-nav.css" rel="stylesheet">
+  <link href="../node_modules/vuejs-uib-pagination/demo/styles.css" rel="stylesheet">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

@@ -270,7 +270,7 @@
                                 <option v-if="x.tipo=='ANIMAL'" :value="x" v-for=" x in experienciaAgricola" > @{{ x.denominacion }} </option>
                             </select>  
                             <div v-show="estatusAnimal">
-                                <button type="button" :disabled="!experienciasRegistradas" class="btn btn-success" @click="guardarExperiencia(animal)">Selección <span class="fa fa-chevron-down"></span></button>
+                                <button type="button" :disabled="!animal" class="btn btn-success" @click="guardarExperiencia(animal)">Selección <span class="fa fa-chevron-down"></span></button>
                             </div>   
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="">  
                             <span class="text-success" v-show="estatusVegetal">Experiencia Agrícola Vegetal</span>                      
@@ -278,13 +278,16 @@
                             <br>
                             <select v-show="estatusVegetal" name="vegetales" class="form-control " aria-label="vegetales" data-vv-name="experiencia agricola vegetal" v-model="vegetal" aria-describedby="basic-addon6" v-validate.initial="'required'">
                                 <option  value="" disabled selected>Seleccione Vegetal</option>
-                                <option v-if="x.tipo=='VEGETAL'" :value="x.id" v-for=" x in experienciaAgricola"> @{{ x.denominacion }} </option>
+                                <option v-if="x.tipo=='VEGETAL'" :value="x" v-for=" x in experienciaAgricola"> @{{ x.denominacion }} </option>
                             </select>
+                            <div v-show="estatusVegetal">
+                                <button type="button" :disabled="!vegetal" class="btn btn-success" @click="guardarExperiencia(vegetal)">Selección <span class="fa fa-chevron-down"></span></button>
+                            </div>
                         </div>
-                        <p {{-- v-show="experienciasRegistradas.length > 0" --}}>Lista Experiencias Agricolas:</p>
+                        <p v-show="experienciasRegistradas.length > 0">Lista Experiencias Agricolas:</p>
                             <div class="d-md-flex" > {{-- Inicio Tabla Experiencias --}}
                                 <div class="col ">
-                                    <div class="table table-hover card" {{-- v-show="experienciasRegistradas.length > 0" --}} >
+                                    <div class="table table-hover card" v-show="experienciasRegistradas.length > 0" >
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr class="text-center">
@@ -305,9 +308,67 @@
                                         </table>
                                     </div>
                                 </div><br>
-                                <div {{-- v-show="array4.length > 5" --}} is="uib-pagination" :boundary-links="true" :boundary-link-numbers="true" :max-size="paginacionExperienciasRegistradas.maxSize" :force-ellipses="true" :total-items="paginacionExperienciasRegistradas.totalItems" :items-per-page="paginacionExperienciasRegistradas.itemsPerPage" v-model="paginacionExperienciasRegistradas.paginate" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></div>
-                {{-- <div class="form-inline"><pre>Paginas: @{{ paginacionExperienciasRegistradas.paginate.currentPage }} / @{{ array4.length / paginacionExperienciasRegistradas.paginate.currentPage }}, total de elementos: @{{ array4.length }} </pre> </div> --}}
                             </div> {{-- Fin Experiencias --}}
+                                <div v-show="experienciasRegistradas.length > 5" is="uib-pagination" :boundary-links="true" :boundary-link-numbers="true" :max-size="paginacionExperienciasRegistradas.maxSize" :force-ellipses="true" :total-items="paginacionExperienciasRegistradas.totalItems" :items-per-page="paginacionExperienciasRegistradas.itemsPerPage" v-model="paginacionExperienciasRegistradas.paginate" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></div>
+                                <div v-show="experienciasRegistradas.length > 5" class="form-inline"><pre>Paginas: @{{ paginacionExperienciasRegistradas.paginate.currentPage }} / @{{ experienciasRegistradas.length / paginacionExperienciasRegistradas.paginate.currentPage }}, total de elementos: @{{ experienciasRegistradas.length }} </pre> </div>
+                            <div class="col-md-4">
+                                <label>¿Produce Semillas? Especifique:</label>
+                                <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.semilla')}">
+                                    <input  data-vv-name="semilla" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: semilla" minlength="2" maxlength="150"  v-model="semilla" >
+                                    <div class="input-group-prepend">
+                                        <button  type="button" :disabled="semillas.length >=2  || semilla=='' || errors.has('form3.semilla')" title="Agregar" @click="guardarItem(semilla,50)" class="btn btn-success">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span v-show="errors.has('form3.semilla')" class="text-danger">@{{ errors.first('form3.semilla') }}</span>
+                            </div><br>
+                             <div class="col-md-4" >
+                                <div v-show="semillas.length > 0">
+                                    <li class="list-group-item active">Lista Semillas</li>
+                                    <ul class="list-group" v-for="(r, index) in semillas">
+                                      <li class="list-group-item">@{{ r.denominacion }}
+                                        <button type="button" class="close" @click="eliminarItem(index,50)">
+                                              <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <h5> ¿Cuenta con Herramientas?</h5> <p>Si poseé herramientas, especifique en los siguientes recuadros: </p>
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusHer" name="">  
+                            <span class="text-success" v-show="estatusHer">Experiencia Agrícola Animal</span>                      
+                            <span class="text-danger" v-show="!estatusHer">Experiencia Agrícola Animal</span> 
+                            <br>
+                            <div class="col-md-4">
+                                <select v-show="estatusHer" class="form-control"  data-vv-scope="form" data-vv-name="herramientas" v-validate.initial="'required'" v-model="herramienta" >
+                                    <option disabled selected value="">Seleccione</option>
+                                    <option value="MACHETE">MACHETE</option>
+                                    <option value="PICO">PICO</option>
+                                    <option value="PALA">PALA</option>
+                                    <option value="CHÍCORA">CHÍCORA</option>
+                                    <option value="ESCARDILLA">ESCARDILLA</option>
+                                    <option value="CARRETILLA">CARRETILLA</option>
+                                    <option value="BOMBA">BOMBA</option>
+                                    <option value="TIJERA">TIJERA</option>
+                                    <option value="MAQUINARIAS">MAQUINARIAS</option>
+                                </select>                                
+                                <div v-show="estatusHer">
+                                    <button type="button" :disabled="!herramienta" class="btn btn-success" @click="guardarHerramienta(herramienta)">Selección <span class="fa fa-chevron-down"></span></button>
+                                </div>
+                            </div><br>
+                             <div class="col-md-4" >
+                                <div v-show="herramientas.length > 0">
+                                    <li class="list-group-item active">Lista herramientas</li>
+                                    <ul class="list-group" v-for="(r, index) in herramientas">
+                                      <li class="list-group-item">@{{ r.denominacion }}
+                                        <button type="button" class="close" @click="eliminarHerramienta(index,50)">
+                                              <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <br>  
@@ -642,7 +703,7 @@
                     <div>
 
 
-                        <button type="button" @click="next2" class="btn btn-primary" :disabled="{{-- (estatusAnimal == false || estatusAnimal == undefined || animales == '') && (estatusVegetal == false || estatusVegetal == undefined || vegetales == '') &&  --}}titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary" :disabled="experienciasRegistradas.length == 0 && semillas.length == 0 && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
         </div>{{-- Fin vista2 --}}

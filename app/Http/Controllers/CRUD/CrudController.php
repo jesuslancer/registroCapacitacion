@@ -20,7 +20,9 @@ use App\OrganizacionesMovimientos;
 use App\Otros;
 use App\Urbanismos;
 use App\Consejos;
-
+use App\Experiencias;
+use App\Semillas;
+use App\Herramientas;
 
 class CrudController extends Controller
 {
@@ -52,6 +54,9 @@ class CrudController extends Controller
         DatosFormativos::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
         DatosOcupacion::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
         EspaciosProductivos::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
+        Experiencias::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
+        Semillas::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
+        Herramientas::where('persona_id',$request->idP)->forceDelete();//Se eliminan de la BD para agregar nuevos datos limpiamente
     	if (!empty($request->titulo)) {
             foreach ($request->titulo as  $value) {
                 $otrosTi = new DatosFormativos();
@@ -83,11 +88,36 @@ class CrudController extends Controller
                 $otrosTi->save();
             }
         }
-        $persona = Persona::find($request->idP);
-        $persona->experiencia_agricola_animal = $request->vegetal;
-        $persona->experiencia_agricola_vegetal =$request->animal;
-        $persona->id_user_updated = $request->idP;
-        $persona->save();		
+        if (!empty($request->experiencias)) {
+            foreach ($request->experiencias as  $value) {
+                $otrosTi = new Experiencias();
+                $otrosTi->persona_id = $request->idP;
+                $otrosTi->experiencia_agricola_id = strtoupper($value['id']);
+                $otrosTi->tipo = strtoupper($value['tipo']);
+                $otrosTi->save();
+            }
+        }
+        if (!empty($request->semillas)) {
+            foreach ($request->semillas as  $value) {
+                $otrosTi = new Semillas();
+                $otrosTi->persona_id = $request->idP;
+                $otrosTi->denominacion = strtoupper($value['denominacion']);
+                $otrosTi->save();
+            }
+        } 
+        if (!empty($request->herramientas)) {
+            foreach ($request->herramientas as  $value) {
+                $otrosTi = new Herramientas();
+                $otrosTi->persona_id = $request->idP;
+                $otrosTi->denominacion = strtoupper($value['denominacion']);
+                $otrosTi->save();
+            }
+        }
+        // $persona = Persona::find($request->idP);
+        // $persona->experiencia_agricola_animal = $request->vegetal;
+        // $persona->experiencia_agricola_vegetal =$request->animal;
+        // $persona->id_user_updated = $request->idP;
+        // $persona->save();		
         return 'guardo';
     }
     public function guardadoFinal(Request $request){//Funcion que guarda los datos finales, de organizaciones sociales

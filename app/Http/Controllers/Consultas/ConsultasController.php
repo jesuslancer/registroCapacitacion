@@ -36,6 +36,8 @@ use App\Otros;
 use App\Urbanismos;
 use App\Consejos;
 use App\Experiencias;
+use App\Semillas;
+use App\Herramientas;
 
 class ConsultasController extends Controller
 {
@@ -59,12 +61,14 @@ class ConsultasController extends Controller
         $urbanismos = Urbanismos::where('persona_id',$persona->id)->get();
         $ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
     	$consejos = Consejos::where('persona_id',$persona->id)->get();
-        $experiencia = Experiencias::where('persona_id',$persona->id)->get();
+        $experiencia = Experiencias::with('ExperienciaAgricola')->where('persona_id',$persona->id)->get();
+        $semillas = Semillas::where('persona_id',$persona->id)->get();
+        $herramientas = Herramientas::where('persona_id',$persona->id)->get();
 		$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, solo entre 15 - 35
         /*if ($edad < 15 || $edad > 35) {//Validacion de edades
             return 'edades';
         }*/
-    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos,'experiencias'=>$experiencia];
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos,'experiencias'=>$experiencia,'semillas'=>$semillas,'herramientas'=>$herramientas];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();

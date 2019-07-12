@@ -13,6 +13,7 @@ window.onload = function(){
 			var self = this
 		},
 		data:{
+			 pagination: {},
 			existeP:false,
 			ya:false,
 			vista1:false,
@@ -28,6 +29,7 @@ window.onload = function(){
 			banderaEspacio:false,
 			agua_directa:false,
 			agua_manantial:false,
+			estatusHer:false,
 			cedula:'',
 			nac:'V',
 			personaId:'',
@@ -64,7 +66,6 @@ window.onload = function(){
 			programa:'',
 			titulo:'',
 			ocupacion:'',
-			vegetal:'',
 			comunidadE:'',
 			fechaTitulo:new Date(),
 			base:'',
@@ -81,10 +82,14 @@ window.onload = function(){
 			consejos:'',
 			animal:'',
 			vegetal:'',
+			semilla:'',
+			herramienta:'',
+			herramientas:[],
 			basess:[],
 			ciudadess:[],
 			claps:[],
 			comunass:[],
+			semillas:[],
 			conuqueross:[],
 			corredoress:[],
 			fundoss:[],
@@ -167,8 +172,6 @@ window.onload = function(){
 							this.piso = r.data['persona'].piso
 							this.referencia = r.data['persona'].punto_referencia
 							this.comunidad = r.data['persona'].comunidad
-							this.estatusAnimal = r.data['persona'].experiencia_agricola_animal
-							this.estatusVegetal = r.data['persona'].experiencia_agricola_vegetal
 							this.estado = r.data['persona'].parroquia ? r.data['persona'].parroquia.municipio.estado.id : '' 
 							if (this.estado) {
 								this.getMunicipios(this.estado)
@@ -180,6 +183,25 @@ window.onload = function(){
 								this.estatusCarnet = 1
 								this.serial = r.data['persona'].serial_carnet_patria
 								this.codigo = r.data['persona'].codigo_carnet_patria
+							}
+							if (r.data['experiencias'].length > 0) {
+								this.experienciasRegistradas = [] // Se vacia para luego rellenar 
+								r.data['experiencias'].forEach((value)=>{
+								this.experienciasRegistradas.push({'id':value.experiencia_agricola_id,'denominacion':value.experiencia_agricola.denominacion, 'tipo':value.tipo})
+									this.paginacionExperienciasRegistradas.totalItems=this.experienciasRegistradas.length
+								})
+							}
+							if (r.data['semillas'].length > 0) {
+								this.semillas = [] // Se vacia para luego rellenar 
+								r.data['semillas'].forEach((value)=>{
+								this.semillas.push({'denominacion':value.denominacion,})
+								})
+							}
+							if (r.data['herramientas'].length > 0) {
+								this.herramientas = [] // Se vacia para luego rellenar 
+								r.data['herramientas'].forEach((value)=>{
+								this.herramientas.push({'denominacion':value.denominacion,})
+								})
 							}
 							if (r.data['titulos'].length > 0) {
 								r.data['titulos'].forEach((value)=>{
@@ -399,8 +421,6 @@ window.onload = function(){
 				this.estatusCarnet =2;
 				this.estatusTitulo =2;
 				this.estatusOcupacion =2;
-				this.estatusAnimal =false;
-				this.estatusVegetal =false;
 				this.agua_directa =false;
 				this.agua_manantial =false;
 				this.hectarias = '';
@@ -544,7 +564,7 @@ window.onload = function(){
 			eliminarEspacio(index){//Funcion para eliminar en vista los titulos registrados
 				this.espacioProductivo.splice(index,1);
 			},
-			guardarExperiencia(a){
+			guardarExperiencia(a){ //Funcion para guardar animales y vegetales seleccionados
 				var existeA = false;
 				this.experienciasRegistradas.forEach((value)=>{
 					if (value['id']== a.id) {
@@ -558,14 +578,56 @@ window.onload = function(){
 					}
 				if (!existeA) {
 					this.experienciasRegistradas.push({'id':a.id,'denominacion':a.denominacion, 'tipo':a.tipo})
-					this.paginacionExperienciasRegistradas.totalItems=this.paginacionExperienciasRegistradas.length
+					this.paginacionExperienciasRegistradas.totalItems=this.experienciasRegistradas.length
 				}
 				//this.limpiarOcupacion()
 				
 			},
+			eliminarExperiencia(index){//Funcion para eliminar en vista las experiencias agricolas registradas
+				this.experienciasRegistradas.splice(index,1);
+			},
+			guardarHerramienta(h){ //Funcion para guardar animales y vegetales seleccionados
+				var existeH = false;
+				this.herramientas.forEach((value)=>{
+					if (value['id']== h.id) {
+						existeH = true;
+							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar esta Herramienta.','error')
+					}
+				})	
+				if (this.herramientas.length>=5) {
+						existeH = true;
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más Herramientas.','error')
+					}
+				if (!existeH) {
+					this.herramientas.push({'denominacion':h, })
+				}
+				//this.limpiarOcupacion()
+				
+			},
+			eliminarHerramienta(index){//Funcion para eliminar en vista las experiencias agricolas registradas
+				this.herramientas.splice(index,1);
+			},
 			guardarItem(i,n){ //se agrega segun el item q se pase
 				this.$validator.validateAll('form3').
 				then(() => {
+				if (n==50) {
+					var eb= false
+					this.semillas.forEach((value)=>{
+						if (i=='' || value['denominacion']==i) {
+							eb = true;
+								Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar el mismo.','error')
+						}
+					})
+					if (this.semillas.length>=3) {
+						eb = true;
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más.','error')
+					}
+					if (!eb) {
+					this.semillas.push({'denominacion':i})
+					this.semilla='';
+
+					}
+				}
 				if (n==1) {
 					var eb= false
 					this.basess.forEach((value)=>{
@@ -774,6 +836,9 @@ window.onload = function(){
 				})
 			},
 			eliminarItem(index,n){//Se elimina segun el item q pase
+				if (n==50) {
+					this.semillas.splice(index,1);
+				}
 				if (n==1) {
 					this.basess.splice(index,1);
 				}
@@ -849,7 +914,7 @@ window.onload = function(){
 			},
 			next2(){// Funcion que guarda la ocupacion y titulo registrados, tambien  cambia a la vista 3
 				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer, 'espacio':this.espacioProductivo,
-				 'animal':this.estatusAnimal,'vegetal':this.estatusVegetal}).then(r =>{
+				 'semillas':this.semillas,'experiencias':this.experienciasRegistradas,'herramientas':this.herramientas}).then(r =>{
 						if (r.data=='guardo') {
 							this.existeP=false;
 							this.vista1=false;
