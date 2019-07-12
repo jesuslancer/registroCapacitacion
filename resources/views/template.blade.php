@@ -60,6 +60,9 @@
         <div class="carousel-item">
           <img class="d-block w-100" src="img/banner4.jpg" alt="Third slide">
         </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/banner5.jpg">
+        </div>
       </div>
       <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -119,6 +122,8 @@
   <script src="../node_modules/vue-select/dist/vue-select.js"></script>
   <!-- Vue-pagination -->
   <script src="../node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js"></script>
+  <!-- Vue-multiselect -->
+  <script src="../node_modules/vue-multiselect/dist/vue-multiselect.min.js"></script>
 
   
 </body>

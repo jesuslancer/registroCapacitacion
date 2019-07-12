@@ -7,6 +7,7 @@ window.onload = function(){
 			this.getEstados();
 			this.getNivel();
 			this.getOcupaciones();
+			this.getExperienciaAgricola();
 		},
 		mounted(){
 			var self = this
@@ -14,8 +15,8 @@ window.onload = function(){
 		data:{
 			existeP:false,
 			ya:false,
-			vista1:true,
-			vista2:false,			
+			vista1:false,
+			vista2:true,			
 			vista3:false,			
 			cargando:false,
 			estatusCarnet:2,
@@ -63,6 +64,7 @@ window.onload = function(){
 			programa:'',
 			titulo:'',
 			ocupacion:'',
+			vegetal:'',
 			comunidadE:'',
 			fechaTitulo:new Date(),
 			base:'',
@@ -77,8 +79,8 @@ window.onload = function(){
 			otros:'',
 			urbanismos:'',
 			consejos:'',
-			animales:'',
-			vegetales:'',
+			animal:'',
+			vegetal:'',
 			basess:[],
 			ciudadess:[],
 			claps:[],
@@ -105,6 +107,8 @@ window.onload = function(){
 			ocupaciones:[],
 			ocupacionesPer:[],
 			espacioProductivo:[],
+			experienciaAgricola:[],
+			experienciasRegistradas:[],
 			paginacionTitulo:{
 				paginate:{currentPage:1},
 				totalItems:null,
@@ -116,6 +120,11 @@ window.onload = function(){
 				itemsPerPage:5
 			},
 			paginacionEspacioProductivo:{
+				paginate:{currentPage:1},
+				totalItems:null,
+				itemsPerPage:5
+			},
+			paginacionExperienciasRegistradas:{
 				paginate:{currentPage:1},
 				totalItems:null,
 				itemsPerPage:5
@@ -159,9 +168,7 @@ window.onload = function(){
 							this.referencia = r.data['persona'].punto_referencia
 							this.comunidad = r.data['persona'].comunidad
 							this.estatusAnimal = r.data['persona'].experiencia_agricola_animal
-							this.animales = r.data['persona'].tipo_animales
 							this.estatusVegetal = r.data['persona'].experiencia_agricola_vegetal
-							this.vegetales = r.data['persona'].tipo_vegetales
 							this.estado = r.data['persona'].parroquia ? r.data['persona'].parroquia.municipio.estado.id : '' 
 							if (this.estado) {
 								this.getMunicipios(this.estado)
@@ -340,6 +347,12 @@ window.onload = function(){
 					this.ocupaciones = r.data
 				})
 			},
+			getExperienciaAgricola (){// Consultar todas las experiencias agricolas de catalogo
+				axios.post('experienciaAgricola')
+				.then(r => {
+					this.experienciaAgricola = r.data
+				})
+			},
 			limpiar(){//Vacia cada variables del formulario
 				this.ya=false;
 				this.nac='V';
@@ -391,8 +404,6 @@ window.onload = function(){
 				this.agua_directa =false;
 				this.agua_manantial =false;
 				this.hectarias = '';
-				this.animales = '';
-				this.vegetales = '';
 				this.estatusEspacio =2;
 
 			},
@@ -533,7 +544,25 @@ window.onload = function(){
 			eliminarEspacio(index){//Funcion para eliminar en vista los titulos registrados
 				this.espacioProductivo.splice(index,1);
 			},
-			
+			guardarExperiencia(a){
+				var existeA = false;
+				this.experienciasRegistradas.forEach((value)=>{
+					if (value['id']== a.id) {
+						existeA = true;
+							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar esta Experiencias Agricola.','error')
+					}
+				})	
+				if (this.experienciasRegistradas.length>=7) {
+						existeA = true;
+						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más Experiencias Agricola.','error')
+					}
+				if (!existeA) {
+					this.experienciasRegistradas.push({'id':a.id,'denominacion':a.denominacion, 'tipo':a.tipo})
+					this.paginacionExperienciasRegistradas.totalItems=this.paginacionExperienciasRegistradas.length
+				}
+				//this.limpiarOcupacion()
+				
+			},
 			guardarItem(i,n){ //se agrega segun el item q se pase
 				this.$validator.validateAll('form3').
 				then(() => {
@@ -820,7 +849,7 @@ window.onload = function(){
 			},
 			next2(){// Funcion que guarda la ocupacion y titulo registrados, tambien  cambia a la vista 3
 				axios.post('guardarTO',{'idP':this.personaId,'titulo':this.titulosRegistrados,'ocupacion':this.ocupacionesPer, 'espacio':this.espacioProductivo,
-				 'animal':this.estatusAnimal,'vegetal':this.estatusVegetal,'animales':this.animales,'vegetales':this.vegetales}).then(r =>{
+				 'animal':this.estatusAnimal,'vegetal':this.estatusVegetal}).then(r =>{
 						if (r.data=='guardo') {
 							this.existeP=false;
 							this.vista1=false;
@@ -887,15 +916,20 @@ window.onload = function(){
 		      	.slice(((this.paginacionTitulo.paginate.currentPage - 1) * this.paginacionTitulo.itemsPerPage),
 					(this.paginacionTitulo.paginate.currentPage * this.paginacionTitulo.itemsPerPage));
 			},
-			array2 () {//Arreglo de los titulos
+			array2 () {//Arreglo de las ocupaciones
 		    return this.ocupacionesPer
 		      	.slice(((this.paginacionOcupacionesPer.paginate.currentPage - 1) * this.paginacionOcupacionesPer.itemsPerPage),
 					(this.paginacionOcupacionesPer.paginate.currentPage * this.paginacionOcupacionesPer.itemsPerPage));
 			},
-			array3 () {//Arreglo de los titulos
+			array3 () {//Arreglo de los espacios productivos
 		    return this.espacioProductivo
 		      	.slice(((this.paginacionEspacioProductivo.paginate.currentPage - 1) * this.paginacionEspacioProductivo.itemsPerPage),
 					(this.paginacionEspacioProductivo.paginate.currentPage * this.paginacionEspacioProductivo.itemsPerPage));
+			},
+			array4 () {//Arreglo de las experiencias registradas
+		    return this.experienciasRegistradas
+		      	.slice(((this.paginacionExperienciasRegistradas.paginate.currentPage - 1) * this.paginacionExperienciasRegistradas.itemsPerPage),
+					(this.paginacionExperienciasRegistradas.paginate.currentPage * this.paginacionExperienciasRegistradas.itemsPerPage));
 			},
 		},
 		

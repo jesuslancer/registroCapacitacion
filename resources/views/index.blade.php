@@ -264,15 +264,50 @@
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="">  
                             <span class="text-success" v-show="estatusAnimal">Experiencia Agrícola Animal</span>                      
                             <span class="text-danger" v-show="!estatusAnimal">Experiencia Agrícola Animal</span> 
-                            <br> 
-                             <input type="text" v-if="estatusAnimal" class="form-control" data-vv-name="animales" minlength ="2" v-model="animales" v-validate.initial="'min:2|max:50'" maxlength="50" placeholder="Ejemplo: Animal">
+                            <br>
+                            <select v-show="estatusAnimal" name="animales" class="form-control" aria-label="animales" data-vv-name="experiencia agricola animal" v-model="animal" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                <option  value="" disabled selected>Seleccione Animal</option>
+                                <option v-if="x.tipo=='ANIMAL'" :value="x" v-for=" x in experienciaAgricola" > @{{ x.denominacion }} </option>
+                            </select>  
+                            <div v-show="estatusAnimal">
+                                <button type="button" :disabled="!experienciasRegistradas" class="btn btn-success" @click="guardarExperiencia(animal)">Selección <span class="fa fa-chevron-down"></span></button>
+                            </div>   
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="">  
                             <span class="text-success" v-show="estatusVegetal">Experiencia Agrícola Vegetal</span>                      
                             <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span> 
                             <br>
-                             <input type="text" v-if="estatusVegetal" class="form-control" data-vv-name="vegetales" minlength ="2" v-model="vegetales" v-validate.initial="'min:2|max:50'" maxlength="50" placeholder="Ejemplo: Vegetal">
-
+                            <select v-show="estatusVegetal" name="vegetales" class="form-control " aria-label="vegetales" data-vv-name="experiencia agricola vegetal" v-model="vegetal" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                <option  value="" disabled selected>Seleccione Vegetal</option>
+                                <option v-if="x.tipo=='VEGETAL'" :value="x.id" v-for=" x in experienciaAgricola"> @{{ x.denominacion }} </option>
+                            </select>
                         </div>
+                        <p {{-- v-show="experienciasRegistradas.length > 0" --}}>Lista Experiencias Agricolas:</p>
+                            <div class="d-md-flex" > {{-- Inicio Tabla Experiencias --}}
+                                <div class="col ">
+                                    <div class="table table-hover card" {{-- v-show="experienciasRegistradas.length > 0" --}} >
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th>Tipo</th>
+                                                    <th>Denominación</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tr class="text-center" v-for="(r, index) in array4">
+                                                <td>@{{ r.tipo }}</td>
+                                                <td>@{{ r.denominacion.toUpperCase() }}</td>
+                                                <td>
+                                                    <a class='btn btn-danger' @click="eliminarExperiencia(index)" title="Eliminar" >
+                                                        <span class="fa fa-eraser"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div><br>
+                                <div {{-- v-show="array4.length > 5" --}} is="uib-pagination" :boundary-links="true" :boundary-link-numbers="true" :max-size="paginacionExperienciasRegistradas.maxSize" :force-ellipses="true" :total-items="paginacionExperienciasRegistradas.totalItems" :items-per-page="paginacionExperienciasRegistradas.itemsPerPage" v-model="paginacionExperienciasRegistradas.paginate" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></div>
+                {{-- <div class="form-inline"><pre>Paginas: @{{ paginacionExperienciasRegistradas.paginate.currentPage }} / @{{ array4.length / paginacionExperienciasRegistradas.paginate.currentPage }}, total de elementos: @{{ array4.length }} </pre> </div> --}}
+                            </div> {{-- Fin Experiencias --}}
                     </div>
                 </div>
                 <br>  
@@ -435,7 +470,7 @@
                             </v-select>
                         </div>
                     </div>
-                        <div v-show="estatusOcupacion">
+                        <div v-show="estatusOcupacion==1">
                             <button type="button" :disabled="!ocupacion" class="btn btn-success" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
                         </div>
                     <br>
@@ -607,7 +642,7 @@
                     <div>
 
 
-                        <button type="button" @click="next2" class="btn btn-primary" :disabled="(estatusAnimal == false || estatusAnimal == undefined || animales == '') && (estatusVegetal == false || estatusVegetal == undefined || vegetales == '') && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary" :disabled="{{-- (estatusAnimal == false || estatusAnimal == undefined || animales == '') && (estatusVegetal == false || estatusVegetal == undefined || vegetales == '') &&  --}}titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
         </div>{{-- Fin vista2 --}}

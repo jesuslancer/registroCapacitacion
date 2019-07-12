@@ -20,6 +20,7 @@ use App\OcupacionGrupo;
 use App\OcupacionSeccion;
 use App\DatosFormativos;
 use App\DatosOcupacion;
+use App\ExperienciaAgricola;
 use App\EspaciosProductivos;
 use App\OrganizacionesSociales;
 use App\BaseMisiones;
@@ -34,6 +35,7 @@ use App\OrganizacionesMovimientos;
 use App\Otros;
 use App\Urbanismos;
 use App\Consejos;
+use App\Experiencias;
 
 class ConsultasController extends Controller
 {
@@ -57,11 +59,12 @@ class ConsultasController extends Controller
         $urbanismos = Urbanismos::where('persona_id',$persona->id)->get();
         $ciudades = CiudadesPriorizadas::where('persona_id',$persona->id)->get();
     	$consejos = Consejos::where('persona_id',$persona->id)->get();
+        $experiencia = Experiencias::where('persona_id',$persona->id)->get();
 		$edad = Carbon::createFromDate($persona->fecha_nacimiento)->age;// Se saca la edad de la persona, solo entre 15 - 35
-        /*if ($edad < 15 || $edad > 35) {
+        /*if ($edad < 15 || $edad > 35) {//Validacion de edades
             return 'edades';
-        }*///Validacion de edades
-    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos];
+        }*/
+    	return ['persona'=>$persona,'titulos'=>$titulos,'ocupaciones'=>$ocupaciones,'espacios'=>$espacios,'bases'=>$bases,'ciudades'=>$ciudades,'claps'=>$claps,'comunas'=>$comunas,'conuqueros'=>$conuqueros,'corredores'=>$corredores,'fundos'=>$fundos,'instituciones'=>$instituciones,'organizaciones'=>$organizaciones,'otros'=>$otros,'urbanismos'=>$urbanismos,'consejos'=>$consejos,'experiencias'=>$experiencia];
     }
     public function estados(){// Funcion q trae todos los estados
     	return Estado::get();
@@ -88,6 +91,9 @@ class ConsultasController extends Controller
     	return TituloCarrera::where('programa_estudio_id',$request->id)->get();
     }
     public function ocupaciones (){//Consultas las ocupaciones clases, para el select2
-    	return OcupacionClase::all();
+        return OcupacionClase::all();
+    }
+    public function experienciaAgricola (){//Consultas las Experiencias agricolas
+    	return ExperienciaAgricola::all();
     }
 }

@@ -86,8 +86,6 @@ class CrudController extends Controller
         $persona = Persona::find($request->idP);
         $persona->experiencia_agricola_animal = $request->vegetal;
         $persona->experiencia_agricola_vegetal =$request->animal;
-        $persona->tipo_vegetales = $request->vegetal ? strtoupper($request->animales): '';
-        $persona->tipo_animales = $request->animal ? strtoupper($request->animales): '';
         $persona->id_user_updated = $request->idP;
         $persona->save();		
         return 'guardo';

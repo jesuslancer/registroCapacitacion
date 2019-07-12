@@ -16,6 +16,8 @@ require('vuejs-uib-pagination');
 require('sweetalert2');
 require('vue-moment');
 import Datepicker from 'vuejs-datepicker';
+import Multiselect from 'vue-multiselect'
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -30,6 +32,8 @@ import Datepicker from 'vuejs-datepicker';
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('vuejs-datepicker', Datepicker);
 Vue.component('custom-datepicker',require('./components/DatePickerComponent.vue').default);
+Vue.component('multiselect', Multiselect);
+Vue.component('multiselect',require('./components/VueMultiSelectComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
