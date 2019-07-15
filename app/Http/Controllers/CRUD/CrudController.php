@@ -117,11 +117,9 @@ class CrudController extends Controller
                 $otrosTi->save();
             }
         }
-        // $persona = Persona::find($request->idP);
-        // $persona->experiencia_agricola_animal = $request->vegetal;
-        // $persona->experiencia_agricola_vegetal =$request->animal;
-        // $persona->id_user_updated = $request->idP;
-        // $persona->save();		//Ya no se guarda en personas los datos agricolas
+        $persona = Persona::find($request->idP);
+        $persona->id_user_updated = $request->idP;
+        $persona->save();		
         return 'guardo';
     }
     public function guardadoFinal(Request $request){//Funcion que guarda los datos finales, de organizaciones sociales

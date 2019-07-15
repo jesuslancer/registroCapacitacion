@@ -492,7 +492,6 @@
                                                 <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
                                             </div>
                                         </div>
-                                        @{{ errors.any('form') }}
                                         <div class="modal-footer">
                                             <button type="button" @click="limpiarTitulo()"  class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                                             <button type="submit" :disabled="errors.any('form')"  class="btn btn-primary">Guardar</button>
