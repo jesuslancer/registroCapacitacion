@@ -8,16 +8,17 @@ window.onload = function(){
 			this.getNivel();
 			this.getOcupaciones();
 			this.getExperienciaAgricola();
+			this.getHectarias();
 		},
 		mounted(){
 			var self = this
 		},
 		data:{
-			 pagination: {},
+			pagination: {},
 			existeP:false,
 			ya:false,
-			vista1:false,
-			vista2:true,			
+			vista1:true,
+			vista2:false,			
 			vista3:false,			
 			cargando:false,
 			estatusCarnet:2,
@@ -52,7 +53,7 @@ window.onload = function(){
 			parroquia:'',
 			estadoE:'',
 			municipioE:'',
-			hectarias:'',
+			hectaria:'',
 			parroquiaE:'',
 			nivel:'',
 			nivelModal:'',
@@ -64,6 +65,9 @@ window.onload = function(){
 			categoria:'',
 			area:'',
 			programa:'',
+			totales:'',
+			sembrados:'',
+			porSembrar:'',
 			titulo:'',
 			ocupacion:'',
 			comunidadE:'',
@@ -83,8 +87,11 @@ window.onload = function(){
 			animal:'',
 			vegetal:'',
 			semilla:'',
+			modalidad:'',
+			personasProd:'',
 			herramienta:'',
 			herramientas:[],
+			hectarias:[],
 			basess:[],
 			ciudadess:[],
 			claps:[],
@@ -223,9 +230,10 @@ window.onload = function(){
 							if (r.data['espacios'].length > 0) {
 								r.data['espacios'].forEach((value)=>{
 									this.estatusEspacio = 1
-									this.espacioProductivo.push({'comunidad':value.comunidad,'hectarias':value.hectarias,'agua_directa':value.agua_directa,
-										'agua_manantial':value.agua_manantial,'estadoE':value.parroquia.municipio.estado.denominacion,
-									'municipioE':value.parroquia.municipio.denominacion,'parroquiaE':value.parroquia.denominacion,'parroquia_id':value.parroquia.id})
+									this.espacioProductivo.push({'comunidad':value.comunidad,'totales':value.mts2totales,'sembrados':value.mts2sembrados,
+										'porSembrar':value.mts2porsembrar,'modalidad':value.modalidad,'personasProd':value.personas,'agua_directa':value.agua_directa,'agua_manantial':value.agua_manantial,
+										'estadoE':value.parroquia.municipio.estado.denominacion,'municipioE':value.parroquia.municipio.denominacion,
+										'parroquiaE':value.parroquia.denominacion,'parroquia_id':value.parroquia.id})
 									this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
 								})
 							}
@@ -375,6 +383,12 @@ window.onload = function(){
 					this.experienciaAgricola = r.data
 				})
 			},
+			getHectarias (){// Consultar todas las experiencias agricolas de catalogo
+				axios.post('hectarias')
+				.then(r => {
+					this.hectarias = r.data
+				})
+			},
 			limpiar(){//Vacia cada variables del formulario
 				this.ya=false;
 				this.nac='V';
@@ -382,6 +396,9 @@ window.onload = function(){
 				this.nombrePersona='';
 				this.genero='';
 				this.fechaNac='';
+				this.animal='';
+				this.vegetal='';
+				this.herramienta='';
 				this.telf1='';
 				this.telf2='';
 				this.telf3='';
@@ -423,7 +440,11 @@ window.onload = function(){
 				this.estatusOcupacion =2;
 				this.agua_directa =false;
 				this.agua_manantial =false;
-				this.hectarias = '';
+				this.sembrados = '';
+				this.porSembrar = '';
+				this.totales = '';
+				this.modalidad = '';
+				this.personas = '';
 				this.estatusEspacio =2;
 
 			},
@@ -530,6 +551,14 @@ window.onload = function(){
 			limpiarEspacio(){
 				this.comunidadE='';
 				this.parroquiaE='';
+				this.sembrados='';
+				this.porSembrar='';
+				this.totales='';
+				this.personasProd='';
+				this.modalidad='';
+				this.agua_directa='';
+				this.agua_manantial='';
+				this.mt2='';
 				this.parroquiasE=[];
 				this.municipioE='';
 				this.municipiosE=[];
@@ -548,8 +577,9 @@ window.onload = function(){
 						Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede agregar más espacios productivos.','error')
 					}
 				if (!existeEs) {
-					this.espacioProductivo.push({'comunidad':this.comunidadE,'hectarias':this.hectarias,'agua_directa':this.agua_directa,
-										'agua_manantial':this.agua_manantial,'estadoE':this.estadoE.denominacion, 'municipioE':this.municipioE.denominacion,
+					this.espacioProductivo.push({'comunidad':this.comunidadE,'totales':this.totales,'sembrados':this.sembrados,'porSembrar':this.porSembrar,
+										'modalidad':this.modalidad,'personasProd':this.personasProd,'agua_directa':this.agua_directa,
+										'agua_manantial':this.agua_manantial,'estadoE':this.estadoE.denominacion,'municipioE':this.municipioE.denominacion,
 										'parroquiaE':this.parroquiaE.denominacion,'parroquia_id':this.parroquiaE.id})
 					this.paginacionEspacioProductivo.totalItems=this.paginacionEspacioProductivo.length
 					$('#modalEspacio').modal('hide');
@@ -589,7 +619,7 @@ window.onload = function(){
 			guardarHerramienta(h){ //Funcion para guardar animales y vegetales seleccionados
 				var existeH = false;
 				this.herramientas.forEach((value)=>{
-					if (value['id']== h.id) {
+					if (value['denominacion']== h) {
 						existeH = true;
 							Swal.fire('¡Atención!','Estimado(a) usuario(a), no puede volver agregar esta Herramienta.','error')
 					}

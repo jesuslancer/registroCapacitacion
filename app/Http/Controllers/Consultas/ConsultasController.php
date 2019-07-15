@@ -38,6 +38,7 @@ use App\Consejos;
 use App\Experiencias;
 use App\Semillas;
 use App\Herramientas;
+use App\Hectarias;
 
 class ConsultasController extends Controller
 {
@@ -99,5 +100,8 @@ class ConsultasController extends Controller
     }
     public function experienciaAgricola (){//Consultas las Experiencias agricolas
     	return ExperienciaAgricola::all();
+    }
+    public function hectarias(){ //Consultas de las Hectarias para asignar
+        return Hectarias::all(['mt2']);
     }
 }

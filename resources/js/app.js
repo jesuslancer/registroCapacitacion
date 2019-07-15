@@ -16,7 +16,6 @@ require('vuejs-uib-pagination');
 require('sweetalert2');
 require('vue-moment');
 import Datepicker from 'vuejs-datepicker';
-import Multiselect from 'vue-multiselect'
 import pagination from "vuejs-uib-pagination";
 Vue.use(pagination);
 /**
@@ -33,8 +32,7 @@ Vue.use(pagination);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('vuejs-datepicker', Datepicker);
 Vue.component('custom-datepicker',require('./components/DatePickerComponent.vue').default);
-Vue.component('multiselect', Multiselect);
-Vue.component('multiselect',require('./components/VueMultiSelectComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

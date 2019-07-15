@@ -246,6 +246,7 @@
                     <button type="button" @click="next" class="btn btn-primary"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
                 </div>
             </div>
+            <br>
             </form> 
         </div> {{-- Fin Datos Adicionales --}}
         <div v-show="vista2" class="container-fluid">{{-- Inicio vista2 --}}
@@ -265,7 +266,7 @@
                             <span class="text-success" v-show="estatusAnimal">Experiencia Agrícola Animal</span>                      
                             <span class="text-danger" v-show="!estatusAnimal">Experiencia Agrícola Animal</span> 
                             <br>
-                            <select v-show="estatusAnimal" name="animales" class="form-control" aria-label="animales" data-vv-name="experiencia agricola animal" v-model="animal" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                            <select v-show="estatusAnimal" name="animales" class="form-control" aria-label="animales" data-vv-name="experiencia agricola animal" v-model="animal" aria-describedby="basic-addon6" >
                                 <option  value="" disabled selected>Seleccione Animal</option>
                                 <option v-if="x.tipo=='ANIMAL'" :value="x" v-for=" x in experienciaAgricola" > @{{ x.denominacion }} </option>
                             </select>  
@@ -276,7 +277,7 @@
                             <span class="text-success" v-show="estatusVegetal">Experiencia Agrícola Vegetal</span>                      
                             <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span> 
                             <br>
-                            <select v-show="estatusVegetal" name="vegetales" class="form-control " aria-label="vegetales" data-vv-name="experiencia agricola vegetal" v-model="vegetal" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                            <select v-show="estatusVegetal" name="vegetales" class="form-control " aria-label="vegetales" data-vv-name="experiencia agricola vegetal" v-model="vegetal" aria-describedby="basic-addon6" >
                                 <option  value="" disabled selected>Seleccione Vegetal</option>
                                 <option v-if="x.tipo=='VEGETAL'" :value="x" v-for=" x in experienciaAgricola"> @{{ x.denominacion }} </option>
                             </select>
@@ -337,11 +338,11 @@
                             </div>
                         <h5> ¿Cuenta con Herramientas?</h5> <p>Si poseé herramientas, especifique en los siguientes recuadros: </p>
                             <input type="checkbox" class="btn btn-outline-primary" v-model="estatusHer" name="">  
-                            <span class="text-success" v-show="estatusHer">Experiencia Agrícola Animal</span>                      
-                            <span class="text-danger" v-show="!estatusHer">Experiencia Agrícola Animal</span> 
+                            <span class="text-success" v-show="estatusHer">Cuento con herramientas</span>                      
+                            <span class="text-danger" v-show="!estatusHer">Cuento con herramientas</span> 
                             <br>
                             <div class="col-md-4">
-                                <select v-show="estatusHer" class="form-control"  data-vv-scope="form" data-vv-name="herramientas" v-validate.initial="'required'" v-model="herramienta" >
+                                <select v-show="estatusHer" class="form-control"  data-vv-scope="formH" data-vv-name="herramientas" v-validate.initial="'required'" v-model="herramienta" >
                                     <option disabled selected value="">Seleccione</option>
                                     <option value="MACHETE">MACHETE</option>
                                     <option value="PICO">PICO</option>
@@ -357,7 +358,7 @@
                                     <button type="button" :disabled="!herramienta" class="btn btn-success" @click="guardarHerramienta(herramienta)">Selección <span class="fa fa-chevron-down"></span></button>
                                 </div>
                             </div><br>
-                             <div class="col-md-4" >
+                            <div class="col-md-4" >
                                 <div v-show="herramientas.length > 0">
                                     <li class="list-group-item active">Lista herramientas</li>
                                     <ul class="list-group" v-for="(r, index) in herramientas">
@@ -372,6 +373,7 @@
                     </div>
                 </div>
                 <br>  
+
                 <div class="d-md-flex">
                     <div class="col-12" v-show="titulosRegistrados.length < 1">
                         <h5> ¿Poseé titulos académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>".</p>
@@ -395,7 +397,6 @@
                     </h3>
                 </div>
                 <br>
-
                 <p v-show="titulosRegistrados.length > 0">Lista titulos Registrados:</p>
                 <div class="d-md-flex" > {{-- Inicio Tabla titulos --}}
                     <div class="col ">
@@ -491,6 +492,7 @@
                                                 <span v-show="errors.has('form.fecha graduación')" class="text-danger"> @{{ errors.first('form.fecha graduación') }}</span>
                                             </div>
                                         </div>
+                                        @{{ errors.any('form') }}
                                         <div class="modal-footer">
                                             <button type="button" @click="limpiarTitulo()"  class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                                             <button type="submit" :disabled="errors.any('form')"  class="btn btn-primary">Guardar</button>
@@ -562,7 +564,7 @@
                     </div>
                 </div> {{-- Fin Ocupaciones Laborales --}}
                 <div class="d-md-flex">
-                    <div class="col-12">
+                    <div class="col-12" class="lg-">
                         <h5> ¿Poseé vinculación con algun espacio productivo actualmente?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>":</p>
                         <div class="form-check">
                             <input type="radio" class="btn btn-outline-primary" v-model="estatusEspacio" name="" value="1">  
@@ -590,7 +592,11 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>Nombre Consejo Comunal</th>
-                                        <th>Hectarias</th>
+                                        <th>Metros Totales</th>
+                                        <th >Metros Sembrados</th>
+                                        <th>Metros Por Sembrar</th>
+                                        <th>Modalidad de Siembra</th>
+                                        <th>Personas Productoras</th>
                                         <th>Agua Directa</th>
                                         <th>Agua de Manantial</th>
                                         <th>Estado</th>
@@ -601,7 +607,11 @@
                                 </thead>
                                 <tr class="text-center" v-for="(r, index) in array3">
                                     <td>@{{ r.comunidad }}</td>
-                                    <td>@{{ r.hectarias }}</td>
+                                    <td>@{{ r.totales }}</td>
+                                    <td>@{{ r.sembrados }}</td>
+                                    <td>@{{ r.porSembrar }}</td>
+                                    <td>@{{ r.modalidad }}</td>
+                                    <td>@{{ r.personasProd }}</td>
                                     <td>@{{ r.agua_directa ? 'SI' : 'NO' }}</td>
                                     <td>@{{ r.agua_manantial ? 'SI' : 'NO' }}</td>
                                     <td>@{{ r.estadoE.toUpperCase()}}</td>
@@ -639,9 +649,59 @@
                                         </div> 
                                         <div class="row">
                                             <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.hectarias')}">
-                                                <label for="hectarias">Hectarias(*)</label>
-                                                <input  data-vv-name="hectarias" v-validate.initial="'required:true|numeric|max:5' " maxlength="5" type="text" class="form-control" placeholder="Ej: 10000"  v-model="hectarias" aria-describedby="basic-addon1">
-                                                <span v-show="errors.has('formE.hectarias')" class="text-danger">@{{ errors.first('formE.hectarias') }}</span>
+                                                <label for="hectarias">Metros Totales(*)</label>
+                                                <select  name="totales" class="form-control " aria-label="totales" data-vv-name="metros totales" v-model="totales" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros totales')" class="text-danger">@{{ errors.first('formE.metros totales') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.sembrados')}">
+                                                <label for="sembrados">Metros Sembrados(*)</label>
+                                                <select  name="metros sembrados" class="form-control " aria-label="metros sembrados" data-vv-name="metros sembrados" v-model="sembrados" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros sembrados')" class="text-danger">@{{ errors.first('formE.metros sembrados') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.porSembrar')}">
+                                                <label for="porSembrar">Metros Por Sembrar(*)</label>
+                                                <select  name="porSembrar" class="form-control " aria-label="porSembrar" data-vv-name="porSembrar" v-model="porSembrar" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros sembrados')" class="text-danger">@{{ errors.first('formE.metros sembrados') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.modalidad de siembra')}">
+                                                <label for="modalidad de siembra">Modalidad de Siembra(*)</label>
+                                                <select  name="modalidad de siembra" class="form-control " aria-label="modalidad de siembra" data-vv-name="modalidad de siembra" v-model="modalidad" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option  value="CONUCO" >Conuco</option>
+                                                        <option  value="HUERTO ORGANOPONICO" >Huerto Organoponico</option>
+                                                        <option  value="PATIO" >Patio</option>
+                                                        <option  value="FUNDO" >Fundo</option>
+                                                        <option  value="HUERTOS INTENSIVOS" >Huertos Intensivos</option>
+                                                </select>
+                                                <span v-show="errors.has('formE.modalidad de siembra')" class="text-danger">@{{ errors.first('formE.modalidad de siembra') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.personas productoras')}">
+                                                <label for="personas productoras">Personas Productoras(*)</label>
+                                                <select  name="personas productoras" class="form-control " aria-label="personas productoras" data-vv-name="personas productoras" v-model="personasProd" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>                                                    
+                                                        <option  value="UNIDAD FAMILIAR" >Unidad Familiar</option>
+                                                        <option  value="UNIDAD DE PRODUCCIÓN SOCIAL" >Unidad de Producción Social</option>
+                                                        <option  value="GRUPO DE 4 PERSONAS" >Grupo de 4 Personas</option>
+                                                        <option  value="GRUPO DE 5 A 10 PERSONAS" >Grupo de 5 a 10 Persona</option>
+                                                </select>
+                                                <span v-show="errors.has('formE.modalidad de siembra')" class="text-danger">@{{ errors.first('formE.modalidad de siembra') }}</span>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -701,11 +761,10 @@
                         <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
-
-
-                        <button type="button" @click="next2" class="btn btn-primary" :disabled="experienciasRegistradas.length == 0 && semillas.length == 0 && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary" :disabled="experienciasRegistradas.length == 0 && semillas.length == 0 && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0 && herramientas.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
+                    <br>
         </div>{{-- Fin vista2 --}}
         <div v-show="vista3"> {{-- Inicio vista3 --}}
             <div class="d-md-flex justify-content-center">
@@ -1019,13 +1078,14 @@
                 </div>
             </div> <br>
             <div class="d-flex justify-content-between"> {{-- botones siguientes --}}
-                    <div>
-                        <button type="button" @click="atras2" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
-                    </div>
-                    <div>
-                        <button type="button" @click="guardadoFinal" class="btn btn-success" >Guardar <span class="fa fa-chevron-right"></span></button>
-                    </div>
-                </div> {{-- fin botones --}}
+                <div>
+                    <button type="button" @click="atras2" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
+                </div>
+                <div>
+                    <button type="button" @click="guardadoFinal" class="btn btn-success" >Guardar <span class="fa fa-chevron-right"></span></button>
+                </div>
+            </div> {{-- fin botones --}}
+            <br>
             </form>
 
         </div> {{-- Fin vista3 --}}

@@ -82,7 +82,11 @@ class CrudController extends Controller
                 $otrosTi->persona_id = $request->idP;
                 $otrosTi->parroquia_id = $value['parroquia_id'];
                 $otrosTi->comunidad = strtoupper($value['comunidad']);
-                $otrosTi->hectarias = $value['hectarias'];
+                $otrosTi->mts2totales = $value['totales'];
+                $otrosTi->mts2sembrados = $value['sembrados'];
+                $otrosTi->mts2porsembrar = $value['porSembrar'];
+                $otrosTi->modalidad = $value['modalidad'];
+                $otrosTi->personas = $value['personasProd'];
                 $otrosTi->agua_directa = $value['agua_directa'];
                 $otrosTi->agua_manantial = $value['agua_manantial'];
                 $otrosTi->save();
@@ -117,7 +121,7 @@ class CrudController extends Controller
         // $persona->experiencia_agricola_animal = $request->vegetal;
         // $persona->experiencia_agricola_vegetal =$request->animal;
         // $persona->id_user_updated = $request->idP;
-        // $persona->save();		
+        // $persona->save();		//Ya no se guarda en personas los datos agricolas
         return 'guardo';
     }
     public function guardadoFinal(Request $request){//Funcion que guarda los datos finales, de organizaciones sociales
