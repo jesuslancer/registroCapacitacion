@@ -120,7 +120,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text fa fa-book" id="basic-addon6"></span>
                         </div>
-                        <select name="nivel" class="form-control " aria-label="nivel" data-vv-name="nivel de instrucción académica" v-model="nivel" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                        <select  name="nivel" class="form-control " aria-label="nivel" data-vv-name="nivel de instrucción académica" v-model="nivel" aria-describedby="basic-addon6" v-validate.initial="'required'">
                                 <option  value="" disabled selected>Seleccione</option>
                                 <option :value="x.id" v-for=" x in niveles"> @{{ x.descripcion }} </option>
                         </select>
@@ -202,10 +202,10 @@
                 </div>
             </div> <br>
             <div class="d-md-flex">
-                <div class="col" :class="{'has-feedback has-error':errors.has('form2.comunidad')}">
-                    <label>Nombre Comunidad(*)</label>
-                    <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="comunidad">
-                    <span v-show="errors.has('form2.comunidad')" class="text-danger">@{{ errors.first('form2.comunidad') }}</span>
+                <div class="col" :class="{'has-feedback has-error':errors.has('form2.Consejo Comunal')}">
+                    <label>Nombre Consejo Comunal(*)</label>
+                    <input type="text" class="form-control" placeholder="Comunidad. Ejemplo" v-model="comunidad" v-validate.initial="'required|min:2'" data-vv-name="Consejo Comunal">
+                    <span v-show="errors.has('form2.Consejo Comunal')" class="text-danger">@{{ errors.first('form2.Consejo Comunal') }}</span>
                 </div>
             </div> <br>
             <div class="d-md-flex">
@@ -240,12 +240,13 @@
             </div> <br>
             <div class="d-flex justify-content-between">
                 <div>
-                    <button type="button" @click="clean" class="btn btn-dark "> <span class="fa fa-stop-circle"></span> Cancelar</button>
+                    <button type="button" @click="clean" class="btn btn-danger"> <span class="fa fa-stop-circle"></span> Cancelar</button>
                 </div>
                 <div>
                     <button type="button" @click="next" class="btn btn-primary"  :disabled="errors.any('form2')">Siguiente <span class="fa fa-chevron-right"></span></button>
                 </div>
             </div>
+            <br>
             </form> 
         </div> {{-- Fin Datos Adicionales --}}
         <div v-show="vista2" class="container-fluid">{{-- Inicio vista2 --}}
@@ -261,17 +262,118 @@
                     <div class="col-12" >
                         <h5> ¿Poseé experiencia agrícola?</h5> <p>Si poseé experiencia agrícola, especifique en los siguientes recuadros: </p>
                         <div class="form-check">
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="" value="">  
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusAnimal" name="">  
                             <span class="text-success" v-show="estatusAnimal">Experiencia Agrícola Animal</span>                      
                             <span class="text-danger" v-show="!estatusAnimal">Experiencia Agrícola Animal</span> 
-                            <br> 
-                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="" value="">  
+                            <br>
+                            <select v-show="estatusAnimal" name="animales" class="form-control" aria-label="animales" data-vv-name="experiencia agricola animal" v-model="animal" aria-describedby="basic-addon6" >
+                                <option  value="" disabled selected>Seleccione Animal</option>
+                                <option v-if="x.tipo=='ANIMAL'" :value="x" v-for=" x in experienciaAgricola" > @{{ x.denominacion }} </option>
+                            </select>  
+                            <div v-show="estatusAnimal">
+                                <button type="button" :disabled="!animal" class="btn btn-success" @click="guardarExperiencia(animal)">Selección <span class="fa fa-chevron-down"></span></button>
+                            </div>   
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusVegetal" name="">  
                             <span class="text-success" v-show="estatusVegetal">Experiencia Agrícola Vegetal</span>                      
-                            <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span>                      
+                            <span class="text-danger" v-show="!estatusVegetal">Experiencia Agrícola Vegetal</span> 
+                            <br>
+                            <select v-show="estatusVegetal" name="vegetales" class="form-control " aria-label="vegetales" data-vv-name="experiencia agricola vegetal" v-model="vegetal" aria-describedby="basic-addon6" >
+                                <option  value="" disabled selected>Seleccione Vegetal</option>
+                                <option v-if="x.tipo=='VEGETAL'" :value="x" v-for=" x in experienciaAgricola"> @{{ x.denominacion }} </option>
+                            </select>
+                            <div v-show="estatusVegetal">
+                                <button type="button" :disabled="!vegetal" class="btn btn-success" @click="guardarExperiencia(vegetal)">Selección <span class="fa fa-chevron-down"></span></button>
+                            </div>
                         </div>
+                        <p v-show="experienciasRegistradas.length > 0">Lista Experiencias Agricolas:</p>
+                            <div class="d-md-flex" > {{-- Inicio Tabla Experiencias --}}
+                                <div class="col ">
+                                    <div class="table table-hover card" v-show="experienciasRegistradas.length > 0" >
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th>Tipo</th>
+                                                    <th>Denominación</th>
+                                                    <th>Acción</th>
+                                                </tr>
+                                            </thead>
+                                            <tr class="text-center" v-for="(r, index) in array4">
+                                                <td>@{{ r.tipo }}</td>
+                                                <td>@{{ r.denominacion.toUpperCase() }}</td>
+                                                <td>
+                                                    <a class='btn btn-danger' @click="eliminarExperiencia(index)" title="Eliminar" >
+                                                        <span class="fa fa-eraser"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div><br>
+                            </div> {{-- Fin Experiencias --}}
+                                <div v-show="experienciasRegistradas.length > 5" is="uib-pagination" :boundary-links="true" :boundary-link-numbers="true" :max-size="paginacionExperienciasRegistradas.maxSize" :force-ellipses="true" :total-items="paginacionExperienciasRegistradas.totalItems" :items-per-page="paginacionExperienciasRegistradas.itemsPerPage" v-model="paginacionExperienciasRegistradas.paginate" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></div>
+                                <div v-show="experienciasRegistradas.length > 5" class="form-inline"><pre>Paginas: @{{ paginacionExperienciasRegistradas.paginate.currentPage }} / @{{ experienciasRegistradas.length / paginacionExperienciasRegistradas.paginate.currentPage }}, total de elementos: @{{ experienciasRegistradas.length }} </pre> </div>
+                            <div class="col-md-4">
+                                <label>¿Produce Semillas? Especifique:</label>
+                                <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.semilla')}">
+                                    <input  data-vv-name="semilla" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: semilla" minlength="2" maxlength="150"  v-model="semilla" >
+                                    <div class="input-group-prepend">
+                                        <button  type="button" :disabled="semillas.length >=2  || semilla=='' || errors.has('form3.semilla')" title="Agregar" @click="guardarItem(semilla,50)" class="btn btn-success">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span v-show="errors.has('form3.semilla')" class="text-danger">@{{ errors.first('form3.semilla') }}</span>
+                            </div><br>
+                             <div class="col-md-4" >
+                                <div v-show="semillas.length > 0">
+                                    <li class="list-group-item active">Lista Semillas</li>
+                                    <ul class="list-group" v-for="(r, index) in semillas">
+                                      <li class="list-group-item">@{{ r.denominacion }}
+                                        <button type="button" class="close" @click="eliminarItem(index,50)">
+                                              <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <h5> ¿Cuenta con Herramientas?</h5> <p>Si poseé herramientas, especifique en los siguientes recuadros: </p>
+                            <input type="checkbox" class="btn btn-outline-primary" v-model="estatusHer" name="">  
+                            <span class="text-success" v-show="estatusHer">Cuento con herramientas</span>                      
+                            <span class="text-danger" v-show="!estatusHer">Cuento con herramientas</span> 
+                            <br>
+                            <div class="col-md-4">
+                                <select v-show="estatusHer" class="form-control"  data-vv-scope="formH" data-vv-name="herramientas" v-validate.initial="'required'" v-model="herramienta" >
+                                    <option disabled selected value="">Seleccione</option>
+                                    <option value="MACHETE">MACHETE</option>
+                                    <option value="PICO">PICO</option>
+                                    <option value="PALA">PALA</option>
+                                    <option value="CHÍCORA">CHÍCORA</option>
+                                    <option value="ESCARDILLA">ESCARDILLA</option>
+                                    <option value="CARRETILLA">CARRETILLA</option>
+                                    <option value="BOMBA">BOMBA</option>
+                                    <option value="TIJERA">TIJERA</option>
+                                    <option value="MAQUINARIAS">MAQUINARIAS</option>
+                                </select>                                
+                                <div v-show="estatusHer">
+                                    <button type="button" :disabled="!herramienta" class="btn btn-success" @click="guardarHerramienta(herramienta)">Selección <span class="fa fa-chevron-down"></span></button>
+                                </div>
+                            </div><br>
+                            <div class="col-md-4" >
+                                <div v-show="herramientas.length > 0">
+                                    <li class="list-group-item active">Lista herramientas</li>
+                                    <ul class="list-group" v-for="(r, index) in herramientas">
+                                      <li class="list-group-item">@{{ r.denominacion }}
+                                        <button type="button" class="close" @click="eliminarHerramienta(index,50)">
+                                              <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <br>  
+
                 <div class="d-md-flex">
                     <div class="col-12" v-show="titulosRegistrados.length < 1">
                         <h5> ¿Poseé titulos académicos?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>".</p>
@@ -295,7 +397,6 @@
                     </h3>
                 </div>
                 <br>
-
                 <p v-show="titulosRegistrados.length > 0">Lista titulos Registrados:</p>
                 <div class="d-md-flex" > {{-- Inicio Tabla titulos --}}
                     <div class="col ">
@@ -431,7 +532,7 @@
                             </v-select>
                         </div>
                     </div>
-                        <div v-show="estatusOcupacion">
+                        <div v-show="estatusOcupacion==1">
                             <button type="button" :disabled="!ocupacion" class="btn btn-success" @click="guardarOcupacion(ocupacion)">Selección <span class="fa fa-chevron-down"></span></button>
                         </div>
                     <br>
@@ -462,7 +563,7 @@
                     </div>
                 </div> {{-- Fin Ocupaciones Laborales --}}
                 <div class="d-md-flex">
-                    <div class="col-12">
+                    <div class="col-12" class="lg-">
                         <h5> ¿Poseé vinculación con algun espacio productivo actualmente?</h5> <p>Si la respuesta es afirmativa haga click en el cuadro, luego pulse el botón agregar: "<i class=" fa fa-plus"></i>":</p>
                         <div class="form-check">
                             <input type="radio" class="btn btn-outline-primary" v-model="estatusEspacio" name="" value="1">  
@@ -489,7 +590,14 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Nombre Comunidad</th>
+                                        <th>Nombre Consejo Comunal</th>
+                                        <th>Metros Totales</th>
+                                        <th >Metros Sembrados</th>
+                                        <th>Metros Por Sembrar</th>
+                                        <th>Modalidad de Siembra</th>
+                                        <th>Personas Productoras</th>
+                                        <th>Agua Directa</th>
+                                        <th>Agua de Manantial</th>
                                         <th>Estado</th>
                                         <th>Municipio</th>
                                         <th>Parroquia</th>
@@ -498,6 +606,13 @@
                                 </thead>
                                 <tr class="text-center" v-for="(r, index) in array3">
                                     <td>@{{ r.comunidad }}</td>
+                                    <td>@{{ r.totales }}</td>
+                                    <td>@{{ r.sembrados }}</td>
+                                    <td>@{{ r.porSembrar }}</td>
+                                    <td>@{{ r.modalidad }}</td>
+                                    <td>@{{ r.personasProd }}</td>
+                                    <td>@{{ r.agua_directa ? 'SI' : 'NO' }}</td>
+                                    <td>@{{ r.agua_manantial ? 'SI' : 'NO' }}</td>
                                     <td>@{{ r.estadoE.toUpperCase()}}</td>
                                     <td>@{{ r.municipioE.toUpperCase() }}</td>
                                     <td>@{{ r.parroquiaE.toUpperCase() }}</td>
@@ -525,10 +640,83 @@
                                 <div class="modal-body">
                                     <form name="formE" data-vv-scope="formE" @submit.prevent="guardarEspacio()" @keyup.enter="guardarEspacio()">
                                         <div class="row">
-                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.nombre comunidad')}">
-                                                <label for="nombre comunidad">Nombre Comunidad(*)</label>
-                                                <input  data-vv-name="nombre comunidad" v-validate.initial="{required:true}" type="text" class="form-control" placeholder="Ej: Nombre comunidad" minlength="2" maxlength="150"  v-model="comunidadE" aria-label="nombre comunidad" aria-describedby="basic-addon1">
-                                                <span v-show="errors.has('formE.nombre comunidad')" class="text-danger">@{{ errors.first('formE.nombre comunidad') }}</span>
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.consejo comunal')}">
+                                                <label for="nombre comunidad">Nombre Consejo Comunal(*)</label>
+                                                <input  data-vv-name="consejo comunal" v-validate.initial="'required|min:2'" type="text" class="form-control" placeholder="Ej: Consejo Comunal" minlength="2" maxlength="150"  v-model="comunidadE" aria-describedby="basic-addon1">
+                                                <span v-show="errors.has('formE.consejo comunal')" class="text-danger">@{{ errors.first('formE.consejo comunal') }}</span>
+                                            </div>
+                                        </div> 
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.hectarias')}">
+                                                <label for="hectarias">Metros Totales(*)</label>
+                                                <select  name="totales" class="form-control " aria-label="totales" data-vv-name="metros totales" v-model="totales" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros totales')" class="text-danger">@{{ errors.first('formE.metros totales') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.sembrados')}">
+                                                <label for="sembrados">Metros Sembrados(*)</label>
+                                                <select  name="metros sembrados" class="form-control " aria-label="metros sembrados" data-vv-name="metros sembrados" v-model="sembrados" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros sembrados')" class="text-danger">@{{ errors.first('formE.metros sembrados') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.porSembrar')}">
+                                                <label for="porSembrar">Metros Por Sembrar(*)</label>
+                                                <select  name="porSembrar" class="form-control " aria-label="porSembrar" data-vv-name="porSembrar" v-model="porSembrar" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option :value="x.mt2" v-for="x in hectarias"> @{{ x.mt2 }} </option>
+                                                </select>
+                                                <span v-show="errors.has('formE.metros sembrados')" class="text-danger">@{{ errors.first('formE.metros sembrados') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.modalidad de siembra')}">
+                                                <label for="modalidad de siembra">Modalidad de Siembra(*)</label>
+                                                <select  name="modalidad de siembra" class="form-control " aria-label="modalidad de siembra" data-vv-name="modalidad de siembra" v-model="modalidad" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>
+                                                        <option  value="CONUCO" >Conuco</option>
+                                                        <option  value="HUERTO ORGANOPONICO" >Huerto Organoponico</option>
+                                                        <option  value="PATIO" >Patio</option>
+                                                        <option  value="FUNDO" >Fundo</option>
+                                                        <option  value="HUERTOS INTENSIVOS" >Huertos Intensivos</option>
+                                                </select>
+                                                <span v-show="errors.has('formE.modalidad de siembra')" class="text-danger">@{{ errors.first('formE.modalidad de siembra') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" :class="{'has-feedback has-error':errors.has('formE.personas productoras')}">
+                                                <label for="personas productoras">Personas Productoras(*)</label>
+                                                <select  name="personas productoras" class="form-control " aria-label="personas productoras" data-vv-name="personas productoras" v-model="personasProd" aria-describedby="basic-addon6" v-validate.initial="'required'">
+                                                        <option  value="" disabled selected>Seleccione</option>                                                    
+                                                        <option  value="UNIDAD FAMILIAR" >Unidad Familiar</option>
+                                                        <option  value="UNIDAD DE PRODUCCIÓN SOCIAL" >Unidad de Producción Social</option>
+                                                        <option  value="GRUPO DE 4 PERSONAS" >Grupo de 4 Personas</option>
+                                                        <option  value="GRUPO DE 5 A 10 PERSONAS" >Grupo de 5 a 10 Persona</option>
+                                                </select>
+                                                <span v-show="errors.has('formE.modalidad de siembra')" class="text-danger">@{{ errors.first('formE.modalidad de siembra') }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group" >
+                                                <label for="hectarias">¿Hay agua directa?(*)</label>
+                                                <br> 
+                                                <input type="checkbox" class="btn btn-outline-primary" v-model="agua_directa" name=""> 
+                                                <span class="text-success" v-show="agua_directa">Agua Directa</span>                      
+                                                <span class="text-danger" v-show="!agua_directa">Agua Directa</span> 
+                                            </div>
+                                            <div class="col form-group" >
+                                                <label for="hectarias">¿Hay agua de manantial?(*)</label>
+                                                <br> 
+                                                <input type="checkbox" class="btn btn-outline-primary" v-model="agua_manantial" name=""> 
+                                                <span class="text-success" v-show="agua_manantial">Agua de Manantial</span>                      
+                                                <span class="text-danger" v-show="!agua_manantial">Agua de Manantial</span> 
                                             </div>
                                         </div>
                                          <div class="d-md-flex">
@@ -572,9 +760,10 @@
                         <button type="button" @click="atras" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
                     </div>
                     <div>
-                        <button type="button" @click="next2" class="btn btn-primary"  >Siguiente <span class="fa fa-chevron-right"></span></button>
+                        <button type="button" @click="next2" class="btn btn-primary" :disabled="experienciasRegistradas.length == 0 && semillas.length == 0 && titulosRegistrados.length == 0 && ocupacionesPer.length == 0 && espacioProductivo.length == 0 && herramientas.length == 0">Siguiente <span class="fa fa-chevron-right"></span></button>
                     </div>
                 </div> {{-- fin botones --}}
+                    <br>
         </div>{{-- Fin vista2 --}}
         <div v-show="vista3"> {{-- Inicio vista3 --}}
             <div class="d-md-flex justify-content-center">
@@ -597,7 +786,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.base misiones')}">
                         <input  data-vv-name="base misiones" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Base Misiones" minlength="2" maxlength="150"  v-model="base" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="basess.length >=5 || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
+                            <button  type="button" :disabled="basess.length >=2  || base=='' || errors.has('form3.base misiones')" title="Agregar" @click="guardarItem(base,1)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -609,7 +798,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.ciudades priorizadas')}">
                         <input  data-vv-name="ciudades priorizadas" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Ciudades priorizadas" minlength="2" maxlength="150"  v-model="ciudades" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="ciudadess.length >=5 || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
+                            <button  type="button" :disabled="ciudadess.length >=2  || ciudades=='' || errors.has('form3.ciudades priorizadas')" title="Agregar" @click="guardarItem(ciudades,2)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -621,7 +810,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.clap')}">
                         <input  data-vv-name="clap" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Clap" minlength="2" maxlength="150"  v-model="clap">
                         <div class="input-group-prepend" >
-                            <button  type="button" :disabled="claps.length >=5 || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
+                            <button  type="button" :disabled="claps.length >=2  || clap=='' || errors.has('form3.clap')" title="Agregar"  @click="guardarItem(clap,3)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -671,7 +860,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.comunas')}">
                         <input  data-vv-name="comunas" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Comunas" minlength="2" maxlength="150"  v-model="comunas" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="comunass.length >=5 || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
+                            <button  type="button" :disabled="comunass.length >=2  || comunas=='' || errors.has('form3.comunas')" title="Agregar" @click="guardarItem(comunas,4)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -683,7 +872,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.conuqueros')}">
                         <input  data-vv-name="conuqueros" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Conuqueros" minlength="2" maxlength="150"  v-model="conuqueros" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="conuqueross.length >=5 || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
+                            <button  type="button" :disabled="conuqueross.length >=2  || conuqueros=='' || errors.has('form3.conuqueros')" title="Agregar" @click="guardarItem(conuqueros,5)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -695,7 +884,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.corredores')}">
                         <input  data-vv-name="corredores" type="text"v-validate="'min:5|max:150'"  class="form-control" placeholder="Ej: Corredores" minlength="2" maxlength="150"  v-model="corredores">
                         <div class="input-group-prepend" >
-                            <button  type="button" :disabled="corredoress.length >=5 || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
+                            <button  type="button" :disabled="corredoress.length >=2  || corredores=='' || errors.has('form3.corredores')" title="Agregar"  @click="guardarItem(corredores,6)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -745,7 +934,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.fundos')}">
                         <input  data-vv-name="fundos" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Fundos/Zamoranos" minlength="2" maxlength="150"  v-model="fundos" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="fundoss.length >=5 || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
+                            <button  type="button" :disabled="fundoss.length >=2  || fundos=='' || errors.has('form3.fundos')" title="Agregar" @click="guardarItem(fundos,7)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -757,7 +946,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.instituciones')}">
                         <input  data-vv-name="instituciones" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Instituciones" minlength="2" maxlength="150"  v-model="institucion" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="instituciones.length >=5 || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
+                            <button  type="button" :disabled="instituciones.length >=2  || institucion=='' || errors.has('form3.instituciones')" title="Agregar" @click="guardarItem(institucion,8)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -769,7 +958,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.organizacion')}">
                         <input  data-vv-name="organizacion" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Organizaciones/Movimientos" minlength="2" maxlength="150"  v-model="organizacion" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="organizaciones.length >=5 || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
+                            <button  type="button" :disabled="organizaciones.length >=2  || organizacion=='' || errors.has('form3.organizacion')" title="Agregar" @click="guardarItem(organizacion,9)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -819,7 +1008,7 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.otros')}">
                         <input  data-vv-name="otros" type="text" class="form-control" v-validate="'min:5|max:150'" placeholder="Ej: Otros" minlength="2" maxlength="150"  v-model="otros" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="otross.length >=5 || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
+                            <button  type="button" :disabled="otross.length >=2  || otros=='' || errors.has('form3.otros')" title="Agregar" @click="guardarItem(otros,10)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
@@ -831,12 +1020,24 @@
                     <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.urbanismos')}">
                         <input  data-vv-name="urbanismos" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Urbanismos" minlength="2" maxlength="150"  v-model="urbanismos" >
                         <div class="input-group-prepend">
-                            <button  type="button" :disabled="urbanismoss.length >=5 || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
+                            <button  type="button" :disabled="urbanismoss.length >=2  || urbanismos=='' || errors.has('form3.urbanismos')" title="Agregar" @click="guardarItem(urbanismos,11)" class="btn btn-success">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
                         <span v-show="errors.has('form3.urbanismos')" class="text-danger"> @{{ errors.first('form3.urbanismos') }} </span>
+                </div>
+                <div class="col-md-4">
+                    <label>Consejos Comunales</label>
+                    <div class="input-group" :class="{'has-feedback has-error':errors.has('form3.consejos comunales')}">
+                        <input  data-vv-name="consejos comunales" type="text"  v-validate="'min:5|max:150'" class="form-control" placeholder="Ej: Consejos Comunales" minlength="2" maxlength="150"  v-model="consejos" >
+                        <div class="input-group-prepend">
+                            <button  type="button" :disabled="consejoss.length >=2 ||  consejos=='' || errors.has('form3.consejos')" title="Agregar" @click="guardarItem(consejos,12)" class="btn btn-success">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                        <span v-show="errors.has('form3.consejos comunales')" class="text-danger"> @{{ errors.first('form3.consejos comunales') }} </span>
                 </div>                
             </div><br>
             <div class="d-md-flex">
@@ -863,15 +1064,27 @@
                         </ul>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div v-show="consejoss.length > 0">
+                        <li class="list-group-item active">Lista Consejos Comunales</li>
+                        <ul class="list-group" v-for="(r, index) in consejoss">
+                          <li class="list-group-item">@{{ r.denominacion }}
+                            <button type="button" class="close" @click="eliminarItem(index,12)">
+                                  <span aria-hidden="true">&times;</span>
+                            </button>
+                        </ul>
+                    </div>
+                </div>
             </div> <br>
             <div class="d-flex justify-content-between"> {{-- botones siguientes --}}
-                    <div>
-                        <button type="button" @click="atras2" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
-                    </div>
-                    <div>
-                        <button type="button" @click="guardadoFinal" class="btn btn-success" >Guardar <span class="fa fa-chevron-right"></span></button>
-                    </div>
-                </div> {{-- fin botones --}}
+                <div>
+                    <button type="button" @click="atras2" class="btn btn-dark "> <span class="fa fa-chevron-left"></span> Atras</button>
+                </div>
+                <div>
+                    <button type="button" @click="guardadoFinal" class="btn btn-success" >Guardar <span class="fa fa-chevron-right"></span></button>
+                </div>
+            </div> {{-- fin botones --}}
+            <br>
             </form>
 
         </div> {{-- Fin vista3 --}}

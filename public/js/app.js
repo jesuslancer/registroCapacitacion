@@ -57860,6 +57860,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuejs_datepicker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuejs-datepicker */ "./node_modules/vuejs-datepicker/dist/vuejs-datepicker.esm.js");
+/* harmony import */ var vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuejs-uib-pagination */ "./node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js");
+/* harmony import */ var vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_2__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -57884,6 +57886,8 @@ __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetale
 __webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment.js");
 
 
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuejs_uib_pagination__WEBPACK_IMPORTED_MODULE_2___default.a);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -58123,8 +58127,13 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! C:\xampp\htdocs\RegistroCaptacion\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\xampp\htdocs\RegistroCaptacion\resources\sass\app.scss */"./resources/sass/app.scss");
+=======
+__webpack_require__(/*! C:\xampp\htdocs\registroCaptacion\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\registroCaptacion\resources\sass\app.scss */"./resources/sass/app.scss");
+>>>>>>> c099bd5ce0bcf75ac729903f951ae2f0a9c63a2e
 
 
 /***/ })

@@ -26,6 +26,8 @@ Route::post('areasConocimientos','Consultas\ConsultasController@areasConocimient
 Route::post('programas','Consultas\ConsultasController@programas');
 Route::post('titulos','Consultas\ConsultasController@titulos');
 Route::post('ocupaciones','Consultas\ConsultasController@ocupaciones');
+Route::post('experienciaAgricola','Consultas\ConsultasController@experienciaAgricola');
+Route::post('hectarias','Consultas\ConsultasController@hectarias');
 
 //Acciones
 Route::post('guardarP','CRUD\CrudController@guardarPersona');

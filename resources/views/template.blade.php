@@ -16,13 +16,14 @@
   <link href="css/fontawesome/css/all.css" rel="stylesheet">
   <!-- Custom styles for this template -->
   <link href="css/scrolling-nav.css" rel="stylesheet">
+  <link href="../node_modules/vuejs-uib-pagination/demo/styles.css" rel="stylesheet">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body id="page-top">
 <div id='app'></div>{{-- Se necesita para evitar el error de vue --}}
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top text-black" style="background-color:#745483" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="http://150.187.42.6/?page_id=32">Fundación CIARA</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,11 +45,40 @@
     </div>
   </nav>
 
-  <header class="bg-primary text-white">
-    <div class="container text-center">
-      <h1>Sistema de Registro de Captación</h1>
-      <p class="lead">Fundación CIARA</p>
+  <header class="text-white" style="background-color: #745483">
+
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="img/banner1.jpg" alt="First slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/banner2.jpg" alt="Second slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/banner3.jpg" alt="Third slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/banner4.jpg" alt="Third slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/banner5.jpg">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Antrior</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
     </div>
+     {{-- <div class="text-center">
+      <img class="img-fluid" src="img/banners.jpg">
+          <h1>Sistema de Registro de Captación</h1>
+          <p class="lead">Fundación CIARA</p>
+    </div> --}}
   </header>
 
   <section id="about">
@@ -67,7 +97,7 @@
   
 <section></section>
   <!-- Footer -->
-  <footer class="py-3 bg-dark fixed-bottom">
+  <footer class="py-3 fixed-bottom" style="background-color: #745483">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; Sitio Web fundación CIARA 2019</p>
     </div>
@@ -93,6 +123,8 @@
   <script src="../node_modules/vue-select/dist/vue-select.js"></script>
   <!-- Vue-pagination -->
   <script src="../node_modules/vuejs-uib-pagination/dist/vuejs-uib-pagination.js"></script>
+  <!-- Vue-multiselect -->
+  <script src="../node_modules/vue-multiselect/dist/vue-multiselect.min.js"></script>
 
   
 </body>
