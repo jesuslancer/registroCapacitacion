@@ -25,11 +25,12 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top text-black" style="background-color:#745483" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="http://150.187.42.6/?page_id=32">Fundación CIARA</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-toggler js-scroll-trigger d-none d-md-block"  href="http://minppau.gob.ve">Ministerio del Poder Popular para la Agricultura Urbana </a>
+      <a class="navbar-toggler" href="http://minppau.gob.ve" data-target="#navbarResponsive"  aria-expanded="false" aria-label="Toggle navigation">MINPPAU</a>
+      {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
+      </button> --}}
+      {{-- <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#about">Sobre el Sitio</a>
@@ -41,7 +42,7 @@
             <a class="nav-link js-scroll-trigger" href="#contact">Contactos</a>
           </li>
         </ul>
-      </div>
+      </div> --}}
     </div>
   </nav>
 
@@ -50,9 +51,9 @@
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-          <img class="d-block w-100" src="img/banner1.jpg" alt="First slide">
+          <img class="d-block w-100" src="img/banner5.jpg" alt="First slide">
         </div>
-        <div class="carousel-item">
+       {{--  <div class="carousel-item">
           <img class="d-block w-100" src="img/banner2.jpg" alt="Second slide">
         </div>
         <div class="carousel-item">
@@ -62,8 +63,8 @@
           <img class="d-block w-100" src="img/banner4.jpg" alt="Third slide">
         </div>
         <div class="carousel-item">
-          <img class="d-block w-100" src="img/banner5.jpg">
-        </div>
+          <img class="d-block w-100" src="img/banner1.jpg">
+        </div> --}}
       </div>
       <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -99,7 +100,7 @@
   <!-- Footer -->
   <footer class="py-3 fixed-bottom" style="background-color: #745483">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Sitio Web fundación CIARA 2019</p>
+      <p class="m-0 text-center text-white">Copyright &copy; Ministerio del Poder Popular para la Agricultura Urbana 2019</p>
     </div>
     <!-- /.container -->
   </footer>
